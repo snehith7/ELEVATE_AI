@@ -57,7 +57,7 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ currentUser }) => 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${currentUser?.id || 'usr_student_demo'}`
+          ...(currentUser?.id ? { 'Authorization': `Bearer ${currentUser.id}` } : {})
         },
         body: JSON.stringify({
           channel,
@@ -79,42 +79,42 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ currentUser }) => 
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-[calc(100vh-4rem)] flex flex-col">
-      <div className="flex-1 flex flex-col md:flex-row rounded-2xl bg-[#0f172a] border border-slate-800 shadow-xl overflow-hidden">
-        {/* Left Sidebar: Channels & Peer Presence (3 cols) */}
-        <div className="w-full md:w-64 border-b md:border-b-0 md:border-r border-slate-800 bg-[#0c1220] p-4 flex flex-col justify-between">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2 px-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-              <Users className="w-4 h-4 text-indigo-400" />
+    <div className="w-full h-[calc(100vh-60px)] md:h-screen px-3 sm:px-6 lg:px-8 py-3 sm:py-6 flex flex-col">
+      <div className="flex-1 flex flex-col md:flex-row rounded-2xl bg-[#0f172a] border border-slate-800 shadow-xl overflow-hidden min-h-0">
+        {/* Left Sidebar / Top Channels on Mobile */}
+        <div className="w-full md:w-64 border-b md:border-b-0 md:border-r border-slate-800 bg-[#0c1220] p-3 sm:p-4 flex flex-col justify-between shrink-0">
+          <div className="space-y-2 sm:space-y-4">
+            <div className="flex items-center space-x-2 px-1 sm:px-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">
+              <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400" />
               <span>Channels</span>
             </div>
 
-            <div className="space-y-1">
+            <div className="flex md:flex-col gap-1.5 overflow-x-auto md:overflow-visible pb-1 md:pb-0">
               {[
-                { id: 'general', name: 'general-discussion', desc: 'Introductions & study groups' },
-                { id: 'algorithms', name: 'algorithm-strategies', desc: 'Code review & solutions' },
-                { id: 'interview-prep', name: 'interview-prep', desc: 'Mock tech interviews & tips' }
+                { id: 'general', name: 'general', desc: 'Study groups & intros' },
+                { id: 'algorithms', name: 'algorithms', desc: 'Code review & solutions' },
+                { id: 'interview-prep', name: 'interviews', desc: 'Mock interviews & tips' }
               ].map(ch => (
                 <button
                   key={ch.id}
                   onClick={() => setChannel(ch.id as any)}
-                  className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-semibold flex items-start space-x-2 transition-colors ${
+                  className={`shrink-0 md:shrink md:w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center md:items-start space-x-2 transition-colors cursor-pointer ${
                     channel === ch.id
-                      ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30'
+                      ? 'bg-indigo-600/25 text-indigo-300 border border-indigo-500/40'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
                   }`}
                 >
-                  <Hash className="w-4 h-4 shrink-0 mt-0.5" />
+                  <Hash className="w-3.5 h-3.5 shrink-0" />
                   <div>
-                    <div className="text-slate-200">{ch.name}</div>
-                    <div className="text-[10px] text-slate-500 font-normal">{ch.desc}</div>
+                    <div className="text-slate-200 whitespace-nowrap">{ch.name}</div>
+                    <div className="hidden md:block text-[10px] text-slate-500 font-normal">{ch.desc}</div>
                   </div>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-800/80 px-2 space-y-2">
+          <div className="hidden md:block pt-4 border-t border-slate-800/80 px-2 space-y-2">
             <div className="text-[11px] text-slate-400 font-semibold flex items-center space-x-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span>Online Academy Members</span>
@@ -126,20 +126,20 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ currentUser }) => 
         </div>
 
         {/* Right Main Chat Area */}
-        <div className="flex-1 flex flex-col bg-[#0b0f19] overflow-hidden">
+        <div className="flex-1 flex flex-col bg-[#0b0f19] overflow-hidden min-h-0">
           {/* Channel Header */}
-          <div className="px-6 py-3 border-b border-slate-800 bg-[#0f172a] flex items-center justify-between">
+          <div className="px-4 sm:px-6 py-2.5 sm:py-3 border-b border-slate-800 bg-[#0f172a] flex items-center justify-between shrink-0">
             <div className="flex items-center space-x-2">
               <Hash className="w-4 h-4 text-indigo-400" />
               <span className="font-bold text-sm text-white capitalize">{channel.replace('-', ' ')}</span>
             </div>
-            <div className="text-xs text-slate-400">
+            <div className="text-[11px] sm:text-xs text-slate-400">
               Live updates synced to database
             </div>
           </div>
 
           {/* Messages Stream */}
-          <div className="flex-1 p-6 overflow-y-auto space-y-4 text-xs">
+          <div className="flex-1 p-3 sm:p-6 overflow-y-auto space-y-3 sm:space-y-4 text-xs">
             {messages.map(msg => {
               const isMe = msg.senderId === currentUser?.id;
               const isAdmin = msg.senderRole === 'admin';
@@ -171,9 +171,19 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ currentUser }) => 
                     <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-200 leading-relaxed">
                       <p className="whitespace-pre-line">{msg.text}</p>
                       {msg.codeSnippet && (
-                        <pre className="mt-2 p-2.5 rounded-lg bg-slate-950 font-mono text-[11px] text-indigo-200 overflow-x-auto border border-slate-800">
-                          {msg.codeSnippet}
-                        </pre>
+                        <div className="mt-2 rounded-lg bg-slate-950 overflow-hidden border border-slate-800">
+                          {typeof msg.codeSnippet === 'object' && msg.codeSnippet !== null && msg.codeSnippet.language && (
+                            <div className="px-2.5 py-1 bg-slate-900 border-b border-slate-800/80 text-[10px] font-mono text-indigo-300 uppercase tracking-wider flex items-center justify-between">
+                              <span>{msg.codeSnippet.language}</span>
+                              <Code2 className="w-3 h-3 text-slate-500" />
+                            </div>
+                          )}
+                          <pre className="p-2.5 font-mono text-[11px] text-indigo-200 overflow-x-auto whitespace-pre">
+                            {typeof msg.codeSnippet === 'object' && msg.codeSnippet !== null
+                              ? (msg.codeSnippet.code || JSON.stringify(msg.codeSnippet, null, 2))
+                              : String(msg.codeSnippet)}
+                          </pre>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -184,7 +194,7 @@ export const CommunityView: React.FC<CommunityViewProps> = ({ currentUser }) => 
           </div>
 
           {/* Message Input Box */}
-          <form onSubmit={handleSendMessage} className="p-4 border-t border-slate-800 bg-[#0f172a] space-y-2">
+          <form onSubmit={handleSendMessage} className="p-3 sm:p-4 border-t border-slate-800 bg-[#0f172a] space-y-2 shrink-0">
             {showCodeInput && (
               <div className="space-y-1">
                 <div className="text-[11px] text-slate-400 flex items-center justify-between">

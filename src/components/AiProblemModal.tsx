@@ -45,7 +45,7 @@ export const AiProblemModal: React.FC<AiProblemModalProps> = ({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${currentUser?.id || 'usr_student_demo'}`
+          ...(currentUser?.id ? { 'Authorization': `Bearer ${currentUser.id}` } : {})
         },
         body: JSON.stringify({
           desiredDifficulty: difficulty,
@@ -70,34 +70,35 @@ export const AiProblemModal: React.FC<AiProblemModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-xl bg-[#0f172a] border border-slate-700 rounded-2xl shadow-2xl overflow-hidden text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full max-w-xl bg-[#0f172a] border border-slate-700 rounded-2xl shadow-2xl overflow-hidden text-slate-100 my-auto">
         {/* Header */}
-        <div className="p-6 border-b border-slate-800 bg-gradient-to-r from-indigo-950/40 via-purple-950/40 to-slate-900 flex items-center justify-between">
+        <div className="p-4 sm:p-6 border-b border-slate-800 bg-gradient-to-r from-indigo-950/40 via-purple-950/40 to-slate-900 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0">
               <Sparkles className="w-5 h-5 text-white animate-spin-slow" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white flex items-center space-x-2">
-                <span>AI Adaptive Problem Generator</span>
+              <h2 className="text-base sm:text-lg font-bold text-white flex items-center space-x-2">
+                <span>AI Problem Generator</span>
                 <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  Gemini 3.8
+                  Gemini
                 </span>
               </h2>
-              <p className="text-xs text-slate-400">Synthesizes targeted coding questions based on your coding talent & mistakes</p>
+              <p className="text-xs text-slate-400">Synthesizes targeted coding questions based on your talent profile</p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            aria-label="Close modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5 max-h-[75vh] overflow-y-auto">
           {/* User Profile Awareness Card */}
           <div className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700 flex items-center justify-between text-xs">
             <div className="flex items-center space-x-3">
@@ -173,20 +174,23 @@ export const AiProblemModal: React.FC<AiProblemModalProps> = ({
                 <span>Observed Struggle Areas From Your Submissions</span>
               </label>
               <div className="flex flex-wrap gap-2">
-                {weakTopics.map((topic, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => {
-                      setTopicFocus(topic);
-                      handleGenerate(topic);
-                    }}
-                    className="text-xs px-2.5 py-1.5 rounded-lg bg-amber-500/10 text-amber-200 border border-amber-500/30 hover:bg-amber-500/20 transition-colors flex items-center space-x-1.5"
-                  >
-                    <span>Practice: {topic}</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </button>
-                ))}
+                {weakTopics.map((topic: any, i: number) => {
+                  const topicStr = typeof topic === 'object' && topic !== null ? (topic.name || topic.title || topic.topic || JSON.stringify(topic)) : String(topic);
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => {
+                        setTopicFocus(topicStr);
+                        handleGenerate(topicStr);
+                      }}
+                      className="text-xs px-2.5 py-1.5 rounded-lg bg-amber-500/10 text-amber-200 border border-amber-500/30 hover:bg-amber-500/20 transition-colors flex items-center space-x-1.5"
+                    >
+                      <span>Practice: {topicStr}</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -225,12 +229,12 @@ export const AiProblemModal: React.FC<AiProblemModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="p-5 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between">
+        <div className="p-3.5 sm:p-5 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between">
           <button
             type="button"
             onClick={onClose}
             disabled={isGenerating}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
           >
             Cancel
           </button>
@@ -239,7 +243,7 @@ export const AiProblemModal: React.FC<AiProblemModalProps> = ({
             type="button"
             onClick={() => handleGenerate()}
             disabled={isGenerating}
-            className="flex items-center space-x-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-indigo-500/20 disabled:opacity-50 transition-all cursor-pointer"
+            className="flex items-center space-x-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-indigo-500/20 disabled:opacity-50 transition-all cursor-pointer"
           >
             {isGenerating ? (
               <>

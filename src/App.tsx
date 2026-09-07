@@ -1,17 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from './components/Navbar';
+import { Sidebar } from './components/Sidebar';
 import { RoadmapView } from './components/RoadmapView';
 import { PlaygroundView } from './components/PlaygroundView';
 import { AnalyticsView } from './components/AnalyticsView';
 import { CommunityView } from './components/CommunityView';
 import { AdminView } from './components/AdminView';
+import { AdminLoginPage } from './components/AdminLoginPage';
+import { FacultyLoginPage } from './components/FacultyLoginPage';
+import { FacultyView } from './components/FacultyView';
+import { StudentLoginPage } from './components/StudentLoginPage';
 import { AiProblemModal } from './components/AiProblemModal';
 import { DatabaseModal } from './components/DatabaseModal';
 import { Problem, User, AnalyticsReport, DatabaseStatus, Submission } from './types';
+import { ArrowLeft, GraduationCap, Menu, Flame, Sparkles, Code2 } from 'lucide-react';
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<'roadmap' | 'playground' | 'analytics' | 'community' | 'admin'>('roadmap');
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
+  // Top-level Page: 'student' | 'faculty' | 'admin'
+  const [currentPage, setCurrentPage] = useState<'student' | 'faculty' | 'admin'>(() => {
+    if (typeof window !== 'undefined') {
+      if (window.location.hash === '#admin' || window.location.pathname.startsWith('/admin')) {
+        return 'admin';
+      }
+      if (window.location.hash === '#faculty' || window.location.pathname.startsWith('/faculty')) {
+        return 'faculty';
+      }
+    }
+    return 'student';
+  });
+
+  // Dedicated Student Auth Session
+  const [studentSession, setStudentSession] = useState<{ user: any; token: string } | null>(() => {
+    try {
+      const stored = localStorage.getItem('codeelevate_student_session');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Dedicated Faculty Auth Session
+  const [facultySession, setFacultySession] = useState<{ user: any; token: string } | null>(() => {
+    try {
+      const stored = localStorage.getItem('codeelevate_faculty_session');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Dedicated Admin Auth Session
+  const [adminSession, setAdminSession] = useState<{ user: any; token: string } | null>(() => {
+    try {
+      const stored = localStorage.getItem('codeelevate_admin_session');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Student Dashboard tabs
+  const [currentTab, setCurrentTab] = useState<'roadmap' | 'playground' | 'analytics' | 'community'>('roadmap');
+
+  // Active user for student/learning features
+  const [currentUser, setCurrentUser] = useState<User | null>(
+    studentSession?.user || facultySession?.user || null
+  );
   const [problems, setProblems] = useState<Problem[]>([]);
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsReport | null>(null);
@@ -21,16 +76,117 @@ export default function App() {
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [isDbModalOpen, setIsDbModalOpen] = useState(false);
 
-  // Fetch initial profile
-  const fetchUserProfile = async () => {
+  // Synchronize URL hash with page state
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === '#admin') {
+        setCurrentPage('admin');
+      } else if (window.location.hash === '#faculty') {
+        setCurrentPage('faculty');
+      } else {
+        setCurrentPage('student');
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const navigateToAdmin = () => {
+    window.location.hash = 'admin';
+    setCurrentPage('admin');
+  };
+
+  const navigateToFaculty = () => {
+    window.location.hash = 'faculty';
+    setCurrentPage('faculty');
+  };
+
+  const navigateToStudent = () => {
+    window.location.hash = 'student';
+    setCurrentPage('student');
+  };
+
+  // Student Auth Handlers
+  const handleStudentLoginSuccess = (user: any, token: string) => {
+    const session = { user, token };
+    setStudentSession(session);
+    setCurrentUser(user);
     try {
-      const res = await fetch('/api/auth/me');
+      localStorage.setItem('codeelevate_student_session', JSON.stringify(session));
+    } catch (e) {
+      console.error('Failed to persist student session', e);
+    }
+    fetchProblems();
+    fetchAnalytics(user.id);
+  };
+
+  const handleStudentLogout = () => {
+    setStudentSession(null);
+    setCurrentUser(null);
+    try {
+      localStorage.removeItem('codeelevate_student_session');
+    } catch (e) {
+      console.error('Failed to clear student session', e);
+    }
+  };
+
+  // Faculty Auth Handlers
+  const handleFacultyLoginSuccess = (user: any, token: string) => {
+    const session = { user, token };
+    setFacultySession(session);
+    try {
+      localStorage.setItem('codeelevate_faculty_session', JSON.stringify(session));
+    } catch (e) {
+      console.error('Failed to persist faculty session', e);
+    }
+  };
+
+  const handleFacultyLogout = () => {
+    setFacultySession(null);
+    try {
+      localStorage.removeItem('codeelevate_faculty_session');
+    } catch (e) {
+      console.error('Failed to clear faculty session', e);
+    }
+  };
+
+  // Admin Auth Handlers
+  const handleAdminLoginSuccess = (user: any, token: string) => {
+    const session = { user, token };
+    setAdminSession(session);
+    try {
+      localStorage.setItem('codeelevate_admin_session', JSON.stringify(session));
+    } catch (e) {
+      console.error('Failed to persist admin session', e);
+    }
+  };
+
+  const handleAdminLogout = () => {
+    setAdminSession(null);
+    try {
+      localStorage.removeItem('codeelevate_admin_session');
+    } catch (e) {
+      console.error('Failed to clear admin session', e);
+    }
+  };
+
+  // Fetch student user profile if session exists
+  const fetchUserProfile = async () => {
+    const token = studentSession?.token || facultySession?.token;
+    if (!token) return;
+    try {
+      const res = await fetch('/api/auth/me', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       if (res.ok) {
         const user = await res.json();
         setCurrentUser(user);
       }
     } catch (err) {
-      console.error('Failed to fetch user:', err);
+      console.error('Failed to fetch user profile:', err);
     }
   };
 
@@ -39,7 +195,8 @@ export default function App() {
     try {
       const res = await fetch('/api/problems');
       if (res.ok) {
-        const list: Problem[] = await res.json();
+        const json = await res.json();
+        const list: Problem[] = json.problems || json;
         setProblems(list);
         if (!selectedProblem && list.length > 0) {
           setSelectedProblem(list[0]);
@@ -51,9 +208,15 @@ export default function App() {
   };
 
   // Fetch analytics
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = async (userId?: string) => {
+    const uid = userId || currentUser?.id || studentSession?.user?.id;
+    if (!uid) return;
     try {
-      const res = await fetch('/api/analytics');
+      const res = await fetch('/api/analytics', {
+        headers: {
+          'x-user-id': uid
+        }
+      });
       if (res.ok) {
         const report: AnalyticsReport = await res.json();
         setAnalytics(report);
@@ -77,35 +240,18 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchUserProfile();
-    fetchProblems();
-    fetchAnalytics();
-    fetchDbStatus();
-  }, []);
-
-  // Switch demo user (student vs admin)
-  const handleSwitchRole = async (role: 'student' | 'admin') => {
-    try {
-      const res = await fetch('/api/auth/switch-demo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ role })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setCurrentUser(data.user);
-        if (role === 'admin') {
-          setCurrentTab('admin');
-        }
-        fetchProblems();
-        fetchAnalytics();
-      }
-    } catch (err) {
-      console.error('Failed to switch role:', err);
+    if (studentSession) {
+      fetchUserProfile();
+      fetchAnalytics(studentSession.user.id);
+    } else if (facultySession) {
+      fetchUserProfile();
+      fetchAnalytics(facultySession.user.id);
     }
-  };
+    fetchProblems();
+    fetchDbStatus();
+  }, [studentSession?.token, facultySession?.token]);
 
-  // When a user selects a problem to practice
+  // When a problem is selected to practice
   const handleSelectProblem = (problem: Problem) => {
     setSelectedProblem(problem);
     setCurrentTab('playground');
@@ -125,69 +271,222 @@ export default function App() {
     fetchUserProfile();
   };
 
+  // When user switches navigation tab via sidebar
+  const handleTabChange = (tab: 'roadmap' | 'playground' | 'analytics' | 'community') => {
+    if (tab === 'playground') {
+      setSelectedProblem(null); // Clear selected problem so Playground opens in Practice Sheet view
+    }
+    setCurrentTab(tab);
+  };
+
+  // -------------------------------------------------------------
+  // 1. DEDICATED ROOT ADMIN ROUTE (#admin)
+  // -------------------------------------------------------------
+  if (currentPage === 'admin') {
+    if (!adminSession) {
+      return (
+        <AdminLoginPage
+          onLoginSuccess={handleAdminLoginSuccess}
+          onGoToStudentLogin={navigateToStudent}
+          onGoToFacultyLogin={navigateToFaculty}
+        />
+      );
+    }
+
+    return (
+      <AdminView
+        adminUser={adminSession.user}
+        onLogout={handleAdminLogout}
+        onBackToStudent={navigateToStudent}
+        onOpenDbModal={() => setIsDbModalOpen(true)}
+        dbStatus={dbStatus}
+        onOpenAiGenerator={() => setIsAiModalOpen(true)}
+      />
+    );
+  }
+
+  // -------------------------------------------------------------
+  // 2. DEDICATED FACULTY PORTAL ROUTE (#faculty)
+  // -------------------------------------------------------------
+  if (currentPage === 'faculty') {
+    if (!facultySession) {
+      return (
+        <FacultyLoginPage
+          onLoginSuccess={handleFacultyLoginSuccess}
+          onGoToStudentLogin={navigateToStudent}
+          onGoToAdminLogin={navigateToAdmin}
+        />
+      );
+    }
+
+    return (
+      <FacultyView
+        facultyUser={facultySession.user}
+        onLogout={handleFacultyLogout}
+        onSwitchToStudentView={() => {
+          setCurrentUser(facultySession.user);
+          navigateToStudent();
+        }}
+        onSelectProblemForSolving={(problem) => {
+          setCurrentUser(facultySession.user);
+          setSelectedProblem(problem);
+          setCurrentTab('playground');
+          navigateToStudent();
+        }}
+      />
+    );
+  }
+
+  // -------------------------------------------------------------
+  // 3. DEDICATED STUDENT ACADEMY ROUTE (#student or default)
+  // -------------------------------------------------------------
+  const activeSession = studentSession || facultySession;
+
+  // If no active session, show clean StudentLoginPage
+  if (!activeSession) {
+    return (
+      <StudentLoginPage
+        onLoginSuccess={handleStudentLoginSuccess}
+        onGoToFacultyLogin={navigateToFaculty}
+        onGoToAdminLogin={navigateToAdmin}
+      />
+    );
+  }
+
+  // Authenticated Student Academy Dashboard
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col selection:bg-indigo-500/30 selection:text-indigo-200">
-      {/* Navigation Header */}
-      <Navbar
+    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-row selection:bg-indigo-500/30 selection:text-indigo-200">
+      {/* Fixed Left Vertical Sidebar (Hidden on mobile, slide-in drawer supported) */}
+      <Sidebar
         currentTab={currentTab}
-        setCurrentTab={setCurrentTab}
+        setCurrentTab={handleTabChange}
         currentUser={currentUser}
-        onSwitchRole={handleSwitchRole}
         dbStatus={dbStatus}
         onOpenDbModal={() => setIsDbModalOpen(true)}
         onOpenAiGenerate={() => setIsAiModalOpen(true)}
+        onLogout={studentSession ? handleStudentLogout : handleFacultyLogout}
+        isMobileOpen={isMobileNavOpen}
+        onCloseMobile={() => setIsMobileNavOpen(false)}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1">
-        {currentTab === 'roadmap' && (
-          <RoadmapView
-            problems={problems}
-            onSelectProblem={handleSelectProblem}
-            onOpenAiGenerator={() => setIsAiModalOpen(true)}
-          />
+      {/* Main Content Area to the right of sidebar */}
+      <div className="flex-1 w-full min-w-0 flex flex-col min-h-screen overflow-x-hidden">
+        {/* Mobile Top Header with Hamburger Navigation Menu */}
+        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#0c1222] border-b border-slate-800 sticky top-0 z-20 shrink-0">
+          <div className="flex items-center gap-2.5">
+            <button
+              id="mobile-menu-hamburger-btn"
+              onClick={() => setIsMobileNavOpen(true)}
+              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+              aria-label="Open navigation menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center shadow-md shadow-indigo-500/20 shrink-0">
+                <Code2 className="w-4 h-4 text-white" />
+              </div>
+              <span className="font-extrabold text-sm tracking-tight text-white">CodeElevate</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {currentUser && (
+              <div
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs font-semibold"
+                title="Active Streak"
+              >
+                <Flame className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                <span>{currentUser.streakDays ?? 0}d</span>
+              </div>
+            )}
+            <button
+              onClick={() => setIsAiModalOpen(true)}
+              className="p-1.5 rounded-lg bg-indigo-600/20 border border-indigo-500/30 text-indigo-300 hover:text-white transition-colors cursor-pointer"
+              title="Generate Practice Challenge with AI"
+              aria-label="Generate AI Challenge"
+            >
+              <Sparkles className="w-4 h-4" />
+            </button>
+          </div>
+        </header>
+
+        {/* Faculty Mode Banner if faculty is previewing student features */}
+        {!studentSession && facultySession && (
+          <div className="bg-cyan-950/80 border-b border-cyan-800/50 px-6 py-2.5 text-xs flex items-center justify-between text-cyan-200 shrink-0">
+            <div className="flex items-center space-x-2">
+              <GraduationCap className="w-4 h-4 text-cyan-400" />
+              <span>
+                Faculty Preview Mode: Logged in as <strong>{facultySession.user.username}</strong> ({facultySession.user.batch || 'Batch 2026-A'})
+              </span>
+            </div>
+            <button
+              onClick={navigateToFaculty}
+              className="flex items-center space-x-1 font-semibold px-2.5 py-1 rounded bg-cyan-800 hover:bg-cyan-700 text-white transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Return to Faculty Dashboard</span>
+            </button>
+          </div>
         )}
 
-        {currentTab === 'playground' && (
-          selectedProblem ? (
+        {/* Main Student Learning Views */}
+        <main className="flex-1 min-w-0">
+          {currentTab === 'roadmap' && (
+            <RoadmapView
+              problems={problems}
+              onSelectProblem={handleSelectProblem}
+              onOpenAiGenerator={() => setIsAiModalOpen(true)}
+            />
+          )}
+
+          {currentTab === 'playground' && (
             <PlaygroundView
+              problems={problems}
               problem={selectedProblem}
               currentUser={currentUser}
               onBackToRoadmap={() => setCurrentTab('roadmap')}
+              onSelectProblem={setSelectedProblem}
               onSubmissionSuccess={handleSubmissionSuccess}
+              onOpenAiGenerator={() => setIsAiModalOpen(true)}
             />
-          ) : (
-            <div className="flex items-center justify-center h-[70vh] text-slate-400 text-sm">
-              Please select a problem from the roadmap to begin practice.
+          )}
+
+          {currentTab === 'analytics' && (
+            <AnalyticsView
+              analytics={analytics}
+              currentUser={currentUser}
+              onOpenAiGenerator={() => setIsAiModalOpen(true)}
+              onSelectProblemById={(id) => {
+                const p = problems.find(prob => prob.id === id);
+                if (p) handleSelectProblem(p);
+              }}
+              allProblems={problems}
+            />
+          )}
+
+          {currentTab === 'community' && (
+            <CommunityView currentUser={currentUser} />
+          )}
+        </main>
+
+        {/* Student Dashboard Footer (omitted when actively solving problem in IDE) */}
+        {!(currentTab === 'playground' && selectedProblem) && (
+          <footer className="border-t border-slate-800/80 bg-slate-950/60 py-6 text-xs text-slate-500 mt-auto shrink-0">
+            <div className="px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center space-x-2">
+                <span className="font-bold text-slate-300">CodeElevate Academy</span>
+                <span>•</span>
+                <span>Adaptive Coding, Instant Diagnostics & Automated Evaluations</span>
+              </div>
+
+              <div className="flex items-center space-x-4 text-slate-500 text-[11px]">
+                <span>Active Session: <strong className="text-slate-300">{currentUser?.username}</strong> ({currentUser?.role || 'student'})</span>
+              </div>
             </div>
-          )
+          </footer>
         )}
-
-        {currentTab === 'analytics' && (
-          <AnalyticsView
-            analytics={analytics}
-            currentUser={currentUser}
-            onOpenAiGenerator={() => setIsAiModalOpen(true)}
-            onSelectProblemById={(id) => {
-              const p = problems.find(prob => prob.id === id);
-              if (p) handleSelectProblem(p);
-            }}
-            allProblems={problems}
-          />
-        )}
-
-        {currentTab === 'community' && (
-          <CommunityView currentUser={currentUser} />
-        )}
-
-        {currentTab === 'admin' && (
-          <AdminView
-            onOpenDbModal={() => setIsDbModalOpen(true)}
-            dbStatus={dbStatus}
-            onOpenAiGenerator={() => setIsAiModalOpen(true)}
-          />
-        )}
-      </main>
+      </div>
 
       {/* AI Problem Generation Modal */}
       <AiProblemModal

@@ -20,7 +20,7 @@ function getGeminiClient(): GoogleGenAI | null {
 }
 
 // Multi-tier model ladder for resilience against temporary high-demand (503) spikes
-const CANDIDATE_MODELS = ['gemini-3.8-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest'];
+const CANDIDATE_MODELS = ['gemini-3.1-flash-lite', 'gemini-2.5-flash', 'gemini-3.8-flash', 'gemini-flash-latest'];
 
 interface ResilientGenerateOptions {
   contents: any;
@@ -51,18 +51,15 @@ async function generateContentWithFallback(options: ResilientGenerateOptions): P
                             errMsg.includes('RESOURCE_EXHAUSTED') ||
                             errMsg.includes('fetch failed');
         if (isTransient) {
-          console.warn(`[Gemini Engine] Model ${model} is temporarily busy (${errMsg.slice(0, 80)}...). Retrying/switching model...`);
-          await new Promise(res => setTimeout(res, 350 * (attempt + 1)));
+          await new Promise(res => setTimeout(res, 200 * (attempt + 1)));
           if (attempt === 0) continue;
         } else {
-          console.warn(`[Gemini Engine] Model ${model} returned non-transient status, trying fallback model...`);
           break;
         }
       }
     }
   }
 
-  console.warn('[Gemini Engine] Gemini models currently experiencing high demand. Engaging intelligent local algorithmic fallback.');
   return null;
 }
 

@@ -1,0 +1,178 @@
+import React, { useState } from 'react';
+import { KeyRound, X, AlertCircle, Lock, CheckCircle2 } from 'lucide-react';
+import { User } from '../types';
+
+interface UserChangePasswordModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  currentUser: User | null;
+  authToken?: string;
+  onSuccess: (msg: string) => void;
+}
+
+export const UserChangePasswordModal: React.FC<UserChangePasswordModalProps> = ({
+  isOpen,
+  onClose,
+  currentUser,
+  authToken,
+  onSuccess
+}) => {
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  if (!isOpen || !currentUser) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPassword) {
+      setErrorMsg('Please enter a new password.');
+      return;
+    }
+    if (newPassword.length < 4) {
+      setErrorMsg('New password must be at least 4 characters long.');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setErrorMsg('New password and confirmation do not match.');
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMsg(null);
+
+    try {
+      const token = authToken || currentUser.id;
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to change password.');
+      }
+
+      onSuccess(data.message || 'Password changed successfully!');
+      onClose();
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (err: any) {
+      setErrorMsg(err.message || 'An error occurred while changing your password.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div className="relative w-full max-w-md bg-[#0f172a] border border-indigo-900/50 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        {/* Header */}
+        <div className="p-5 border-b border-slate-800 bg-gradient-to-r from-indigo-950/60 via-slate-900 to-slate-900 flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600/30 text-indigo-300 flex items-center justify-center">
+              <KeyRound className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="font-bold text-white text-base">Change Password</h3>
+              <p className="text-[11px] text-slate-400">
+                Security settings for <span className="text-indigo-300 font-semibold">{currentUser.username}</span>
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <form onSubmit={handleSubmit} className="p-5 space-y-4 text-xs">
+          {errorMsg && (
+            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 flex items-start space-x-2">
+              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <div className="flex-1">{errorMsg}</div>
+            </div>
+          )}
+
+          <div>
+            <label className="block font-semibold text-slate-300 mb-1">Current Password</label>
+            <div className="relative">
+              <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+              <input
+                type="password"
+                value={currentPassword}
+                onChange={e => setCurrentPassword(e.target.value)}
+                placeholder="Enter current password"
+                className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-semibold text-slate-300 mb-1">New Password *</label>
+            <div className="relative">
+              <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+              <input
+                type="password"
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
+                placeholder="At least 4 characters"
+                className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-semibold text-slate-300 mb-1">Confirm New Password *</label>
+            <div className="relative">
+              <Lock className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                placeholder="Re-type new password"
+                className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="pt-2 flex items-center justify-end space-x-2.5">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 font-semibold transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold shadow-lg shadow-indigo-600/20 disabled:opacity-50 transition-all flex items-center space-x-1.5"
+            >
+              {isLoading ? (
+                <span>Updating...</span>
+              ) : (
+                <>
+                  <KeyRound className="w-3.5 h-3.5" />
+                  <span>Update Password</span>
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};

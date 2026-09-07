@@ -42,9 +42,9 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 text-slate-100">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-5 sm:space-y-8 text-slate-100">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/60 to-slate-900 border border-slate-800 shadow-xl">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/60 to-slate-900 border border-slate-800 shadow-xl">
         <div className="space-y-1">
           <div className="flex items-center space-x-2 text-xs font-semibold text-indigo-400 uppercase tracking-wider">
             <BrainCircuit className="w-4 h-4" />
@@ -196,16 +196,41 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
             </p>
 
             <div className="grid grid-cols-1 gap-2.5">
-              {analytics.recommendedFocusList.map((rec, i) => (
-                <div key={i} className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700 flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-indigo-600/30 text-indigo-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
-                    {i + 1}
+              {analytics.recommendedFocusList.map((rec: any, i: number) => {
+                const isObj = typeof rec === 'object' && rec !== null;
+                const title = isObj ? (rec.title || 'Targeted Practice Problem') : String(rec);
+                const reason = isObj ? rec.reason : null;
+                const category = isObj ? rec.category : null;
+                const difficulty = isObj ? rec.difficulty : null;
+
+                return (
+                  <div key={i} className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700 flex items-start space-x-3">
+                    <div className="w-6 h-6 rounded-full bg-indigo-600/30 text-indigo-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                      {i + 1}
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center justify-between gap-2 flex-wrap">
+                        <span className="text-xs font-semibold text-white">{title}</span>
+                        {difficulty && (
+                          <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${
+                            difficulty === 'basic' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' :
+                            difficulty === 'intermediate' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' :
+                            'text-rose-400 bg-rose-500/10 border-rose-500/20'
+                          }`}>
+                            {difficulty}
+                          </span>
+                        )}
+                      </div>
+                      {category && (
+                        <div className="text-[11px] text-indigo-300 font-medium">{category}</div>
+                      )}
+                      {reason && (
+                        <p className="text-xs text-slate-300 leading-relaxed">{reason}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-xs text-slate-200 leading-relaxed">{rec}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

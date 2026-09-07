@@ -58,32 +58,33 @@ export const DatabaseModal: React.FC<DatabaseModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-xl bg-[#0f172a] border border-slate-700 rounded-2xl shadow-2xl overflow-hidden text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full max-w-xl bg-[#0f172a] border border-slate-700 rounded-2xl shadow-2xl overflow-hidden text-slate-100 my-auto">
         {/* Header */}
-        <div className="p-6 border-b border-slate-800 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-indigo-950/40 flex items-center justify-between">
+        <div className="p-4 sm:p-6 border-b border-slate-800 bg-gradient-to-r from-emerald-950/40 via-slate-900 to-indigo-950/40 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0">
               <Database className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white flex items-center space-x-2">
-                <span>MongoDB & Cloud Database Engine</span>
+              <h2 className="text-base sm:text-lg font-bold text-white flex items-center space-x-2">
+                <span>Database Engine</span>
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
               </h2>
-              <p className="text-xs text-slate-400">Manage MongoDB Atlas, Local laptop MongoDB, or In-Memory Persistence</p>
+              <p className="text-xs text-slate-400">Manage MongoDB Atlas, Local MongoDB, or In-Memory Persistence</p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            aria-label="Close modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="p-6 space-y-5 max-h-[75vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5 max-h-[75vh] overflow-y-auto">
           {/* Live Status Overview */}
           <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700 space-y-3">
             <div className="flex items-center justify-between">

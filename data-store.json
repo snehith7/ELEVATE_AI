@@ -1,0 +1,935 @@
+{
+  "users": [
+    {
+      "id": "usr_admin_root",
+      "username": "admin",
+      "email": "admin@codeelevate.io",
+      "password": "AdminPass123!",
+      "role": "admin",
+      "skillLevel": "advanced",
+      "preferredLanguage": "typescript",
+      "targetGoal": "System and Curriculum Administration",
+      "batch": "Administration",
+      "streakDays": 0,
+      "totalSolved": 0,
+      "createdAt": "2026-09-07T11:57:43.048Z"
+    },
+    {
+      "id": "usr_mtr6v7br15ml",
+      "username": "snnn",
+      "email": "snehithsudulaguntla2108@gmail.com",
+      "password": "SNEHITHSUDULAGUNTLA2108@GMAIL.COM",
+      "role": "student",
+      "batch": "Batch 2026-A",
+      "skillLevel": "intermediate",
+      "preferredLanguage": "javascript",
+      "targetGoal": "Master Algorithmic Interviews & Problem Solving",
+      "streakDays": 2,
+      "totalSolved": 1,
+      "createdAt": "2026-09-07T12:00:18.135Z"
+    }
+  ],
+  "problems": [
+    {
+      "id": "prob_two_sum",
+      "title": "Two Sum",
+      "slug": "two-sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "description": "Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have **exactly one solution**, and you may not use the same element twice.\n\nYou can return the answer in any order.",
+      "examples": [
+        {
+          "input": "nums = [2,7,11,15], target = 9",
+          "output": "[0, 1]",
+          "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
+        },
+        {
+          "input": "nums = [3,2,4], target = 6",
+          "output": "[1, 2]",
+          "explanation": "Because nums[1] + nums[2] == 6, we return [1, 2]."
+        },
+        {
+          "input": "nums = [3,3], target = 6",
+          "output": "[0, 1]"
+        }
+      ],
+      "constraints": [
+        "2 <= nums.length <= 10^4",
+        "-10^9 <= nums[i] <= 10^9",
+        "-10^9 <= target <= 10^9",
+        "Only one valid answer exists.",
+        "Target time complexity: O(N)"
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nfunction twoSum(nums, target) {\n  // Write your code here\n  return [];\n}",
+        "python": "def twoSum(nums: list[int], target: int) -> list[int]:\n    # Write your code here\n    return []",
+        "typescript": "function twoSum(nums: number[], target: number): number[] {\n  // Write your code here\n  return [];\n}",
+        "java": "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Write your code here\n        return new int[]{};\n    }\n}",
+        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Write your code here\n        return {};\n    }\n};",
+        "go": "package main\n\nfunc twoSum(nums []int, target int) []int {\n    // Write your code here\n    return []int{}\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "[2,7,11,15], 9",
+          "expectedOutput": "[0,1]"
+        },
+        {
+          "id": "t2",
+          "input": "[3,2,4], 6",
+          "expectedOutput": "[1,2]"
+        },
+        {
+          "id": "t3",
+          "input": "[3,3], 6",
+          "expectedOutput": "[0,1]"
+        },
+        {
+          "id": "t4",
+          "input": "[1,5,8,3], 4",
+          "expectedOutput": "[0,3]",
+          "isHidden": true
+        }
+      ],
+      "hints": [
+        "A brute-force solution checks every pair with two nested loops in O(N^2). Can you do better?",
+        "Can you use a Hash Map to store numbers you have already visited and check for the complement in O(1) time?"
+      ],
+      "tags": [
+        "Array",
+        "Hash Table",
+        "Beginner Friendly"
+      ],
+      "acceptanceRate": 88
+    },
+    {
+      "id": "prob_valid_palindrome",
+      "title": "Valid Palindrome",
+      "slug": "valid-palindrome",
+      "difficulty": "basic",
+      "category": "Two Pointers & Strings",
+      "description": "A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\n\nGiven a string `s`, return `true` if it is a palindrome, or `false` otherwise.",
+      "examples": [
+        {
+          "input": "s = \"A man, a plan, a canal: Panama\"",
+          "output": "true",
+          "explanation": "\"amanaplanacanalpanama\" is a palindrome."
+        },
+        {
+          "input": "s = \"race a car\"",
+          "output": "false",
+          "explanation": "\"raceacar\" is not a palindrome."
+        },
+        {
+          "input": "s = \" \"",
+          "output": "true",
+          "explanation": "An empty string reads the same forward and backward."
+        }
+      ],
+      "constraints": [
+        "1 <= s.length <= 2 * 10^5",
+        "`s` consists only of printable ASCII characters.",
+        "Optimal space complexity: O(1) using two pointers"
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {string} s\n * @return {boolean}\n */\nfunction isPalindrome(s) {\n  // Write your code here\n  return false;\n}",
+        "python": "def isPalindrome(s: str) -> bool:\n    # Write your code here\n    return False",
+        "typescript": "function isPalindrome(s: string): boolean {\n  // Write your code here\n  return false;\n}",
+        "java": "class Solution {\n    public boolean isPalindrome(String s) {\n        // Write your code here\n        return false;\n    }\n}",
+        "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isPalindrome(string s) {\n        // Write your code here\n        return false;\n    }\n};",
+        "go": "package main\n\nfunc isPalindrome(s string) bool {\n    // Write your code here\n    return false\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "\"A man, a plan, a canal: Panama\"",
+          "expectedOutput": "true"
+        },
+        {
+          "id": "t2",
+          "input": "\"race a car\"",
+          "expectedOutput": "false"
+        },
+        {
+          "id": "t3",
+          "input": "\" \"",
+          "expectedOutput": "true"
+        },
+        {
+          "id": "t4",
+          "input": "\"0P\"",
+          "expectedOutput": "false",
+          "isHidden": true
+        }
+      ],
+      "hints": [
+        "Consider two pointers starting at the beginning and the end of the string.",
+        "Increment the left pointer and decrement the right pointer until both point to alphanumeric characters."
+      ],
+      "tags": [
+        "Two Pointers",
+        "String",
+        "Easy"
+      ],
+      "acceptanceRate": 79
+    },
+    {
+      "id": "prob_contains_duplicate",
+      "title": "Contains Duplicate",
+      "slug": "contains-duplicate",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "description": "Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.",
+      "examples": [
+        {
+          "input": "nums = [1,2,3,1]",
+          "output": "true"
+        },
+        {
+          "input": "nums = [1,2,3,4]",
+          "output": "false"
+        },
+        {
+          "input": "nums = [1,1,1,3,3,4,3,2,4,2]",
+          "output": "true"
+        }
+      ],
+      "constraints": [
+        "1 <= nums.length <= 10^5",
+        "-10^9 <= nums[i] <= 10^9"
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {number[]} nums\n * @return {boolean}\n */\nfunction containsDuplicate(nums) {\n  // Write your code here\n  return false;\n}",
+        "python": "def containsDuplicate(nums: list[int]) -> bool:\n    # Write your code here\n    return False",
+        "typescript": "function containsDuplicate(nums: number[]): boolean {\n  // Write your code here\n  return false;\n}",
+        "java": "class Solution {\n    public boolean containsDuplicate(int[] nums) {\n        // Write your code here\n        return false;\n    }\n}",
+        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool containsDuplicate(vector<int>& nums) {\n        // Write your code here\n        return false;\n    }\n};",
+        "go": "package main\n\nfunc containsDuplicate(nums []int) bool {\n    // Write your code here\n    return false\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "[1,2,3,1]",
+          "expectedOutput": "true"
+        },
+        {
+          "id": "t2",
+          "input": "[1,2,3,4]",
+          "expectedOutput": "false"
+        },
+        {
+          "id": "t3",
+          "input": "[1,1,1,3,3,4,3,2,4,2]",
+          "expectedOutput": "true"
+        }
+      ],
+      "hints": [
+        "A Set only contains unique elements. What happens when you compare the size of a Set to the length of the array?"
+      ],
+      "tags": [
+        "Array",
+        "Hash Table",
+        "Set"
+      ],
+      "acceptanceRate": 85
+    },
+    {
+      "id": "prob_3sum",
+      "title": "3Sum",
+      "slug": "3sum",
+      "difficulty": "intermediate",
+      "category": "Two Pointers",
+      "description": "Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.\n\nNotice that the solution set must not contain duplicate triplets.",
+      "examples": [
+        {
+          "input": "nums = [-1,0,1,2,-1,-4]",
+          "output": "[[-1,-1,2],[-1,0,1]]",
+          "explanation": "nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.\nnums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.\nnums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.\nThe distinct triplets are [-1,0,1] and [-1,-1,2]."
+        },
+        {
+          "input": "nums = [0,1,1]",
+          "output": "[]"
+        },
+        {
+          "input": "nums = [0,0,0]",
+          "output": "[[0,0,0]]"
+        }
+      ],
+      "constraints": [
+        "3 <= nums.length <= 3000",
+        "-10^5 <= nums[i] <= 10^5",
+        "Time complexity: O(N^2)"
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nfunction threeSum(nums) {\n  // Write your code here\n  return [];\n}",
+        "python": "def threeSum(nums: list[int]) -> list[list[int]]:\n    # Write your code here\n    return []",
+        "typescript": "function threeSum(nums: number[]): number[][] {\n  // Write your code here\n  return [];\n}",
+        "java": "import java.util.List;\nimport java.util.ArrayList;\n\nclass Solution {\n    public List<List<Integer>> threeSum(int[] nums) {\n        // Write your code here\n        return new ArrayList<>();\n    }\n}",
+        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        // Write your code here\n        return {};\n    }\n};",
+        "go": "package main\n\nfunc threeSum(nums []int) [][]int {\n    // Write your code here\n    return [][]int{}\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "[-1,0,1,2,-1,-4]",
+          "expectedOutput": "[[-1,-1,2],[-1,0,1]]"
+        },
+        {
+          "id": "t2",
+          "input": "[0,1,1]",
+          "expectedOutput": "[]"
+        },
+        {
+          "id": "t3",
+          "input": "[0,0,0]",
+          "expectedOutput": "[[0,0,0]]"
+        }
+      ],
+      "hints": [
+        "Sorting the array first makes it easy to avoid duplicate triplets and enables the two-pointer technique.",
+        "Fix the first element nums[i] and use two pointers (left and right) to find pairs that sum to -nums[i]."
+      ],
+      "tags": [
+        "Array",
+        "Two Pointers",
+        "Sorting",
+        "Interview Classic"
+      ],
+      "acceptanceRate": 46
+    },
+    {
+      "id": "prob_longest_substring",
+      "title": "Longest Substring Without Repeating Characters",
+      "slug": "longest-substring-without-repeating-characters",
+      "difficulty": "intermediate",
+      "category": "Sliding Window",
+      "description": "Given a string `s`, find the length of the **longest substring** without duplicate characters.",
+      "examples": [
+        {
+          "input": "s = \"abcabcbb\"",
+          "output": "3",
+          "explanation": "The answer is \"abc\", with the length of 3."
+        },
+        {
+          "input": "s = \"bbbbb\"",
+          "output": "1",
+          "explanation": "The answer is \"b\", with the length of 1."
+        },
+        {
+          "input": "s = \"pwwkew\"",
+          "output": "3",
+          "explanation": "The answer is \"wke\", with the length of 3. Notice that \"pwke\" is a subsequence and not a substring."
+        }
+      ],
+      "constraints": [
+        "0 <= s.length <= 5 * 10^4",
+        "`s` consists of English letters, digits, symbols and spaces.",
+        "Target time complexity: O(N)"
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {string} s\n * @return {number}\n */\nfunction lengthOfLongestSubstring(s) {\n  // Write your code here\n  return 0;\n}",
+        "python": "def lengthOfLongestSubstring(s: str) -> int:\n    # Write your code here\n    return 0",
+        "typescript": "function lengthOfLongestSubstring(s: string): number {\n  // Write your code here\n  return 0;\n}",
+        "java": "class Solution {\n    public int lengthOfLongestSubstring(String s) {\n        // Write your code here\n        return 0;\n    }\n}",
+        "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        // Write your code here\n        return 0;\n    }\n};",
+        "go": "package main\n\nfunc lengthOfLongestSubstring(s string) int {\n    // Write your code here\n    return 0\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "\"abcabcbb\"",
+          "expectedOutput": "3"
+        },
+        {
+          "id": "t2",
+          "input": "\"bbbbb\"",
+          "expectedOutput": "1"
+        },
+        {
+          "id": "t3",
+          "input": "\"pwwkew\"",
+          "expectedOutput": "3"
+        },
+        {
+          "id": "t4",
+          "input": "\"\"",
+          "expectedOutput": "0",
+          "isHidden": true
+        }
+      ],
+      "hints": [
+        "Use the sliding window technique with two pointers [left, right].",
+        "Store the last seen index of each character to quickly advance the left boundary."
+      ],
+      "tags": [
+        "Hash Table",
+        "String",
+        "Sliding Window"
+      ],
+      "acceptanceRate": 54
+    },
+    {
+      "id": "prob_group_anagrams",
+      "title": "Group Anagrams",
+      "slug": "group-anagrams",
+      "difficulty": "intermediate",
+      "category": "Hash Maps & Strings",
+      "description": "Given an array of strings `strs`, group the **anagrams** together. You can return the answer in **any order**.\n\nAn Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+      "examples": [
+        {
+          "input": "strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+          "output": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
+        },
+        {
+          "input": "strs = [\"\"]",
+          "output": "[[\"\"]]"
+        },
+        {
+          "input": "strs = [\"a\"]",
+          "output": "[[\"a\"]]"
+        }
+      ],
+      "constraints": [
+        "1 <= strs.length <= 10^4",
+        "0 <= strs[i].length <= 100",
+        "`strs[i]` consists of lowercase English letters."
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {string[]} strs\n * @return {string[][]}\n */\nfunction groupAnagrams(strs) {\n  // Write your code here\n  return [];\n}",
+        "python": "def groupAnagrams(strs: list[str]) -> list[list[str]]:\n    # Write your code here\n    return []",
+        "typescript": "function groupAnagrams(strs: string[]): string[][] {\n  // Write your code here\n  return [];\n}",
+        "java": "import java.util.List;\nimport java.util.ArrayList;\n\nclass Solution {\n    public List<List<String>> groupAnagrams(String[] strs) {\n        // Write your code here\n        return new ArrayList<>();\n    }\n}",
+        "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        // Write your code here\n        return {};\n    }\n};",
+        "go": "package main\n\nfunc groupAnagrams(strs []string) [][]string {\n    // Write your code here\n    return [][]string{}\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+          "expectedOutput": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
+        },
+        {
+          "id": "t2",
+          "input": "[\"\"]",
+          "expectedOutput": "[[\"\"]]"
+        },
+        {
+          "id": "t3",
+          "input": "[\"a\"]",
+          "expectedOutput": "[[\"a\"]]"
+        }
+      ],
+      "hints": [
+        "Two words are anagrams if and only if their sorted character representations are identical."
+      ],
+      "tags": [
+        "Array",
+        "Hash Table",
+        "String",
+        "Sorting"
+      ],
+      "acceptanceRate": 67
+    },
+    {
+      "id": "prob_trapping_rain_water",
+      "title": "Trapping Rain Water",
+      "slug": "trapping-rain-water",
+      "difficulty": "advanced",
+      "category": "Two Pointers & Monotonic Stack",
+      "description": "Given `n` non-negative integers representing an elevation map where the width of each bar is `1`, compute how much water it can trap after raining.",
+      "examples": [
+        {
+          "input": "height = [0,1,0,2,1,0,1,3,2,1,2,1]",
+          "output": "6",
+          "explanation": "The elevation map traps 6 units of rain water."
+        },
+        {
+          "input": "height = [4,2,0,3,2,5]",
+          "output": "9"
+        }
+      ],
+      "constraints": [
+        "n == height.length",
+        "1 <= n <= 2 * 10^4",
+        "0 <= height[i] <= 10^5",
+        "Optimal time: O(N), Optimal space: O(1)"
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {number[]} height\n * @return {number}\n */\nfunction trap(height) {\n  // Write your code here\n  return 0;\n}",
+        "python": "def trap(height: list[int]) -> int:\n    # Write your code here\n    return 0",
+        "typescript": "function trap(height: number[]): number {\n  // Write your code here\n  return 0;\n}",
+        "java": "class Solution {\n    public int trap(int[] height) {\n        // Write your code here\n        return 0;\n    }\n}",
+        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int trap(vector<int>& height) {\n        // Write your code here\n        return 0;\n    }\n};",
+        "go": "package main\n\nfunc trap(height []int) int {\n    // Write your code here\n    return 0\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "[0,1,0,2,1,0,1,3,2,1,2,1]",
+          "expectedOutput": "6"
+        },
+        {
+          "id": "t2",
+          "input": "[4,2,0,3,2,5]",
+          "expectedOutput": "9"
+        },
+        {
+          "id": "t3",
+          "input": "[3,0,2,0,4]",
+          "expectedOutput": "7",
+          "isHidden": true
+        }
+      ],
+      "hints": [
+        "For each element, how much water can be trapped above it? It is min(maxLeft, maxRight) - currentHeight.",
+        "Can you maintain maxLeft and maxRight dynamically using two pointers moving inwards?"
+      ],
+      "tags": [
+        "Two Pointers",
+        "Dynamic Programming",
+        "Monotonic Stack",
+        "Hard"
+      ],
+      "acceptanceRate": 38
+    },
+    {
+      "id": "prob_coin_change",
+      "title": "Coin Change",
+      "slug": "coin-change",
+      "difficulty": "advanced",
+      "category": "Dynamic Programming",
+      "description": "You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.\n\nReturn the **fewest number of coins** that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return `-1`.\n\nYou may assume that you have an infinite number of each kind of coin.",
+      "examples": [
+        {
+          "input": "coins = [1,2,5], amount = 11",
+          "output": "3",
+          "explanation": "11 = 5 + 5 + 1"
+        },
+        {
+          "input": "coins = [2], amount = 3",
+          "output": "-1"
+        },
+        {
+          "input": "coins = [1], amount = 0",
+          "output": "0"
+        }
+      ],
+      "constraints": [
+        "1 <= coins.length <= 12",
+        "1 <= coins[i] <= 2^31 - 1",
+        "0 <= amount <= 10^4"
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {number[]} coins\n * @param {number} amount\n * @return {number}\n */\nfunction coinChange(coins, amount) {\n  // Write your code here\n  return -1;\n}",
+        "python": "def coinChange(coins: list[int], amount: int) -> int:\n    # Write your code here\n    return -1",
+        "typescript": "function coinChange(coins: number[], amount: number): number {\n  // Write your code here\n  return -1;\n}",
+        "java": "class Solution {\n    public int coinChange(int[] coins, int amount) {\n        // Write your code here\n        return -1;\n    }\n}",
+        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int coinChange(vector<int>& coins, int amount) {\n        // Write your code here\n        return -1;\n    }\n};",
+        "go": "package main\n\nfunc coinChange(coins []int, amount int) int {\n    // Write your code here\n    return -1\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "[1,2,5], 11",
+          "expectedOutput": "3"
+        },
+        {
+          "id": "t2",
+          "input": "[2], 3",
+          "expectedOutput": "-1"
+        },
+        {
+          "id": "t3",
+          "input": "[1], 0",
+          "expectedOutput": "0"
+        },
+        {
+          "id": "t4",
+          "input": "[186,419,83,408], 6249",
+          "expectedOutput": "20",
+          "isHidden": true
+        }
+      ],
+      "hints": [
+        "Think of this as finding the shortest path in a graph where nodes are amounts from 0 to amount.",
+        "Define dp[i] as the minimum coins needed to make amount i. What is the transition relation?"
+      ],
+      "tags": [
+        "Dynamic Programming",
+        "Breadth-First Search",
+        "State Optimization"
+      ],
+      "acceptanceRate": 43
+    },
+    {
+      "id": "prob_course_schedule",
+      "title": "Course Schedule",
+      "slug": "course-schedule",
+      "difficulty": "advanced",
+      "category": "Graphs & Topological Sort",
+      "description": "There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [a_i, b_i]` indicates that you **must** take course `b_i` first if you want to take course `a_i`.\n\nReturn `true` if you can finish all courses. Otherwise, return `false` (i.e. if there is a circular dependency / cycle).",
+      "examples": [
+        {
+          "input": "numCourses = 2, prerequisites = [[1,0]]",
+          "output": "true",
+          "explanation": "To take course 1 you should have finished course 0. So it is possible."
+        },
+        {
+          "input": "numCourses = 2, prerequisites = [[1,0],[0,1]]",
+          "output": "false",
+          "explanation": "Course 1 requires course 0, but course 0 requires course 1. Cycle exists!"
+        }
+      ],
+      "constraints": [
+        "1 <= numCourses <= 2000",
+        "0 <= prerequisites.length <= 5000",
+        "prerequisites[i].length == 2",
+        "All prerequisite pairs are unique."
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {number} numCourses\n * @param {number[][]} prerequisites\n * @return {boolean}\n */\nfunction canFinish(numCourses, prerequisites) {\n  // Write your code here\n  return false;\n}",
+        "python": "def canFinish(numCourses: int, prerequisites: list[list[int]]) -> bool:\n    # Write your code here\n    return False",
+        "typescript": "function canFinish(numCourses: number, prerequisites: number[][]): boolean {\n  // Write your code here\n  return false;\n}",
+        "java": "class Solution {\n    public boolean canFinish(int numCourses, int[][] prerequisites) {\n        // Write your code here\n        return false;\n    }\n}",
+        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {\n        // Write your code here\n        return false;\n    }\n};",
+        "go": "package main\n\nfunc canFinish(numCourses int, prerequisites [][]int) bool {\n    // Write your code here\n    return false\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "2, [[1,0]]",
+          "expectedOutput": "true"
+        },
+        {
+          "id": "t2",
+          "input": "2, [[1,0],[0,1]]",
+          "expectedOutput": "false"
+        },
+        {
+          "id": "t3",
+          "input": "4, [[1,0],[2,0],[3,1],[3,2]]",
+          "expectedOutput": "true",
+          "isHidden": true
+        }
+      ],
+      "hints": [
+        "Model the courses and prerequisites as a Directed Graph.",
+        "Kahn's algorithm for Topological Sorting uses in-degrees and a queue. If you process all nodes, no cycle exists."
+      ],
+      "tags": [
+        "Depth-First Search",
+        "Breadth-First Search",
+        "Graph",
+        "Topological Sort"
+      ],
+      "acceptanceRate": 47
+    },
+    {
+      "title": "Valid Parentheses String with Wildcards",
+      "category": "Stacks & Greedy",
+      "difficulty": "intermediate",
+      "description": "Given a string `s` containing only three types of characters: '(', ')' and '*', return true if `s` is valid.\n\nRules:\n1. Any left parenthesis '(' must have a corresponding right parenthesis ')'.\n2. Any right parenthesis ')' must have a corresponding left parenthesis '('.\n3. Left parenthesis '(' must go before the corresponding right parenthesis ')'.\n4. '*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty string \"\".",
+      "examples": [
+        {
+          "input": "s = \"()\"",
+          "output": "true",
+          "explanation": "Simple matching pair."
+        },
+        {
+          "input": "s = \"(*)\"",
+          "output": "true",
+          "explanation": "'*' is treated as empty string."
+        },
+        {
+          "input": "s = \"(*))\"",
+          "output": "true",
+          "explanation": "'*' is treated as '('."
+        }
+      ],
+      "constraints": [
+        "1 <= s.length <= 100",
+        "s[i] is '(', ')' or '*'",
+        "Time complexity expected: O(n)"
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {string} s\n * @return {boolean}\n */\nfunction checkValidString(s) {\n  // Your code here\n  return false;\n}",
+        "python": "def checkValidString(s: str) -> bool:\n    # Your code here\n    return False",
+        "typescript": "function checkValidString(s: string): boolean {\n  // Your code here\n  return false;\n}",
+        "java": "class Solution {\n    public boolean checkValidString(String s) {\n        // Your code here\n        return false;\n    }\n}",
+        "cpp": "class Solution {\npublic:\n    bool checkValidString(string s) {\n        // Your code here\n        return false;\n    }\n};",
+        "go": "func checkValidString(s string) bool {\n    // Your code here\n    return false\n}"
+      },
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "\"()\"",
+          "expectedOutput": "true"
+        },
+        {
+          "id": "t2",
+          "input": "\"(*)\"",
+          "expectedOutput": "true"
+        },
+        {
+          "id": "t3",
+          "input": "\"(*))\"",
+          "expectedOutput": "true"
+        },
+        {
+          "id": "t4",
+          "input": "\")(\"",
+          "expectedOutput": "false",
+          "isHidden": true
+        }
+      ],
+      "hints": [
+        "Consider tracking the minimum and maximum possible count of open parentheses as you iterate through the string.",
+        "When encountering a ')', decrease both counts. When encountering a '*', minCount decreases (acting as ')') and maxCount increases (acting as '(').",
+        "If maxCount becomes negative at any moment, return false immediately."
+      ],
+      "tags": [
+        "String",
+        "Dynamic Programming",
+        "Greedy",
+        "Stack"
+      ],
+      "reasonForRecommendation": "Targeted practice to reinforce boundary handling and greedy tracking on string structures.",
+      "id": "ai_mtr3n6oo",
+      "slug": "valid-parentheses-string-with-wildcards",
+      "isAiGenerated": true,
+      "generatedReason": "Targeted practice to reinforce boundary handling and greedy tracking on string structures."
+    }
+  ],
+  "submissions": [
+    {
+      "id": "sub_mtr9bleyz4hm",
+      "userId": "usr_mtr6v7br15ml",
+      "userEmail": "snehithsudulaguntla2108@gmail.com",
+      "userName": "snnn",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "code": "function twoSum(nums, target) { return []; }",
+      "language": "javascript",
+      "status": "Failed",
+      "passedCases": 0,
+      "totalCases": 4,
+      "executionTimeMs": 16,
+      "memoryKb": 39269,
+      "testResults": [
+        {
+          "testId": "t1",
+          "passed": false,
+          "input": "[2,7,11,15], 9",
+          "expected": "[0,1]",
+          "actual": "[]"
+        },
+        {
+          "testId": "t2",
+          "passed": false,
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "actual": "[]"
+        },
+        {
+          "testId": "t3",
+          "passed": false,
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[]"
+        },
+        {
+          "testId": "t4",
+          "passed": false,
+          "input": "[1,5,8,3], 4",
+          "expected": "[0,3]",
+          "actual": "[]"
+        }
+      ],
+      "aiReview": {
+        "correctnessScore": 0,
+        "timeComplexity": "O(1)",
+        "spaceComplexity": "O(1)",
+        "summary": "The provided code implements a placeholder function that returns an empty array, failing all test cases. The logic for solving the Two Sum problem using a hash map for linear time complexity is entirely missing.",
+        "strengths": [
+          "Syntactically correct JavaScript function structure.",
+          "Correct function signature matching the problem requirements."
+        ],
+        "improvements": [
+          "Implement a Hash Map (Object or Map) to store visited numbers and their indices to achieve O(n) time complexity.",
+          "Iterate through the array once, calculating the 'complement' (target - current element) at each step to determine if the pair exists.",
+          "Replace the placeholder return statement with the logic to return the pair of indices once found."
+        ],
+        "edgeCasesCovered": [
+          "Empty function body is technically syntactically valid."
+        ],
+        "edgeCasesMissed": [
+          "Standard input with a single solution",
+          "Duplicate numbers that sum to the target",
+          "Negative numbers",
+          "Array with only two elements"
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) { return [map.get(complement), i]; } map.set(nums[i], i); } return []; }"
+      },
+      "createdAt": "2026-09-07T13:09:02.122Z"
+    },
+    {
+      "id": "sub_mtr9buxmfh4a",
+      "userId": "usr_mtr6v7br15ml",
+      "userEmail": "snehithsudulaguntla2108@gmail.com",
+      "userName": "snnn",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "code": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const comp = target - nums[i]; if (map.has(comp)) return [map.get(comp), i]; map.set(nums[i], i); } return []; }",
+      "language": "javascript",
+      "status": "Passed",
+      "passedCases": 4,
+      "totalCases": 4,
+      "executionTimeMs": 16,
+      "memoryKb": 34359,
+      "testResults": [
+        {
+          "testId": "t1",
+          "passed": true,
+          "input": "[2,7,11,15], 9",
+          "expected": "[0,1]",
+          "actual": "[0,1]"
+        },
+        {
+          "testId": "t2",
+          "passed": true,
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "actual": "[1,2]"
+        },
+        {
+          "testId": "t3",
+          "passed": true,
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[0,1]"
+        },
+        {
+          "testId": "t4",
+          "passed": true,
+          "input": "[1,5,8,3], 4",
+          "expected": "[0,3]",
+          "actual": "[0,3]"
+        }
+      ],
+      "aiReview": {
+        "correctnessScore": 100,
+        "timeComplexity": "O(n), where n is the length of the array, as we iterate through the array once and Map lookups are average O(1).",
+        "spaceComplexity": "O(n), as in the worst case (e.g., target not found or last pair), we store up to n elements in the hash map.",
+        "summary": "This is an optimal, industry-standard implementation of the Two Sum problem. Your use of a Map for single-pass lookups demonstrates a solid grasp of space-time trade-offs.",
+        "strengths": [
+          "Efficient single-pass approach avoiding the nested loop O(n^2) pitfall.",
+          "Correct use of the Map object for O(1) average time complexity lookups.",
+          "Excellent conciseness and adherence to problem constraints."
+        ],
+        "improvements": [
+          "Consider adding JSDoc comments to document parameter types and return expectations for better maintainability.",
+          "While concise, consider breaking the logic into slightly more readable multi-line blocks if the function scope expands, though this is purely stylistic.",
+          "Input validation could be added to guard against non-array inputs or empty arrays, even if the problem guarantees a solution."
+        ],
+        "edgeCasesCovered": [
+          "Array with exactly two elements",
+          "Negative integers",
+          "Large arrays where the solution appears at the end",
+          "Numbers with the same value (handled correctly by the single-pass logic)"
+        ],
+        "edgeCasesMissed": [
+          "Non-integer inputs",
+          "Empty arrays or single-element arrays (though problem constraints implied valid inputs)"
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const seen = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (seen.has(complement)) { return [seen.get(complement), i]; } seen.set(nums[i], i); } throw new Error('No solution found'); }"
+      },
+      "createdAt": "2026-09-07T13:09:14.458Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg_1",
+      "channel": "general",
+      "senderId": "usr_admin_mentor",
+      "senderName": "Lead Mentor (David)",
+      "senderRole": "mentor",
+      "text": "Welcome to CodeElevate Academy! Our AI Mentor is online 24/7 in your coding playground. Feel free to ask questions here or use the \"Ask AI Tutor\" side drawer while solving.",
+      "createdAt": "2026-09-05T10:24:09.104Z"
+    },
+    {
+      "id": "msg_2",
+      "channel": "algorithms",
+      "senderId": "usr_student_demo",
+      "senderName": "Alex Coder",
+      "senderRole": "student",
+      "text": "Has anyone tackled the Trapping Rain Water problem yet? I found that using two pointers was much easier than maintaining two separate prefix/suffix maximum arrays.",
+      "codeSnippet": {
+        "language": "javascript",
+        "code": "let leftMax = 0, rightMax = 0;\nwhile (left < right) {\n  if (height[left] < height[right]) { ... }\n}"
+      },
+      "reactions": {
+        "🔥": 4,
+        "💡": 3
+      },
+      "createdAt": "2026-09-06T22:24:09.104Z"
+    },
+    {
+      "id": "msg_3",
+      "channel": "algorithms",
+      "senderId": "usr_admin_mentor",
+      "senderName": "Lead Mentor (David)",
+      "senderRole": "mentor",
+      "text": "Spot on, Alex! The two-pointer approach reduces the space complexity from O(N) to O(1) by lazily evaluating whichever boundary is strictly smaller.",
+      "reactions": {
+        "🚀": 5
+      },
+      "createdAt": "2026-09-07T00:24:09.104Z"
+    },
+    {
+      "id": "msg_4",
+      "channel": "interview-prep",
+      "senderId": "usr_student_beginner",
+      "senderName": "Sarah Dev",
+      "senderRole": "student",
+      "text": "The AI feedback feature highlighted that I was missing null checks on empty string inputs. That immediate review really saved me!",
+      "reactions": {
+        "❤️": 6
+      },
+      "createdAt": "2026-09-07T06:24:09.104Z"
+    },
+    {
+      "id": "msg_mtr50ehiay6q",
+      "channel": "algorithms",
+      "senderId": "usr_student_demo",
+      "senderName": "alex_coder",
+      "senderRole": "student",
+      "text": "Check this two pointer approach",
+      "codeSnippet": {
+        "language": "typescript",
+        "code": "function twoSum(nums: number[]): number[] { return [0, 1]; }"
+      },
+      "reactions": {
+        "👍": 1
+      },
+      "createdAt": "2026-09-07T11:08:21.462Z"
+    },
+    {
+      "id": "msg_mtr8gfylc0m2",
+      "channel": "general",
+      "senderId": "usr_mtr6v7br15ml",
+      "senderName": "snnn",
+      "senderRole": "student",
+      "text": "hi",
+      "codeSnippet": null,
+      "reactions": {
+        "👍": 1
+      },
+      "createdAt": "2026-09-07T12:44:48.717Z"
+    }
+  ],
+  "analytics": []
+}

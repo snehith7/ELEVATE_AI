@@ -1,6 +1,8 @@
 export type Difficulty = 'basic' | 'intermediate' | 'advanced';
 
-export type UserRole = 'student' | 'admin';
+export type UserRole = 'student' | 'faculty' | 'admin';
+
+export type SkillLevel = 'beginner' | 'intermediate' | 'advanced';
 
 export type SupportedLanguage = 'javascript' | 'python' | 'typescript' | 'java' | 'cpp' | 'go';
 
@@ -9,7 +11,8 @@ export interface User {
   username: string;
   email: string;
   role: UserRole;
-  skillLevel: 'beginner' | 'intermediate' | 'advanced';
+  batch?: string;
+  skillLevel: SkillLevel;
   preferredLanguage: SupportedLanguage;
   targetGoal: string;
   streakDays: number;
@@ -72,7 +75,7 @@ export interface Submission {
   category: string;
   code: string;
   language: SupportedLanguage;
-  status: 'accepted' | 'wrong_answer' | 'runtime_error' | 'time_limit';
+  status: 'Passed' | 'Failed' | 'accepted' | 'wrong_answer' | 'runtime_error' | 'time_limit';
   passedCases: number;
   totalCases: number;
   executionTimeMs: number;
@@ -157,6 +160,7 @@ export interface AdminStudentMetric {
   username: string;
   email: string;
   role: string;
+  batch?: string;
   skillLevel: string;
   preferredLanguage: string;
   targetGoal: string;
@@ -178,6 +182,24 @@ export interface AdminOverview {
   };
   students: AdminStudentMetric[];
   recentSubmissions: Submission[];
+}
+
+export interface FacultyOverview {
+  faculty: {
+    id: string;
+    username: string;
+    email: string;
+    batch?: string;
+  };
+  metrics: {
+    totalBatchStudents: number;
+    batchPassRate: number;
+    totalBatchSubmissions: number;
+    activeProblems: number;
+  };
+  students: AdminStudentMetric[];
+  recentSubmissions: Submission[];
+  batches: string[];
 }
 
 export interface DatabaseStatus {

@@ -119,6 +119,15 @@ class EmbeddedMongoEngine {
         this.persist();
         return { deletedCount: 1 };
       },
+      deleteMany: async (filter: any = {}) => {
+        const initialLen = items.length;
+        const remaining = items.filter(doc => !matchesFilter(doc, filter));
+        const deletedCount = initialLen - remaining.length;
+        items.length = 0;
+        items.push(...remaining);
+        this.persist();
+        return { deletedCount };
+      },
       countDocuments: async (filter: any = {}) => {
         return items.filter(doc => matchesFilter(doc, filter)).length;
       }
