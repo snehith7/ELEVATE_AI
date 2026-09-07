@@ -1,0 +1,6 @@
+{
+  "name": "CodeElevate AI - Adaptive Coding Academy",
+  "description": "AI-powered adaptive coding platform with real-time code reviews, personalized learning roadmaps, interactive playground, and student performance analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
