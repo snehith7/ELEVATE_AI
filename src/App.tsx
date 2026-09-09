@@ -173,7 +173,7 @@ export default function App() {
 
   // Fetch student user profile if session exists
   const fetchUserProfile = async () => {
-    const token = studentSession?.token || facultySession?.token;
+    const token = studentSession?.token || facultySession?.token || currentUser?.id;
     if (!token) return;
     try {
       const res = await fetch('/api/auth/me', {
@@ -184,6 +184,11 @@ export default function App() {
       if (res.ok) {
         const user = await res.json();
         setCurrentUser(user);
+        if (studentSession) {
+          const updated = { ...studentSession, user };
+          setStudentSession(updated);
+          localStorage.setItem('codeelevate_student_session', JSON.stringify(updated));
+        }
       }
     } catch (err) {
       console.error('Failed to fetch user profile:', err);
@@ -193,14 +198,16 @@ export default function App() {
   // Fetch problems
   const fetchProblems = async () => {
     try {
-      const res = await fetch('/api/problems');
+      const token = studentSession?.token || facultySession?.token || currentUser?.id;
+      const res = await fetch('/api/problems', {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+      });
       if (res.ok) {
         const json = await res.json();
         const list: Problem[] = json.problems || json;
         setProblems(list);
-        if (!selectedProblem && list.length > 0) {
-          setSelectedProblem(list[0]);
-        }
       }
     } catch (err) {
       console.error('Failed to fetch problems:', err);
@@ -266,9 +273,39 @@ export default function App() {
 
   // When a submission succeeds
   const handleSubmissionSuccess = (submission: Submission) => {
-    fetchAnalytics();
+    // 1. Immediately update problem state so PracticeSheetView and lists reflect 'solved'
+    setProblems(prev =>
+      prev.map(p =>
+        p.id === submission.problemId || p.slug === submission.problemId
+          ? { ...p, solvedByCurrentUser: true }
+          : p
+      )
+    );
+
+    // 2. Update selectedProblem if active
+    setSelectedProblem(prev =>
+      prev && (prev.id === submission.problemId || prev.slug === submission.problemId)
+        ? { ...prev, solvedByCurrentUser: true }
+        : prev
+    );
+
+    // 3. Immediately update user stats optimistically so counters and progress immediately update
+    setCurrentUser(prev => {
+      if (!prev) return prev;
+      const existing = prev.solvedProblems || [];
+      const alreadySolved = existing.includes(submission.problemId);
+      const newSolvedList = alreadySolved ? existing : [...existing, submission.problemId];
+      return {
+        ...prev,
+        solvedProblems: newSolvedList,
+        totalSolved: alreadySolved ? (prev.totalSolved ?? 1) : (prev.totalSolved ?? 0) + 1
+      };
+    });
+
+    // 4. Trigger background refetches to guarantee backend persistence & accurate analytics
     fetchProblems();
     fetchUserProfile();
+    fetchAnalytics();
   };
 
   // When user switches navigation tab via sidebar

@@ -17,6 +17,7 @@ export interface User {
   targetGoal: string;
   streakDays: number;
   totalSolved: number;
+  solvedProblems?: string[];
   createdAt: string;
 }
 
@@ -64,6 +65,20 @@ export interface AiCodeReview {
   suggestedOptimizedSnippet?: string;
 }
 
+export interface TestCaseResult {
+  testId: string;
+  passed: boolean;
+  status?: 'Passed' | 'Wrong Answer' | 'Runtime Error' | 'Syntax Error' | 'Time Limit Exceeded';
+  input: string;
+  expected: string;
+  actual: string;
+  error?: string;
+  stack?: string;
+  stdout?: string;
+  isHidden?: boolean;
+  executionTimeMs?: number;
+}
+
 export interface Submission {
   id: string;
   userId: string;
@@ -80,15 +95,19 @@ export interface Submission {
   totalCases: number;
   executionTimeMs: number;
   memoryKb: number;
-  testResults: {
-    testId: string;
-    passed: boolean;
-    input: string;
-    expected: string;
-    actual: string;
-    error?: string;
-  }[];
+  testResults: TestCaseResult[];
   errorDetails?: string;
+  compileError?: {
+    message: string;
+    line?: number;
+    column?: number;
+    stack?: string;
+  };
+  runtimeError?: {
+    message: string;
+    stack?: string;
+  };
+  stdout?: string;
   aiReview?: AiCodeReview;
   createdAt: string;
 }

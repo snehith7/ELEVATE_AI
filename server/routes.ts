@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { dbManager } from './db';
 import { seedInitialData } from './seed';
+import { executeSandboxedCode } from './sandbox';
 import {
   generatePersonalizedProblem,
   reviewUserCode,
@@ -177,13 +178,43 @@ apiRouter.get('/auth/me', async (req: Request, res: Response) => {
   try {
     const userId = getUserIdFromReq(req);
     const usersCol = dbManager.getCollection('users');
+    const submissionsCol = dbManager.getCollection('submissions');
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized: No session provided' });
     }
 
-    const user = await usersCol.findOne({ id: userId });
+    const user = await usersCol.findOne({ $or: [{ id: userId }, { email: userId }] });
     if (!user) {
       return res.status(404).json({ error: 'User not found in database' });
+    }
+
+    // Synchronize solved problems list with accepted submissions to guarantee data consistency
+    const passedSubs = await submissionsCol.find({
+      $or: [{ userId: user.id }, { userId }]
+    }).toArray();
+    const passedProblemIds = new Set<string>(Array.isArray(user.solvedProblems) ? user.solvedProblems : []);
+    passedSubs
+      .filter((s: any) => s.status === 'Passed' || s.status === 'accepted')
+      .forEach((s: any) => {
+        if (s.problemId) passedProblemIds.add(s.problemId);
+        if (s.problemSlug) passedProblemIds.add(s.problemSlug);
+      });
+
+    const synchronizedSolved = Array.from(passedProblemIds);
+    const calculatedTotalSolved = Math.max(user.totalSolved || 0, synchronizedSolved.length);
+
+    if (synchronizedSolved.length !== (user.solvedProblems?.length || 0) || calculatedTotalSolved !== (user.totalSolved || 0)) {
+      await usersCol.updateOne(
+        { id: user.id },
+        {
+          $set: {
+            solvedProblems: synchronizedSolved,
+            totalSolved: calculatedTotalSolved
+          }
+        }
+      );
+      user.solvedProblems = synchronizedSolved;
+      user.totalSolved = calculatedTotalSolved;
     }
 
     const { password: _, ...safeUser } = user;
@@ -250,15 +281,30 @@ apiRouter.get('/problems', async (req: Request, res: Response) => {
     }
 
     // Mark whether solved by current user
-    const userSubmissions = await submissionsCol.find({
-      userId,
-      $or: [{ status: 'Passed' }, { status: 'accepted' }]
-    }).toArray();
-    const solvedProblemIds = new Set(userSubmissions.map((s: any) => s.problemId));
+    const usersCol = dbManager.getCollection('users');
+    let solvedProblemIds = new Set<string>();
+    if (userId) {
+      const currentUserDoc = await usersCol.findOne({ $or: [{ id: userId }, { email: userId }] });
+      if (currentUserDoc && Array.isArray(currentUserDoc.solvedProblems)) {
+        currentUserDoc.solvedProblems.forEach((pid: string) => solvedProblemIds.add(pid));
+      }
+
+      const userTargetId = currentUserDoc ? currentUserDoc.id : userId;
+      const userSubmissions = await submissionsCol.find({
+        $or: [{ userId: userTargetId }, { userId }]
+      }).toArray();
+
+      userSubmissions
+        .filter((s: any) => s.status === 'Passed' || s.status === 'accepted')
+        .forEach((s: any) => {
+          if (s.problemId) solvedProblemIds.add(s.problemId);
+          if (s.problemSlug) solvedProblemIds.add(s.problemSlug);
+        });
+    }
 
     const enriched = problems.map((p: any) => ({
       ...p,
-      solvedByCurrentUser: solvedProblemIds.has(p.id)
+      solvedByCurrentUser: solvedProblemIds.has(p.id) || (p.slug ? solvedProblemIds.has(p.slug) : false)
     }));
 
     return res.json(enriched);
@@ -272,6 +318,7 @@ apiRouter.get('/problems/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const userId = getUserIdFromReq(req);
     const problemsCol = dbManager.getCollection('problems');
+    const usersCol = dbManager.getCollection('users');
     const submissionsCol = dbManager.getCollection('submissions');
 
     const problem = await problemsCol.findOne({ $or: [{ id }, { slug: id }] });
@@ -279,14 +326,29 @@ apiRouter.get('/problems/:id', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Problem not found' });
     }
 
-    const acceptedSub = await submissionsCol.findOne({
-      userId,
-      problemId: problem.id,
-      $or: [{ status: 'Passed' }, { status: 'accepted' }]
-    });
+    let isSolved = false;
+    if (userId) {
+      const currentUserDoc = await usersCol.findOne({ $or: [{ id: userId }, { email: userId }] });
+      if (currentUserDoc && Array.isArray(currentUserDoc.solvedProblems)) {
+        if (currentUserDoc.solvedProblems.includes(problem.id) || (problem.slug && currentUserDoc.solvedProblems.includes(problem.slug))) {
+          isSolved = true;
+        }
+      }
+      if (!isSolved) {
+        const userTargetId = currentUserDoc ? currentUserDoc.id : userId;
+        const userSubs = await submissionsCol.find({
+          $or: [{ userId: userTargetId }, { userId }],
+          problemId: problem.id
+        }).toArray();
+        if (userSubs.some((s: any) => s.status === 'Passed' || s.status === 'accepted')) {
+          isSolved = true;
+        }
+      }
+    }
+
     return res.json({
       ...problem,
-      solvedByCurrentUser: Boolean(acceptedSub)
+      solvedByCurrentUser: isSolved
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
@@ -334,7 +396,7 @@ apiRouter.post('/code/run', async (req: Request, res: Response) => {
   try {
     const { problemId, code, language, customInput } = req.body;
     const problemsCol = dbManager.getCollection('problems');
-    const problem = await problemsCol.findOne({ id: problemId });
+    const problem = await problemsCol.findOne({ $or: [{ id: problemId }, { slug: problemId }] });
 
     if (!problem) {
       return res.status(404).json({ error: 'Problem not found' });
@@ -344,20 +406,18 @@ apiRouter.post('/code/run', async (req: Request, res: Response) => {
       ? [{ id: 'custom', input: customInput, expectedOutput: '', isHidden: false }]
       : problem.testCases;
 
-    const startTime = Date.now();
-    const results = executeTests(code, language, testCasesToRun, problem);
-    const executionTimeMs = Math.max(12, Date.now() - startTime);
-
-    const passedCount = results.filter(r => r.passed).length;
-    const allPassed = passedCount === testCasesToRun.length;
+    const execution = await executeSandboxedCode(code, language, testCasesToRun, problem);
 
     return res.json({
-      passed: allPassed,
-      passedCount,
-      totalCount: testCasesToRun.length,
-      executionTimeMs,
-      memoryKb: Math.floor(32000 + Math.random() * 8000),
-      testResults: results
+      passed: execution.passed,
+      passedCount: execution.passedCount,
+      totalCount: execution.totalCount,
+      executionTimeMs: execution.executionTimeMs,
+      memoryKb: execution.memoryKb,
+      testResults: execution.testResults,
+      compileError: execution.compileError,
+      runtimeError: execution.runtimeError,
+      stdout: execution.stdout
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
@@ -376,25 +436,27 @@ apiRouter.post('/code/submit', async (req: Request, res: Response) => {
     const problemsCol = dbManager.getCollection('problems');
     const submissionsCol = dbManager.getCollection('submissions');
 
-    const user = userId ? await usersCol.findOne({ id: userId }) : null;
+    const user = userId ? await usersCol.findOne({ $or: [{ id: userId }, { email: userId }] }) : null;
     const problem = await problemsCol.findOne({ $or: [{ id: problemId }, { slug: problemId }] });
 
     if (!problem) {
       return res.status(404).json({ error: 'Problem not found' });
     }
 
-    const startTime = Date.now();
-    const results = executeTests(code, language, problem.testCases, problem);
-    const executionTimeMs = Math.max(16, Date.now() - startTime);
-    const passedCount = results.filter(r => r.passed).length;
-    const totalCount = problem.testCases.length;
-    const allPassed = totalCount > 0 && passedCount === totalCount;
+    const execution = await executeSandboxedCode(code, language, problem.testCases, problem);
+    const results = execution.testResults;
+    const passedCount = execution.passedCount;
+    const totalCount = execution.totalCount;
+    const allPassed = execution.passed;
 
     // Status flag indicating if it 'Passed' or 'Failed'
     const status: 'Passed' | 'Failed' = allPassed ? 'Passed' : 'Failed';
 
     // Real-time AI Code Review
-    const failedMessages = results.filter(r => !r.passed).map(r => `Input: ${r.input} | Expected: ${r.expected} | Got: ${r.actual}`);
+    const failedMessages = results
+      .filter(r => !r.passed)
+      .map(r => `Input: ${r.input} | Expected: ${r.expected} | Got: ${r.actual} | Status: ${r.status}${r.error ? ` | Error: ${r.error}` : ''}`);
+
     let aiReview = null;
     try {
       aiReview = await reviewUserCode({
@@ -412,7 +474,7 @@ apiRouter.post('/code/submit', async (req: Request, res: Response) => {
 
     const submission = {
       id: 'sub_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
-      userId: userId || 'usr_student',
+      userId: user ? user.id : (userId || 'usr_student'),
       userEmail: user?.email || '',
       userName: user?.username || 'Student',
       problemId: problem.id,
@@ -424,9 +486,13 @@ apiRouter.post('/code/submit', async (req: Request, res: Response) => {
       status, // 'Passed' or 'Failed'
       passedCases: passedCount,
       totalCases: totalCount,
-      executionTimeMs,
-      memoryKb: Math.floor(34000 + Math.random() * 6000),
+      executionTimeMs: execution.executionTimeMs,
+      memoryKb: execution.memoryKb,
       testResults: results,
+      compileError: execution.compileError,
+      runtimeError: execution.runtimeError,
+      stdout: execution.stdout,
+      errorDetails: execution.compileError?.message || execution.runtimeError?.message,
       aiReview,
       createdAt: new Date().toISOString()
     };
@@ -434,25 +500,36 @@ apiRouter.post('/code/submit', async (req: Request, res: Response) => {
     // Every submitted attempt is saved to the database, regardless of whether solution is correct or incorrect
     await submissionsCol.insertOne(submission);
 
-    // Update user stats if passed and not solved before
+    // Update user stats and mark problem as solved on user profile in database
     if (allPassed && user) {
-      const priorAccepted = await submissionsCol.findOne({
-        userId,
-        problemId: problem.id,
-        $or: [{ status: 'Passed' }, { status: 'accepted' }],
-        id: { $ne: submission.id }
-      });
-      if (!priorAccepted) {
-        await usersCol.updateOne(
-          { id: userId },
-          {
-            $set: {
-              totalSolved: (user.totalSolved || 0) + 1,
-              streakDays: (user.streakDays || 1) + 1
-            }
-          }
-        );
+      const priorSubs = await submissionsCol.find({
+        $or: [{ userId: user.id }, { userId }],
+        problemId: problem.id
+      }).toArray();
+      const priorAccepted = priorSubs.some((s: any) =>
+        s.id !== submission.id && (s.status === 'Passed' || s.status === 'accepted')
+      );
+
+      const currentSolvedList: string[] = Array.isArray(user.solvedProblems) ? [...user.solvedProblems] : [];
+      if (!currentSolvedList.includes(problem.id)) {
+        currentSolvedList.push(problem.id);
       }
+      if (problem.slug && !currentSolvedList.includes(problem.slug)) {
+        currentSolvedList.push(problem.slug);
+      }
+
+      const uniqueCount = new Set(currentSolvedList).size;
+
+      await usersCol.updateOne(
+        { id: user.id },
+        {
+          $set: {
+            solvedProblems: currentSolvedList,
+            totalSolved: priorAccepted ? (user.totalSolved || uniqueCount) : Math.max((user.totalSolved || 0) + 1, uniqueCount),
+            streakDays: (user.streakDays || 1) + (priorAccepted ? 0 : 1)
+          }
+        }
+      );
     }
 
     // Invalidate user analytics evaluation cache upon new submission
@@ -1389,111 +1466,3 @@ apiRouter.post('/database/configure', async (req: Request, res: Response) => {
   }
 });
 
-// -------------------------------------------------------------
-// INTERNAL EXECUTION ENGINE (JS/TS safe eval + generic pattern checker)
-// -------------------------------------------------------------
-function executeTests(code: string, language: string, testCases: any[], problem: any) {
-  const results = [];
-
-  for (const tc of testCases) {
-    let passed = false;
-    let actual = '';
-    let error: string | undefined;
-
-    if (language === 'javascript' || language === 'typescript') {
-      try {
-        // Safe Function evaluation for JavaScript test verification
-        const wrappedCode = `
-          ${code}
-          const fn = ${getFunctionName(problem.slug, code)};
-          if (typeof fn !== 'function') throw new Error('Main function not found in editor.');
-          return fn(${tc.input});
-        `;
-        const executor = new Function(wrappedCode);
-        const rawOutput = executor();
-        actual = normalizeOutput(rawOutput);
-        const expected = normalizeExpected(tc.expectedOutput);
-
-        passed = compareOutputs(actual, expected);
-      } catch (err: any) {
-        error = err.message;
-        actual = 'Error: ' + err.message;
-        passed = false;
-      }
-    } else {
-      // For Python / Java / C++ / Go in this browser-based development container:
-      // Perform AST/lexical correctness check against problem patterns or evaluate algorithmic logic
-      const isCodeComplete = code.length > 50 && !code.includes('// Your code here') && !code.includes('# Your code here');
-      passed = isCodeComplete;
-      actual = passed ? tc.expectedOutput : 'Null / Output mismatch';
-    }
-
-    results.push({
-      testId: tc.id,
-      passed,
-      input: tc.input,
-      expected: tc.expectedOutput,
-      actual: actual,
-      error
-    });
-  }
-
-  return results;
-}
-
-function getFunctionName(slug: string, code: string): string {
-  // Extract function name from code if defined
-  const match = code.match(/function\s+([a-zA-Z0-9_]+)\s*\(/);
-  if (match && match[1]) return match[1];
-
-  const constMatch = code.match(/(?:const|let|var)\s+([a-zA-Z0-9_]+)\s*=\s*(?:\([^)]*\)|[a-zA-Z0-9_]+)\s*=>/);
-  if (constMatch && constMatch[1]) return constMatch[1];
-
-  // Default known problem functions
-  if (slug.includes('two-sum')) return 'twoSum';
-  if (slug.includes('palindrome')) return 'isPalindrome';
-  if (slug.includes('contains-duplicate')) return 'containsDuplicate';
-  if (slug.includes('3sum')) return 'threeSum';
-  if (slug.includes('longest-substring')) return 'lengthOfLongestSubstring';
-  if (slug.includes('group-anagrams')) return 'groupAnagrams';
-  if (slug.includes('trapping-rain-water')) return 'trap';
-  if (slug.includes('coin-change')) return 'coinChange';
-  if (slug.includes('course-schedule')) return 'canFinish';
-  if (slug.includes('valid-parentheses')) return 'checkValidString';
-
-  return 'solution';
-}
-
-function normalizeOutput(val: any): string {
-  if (val === undefined) return 'undefined';
-  if (typeof val === 'boolean') return val ? 'true' : 'false';
-  if (typeof val === 'object' && val !== null) {
-    try {
-      return JSON.stringify(val);
-    } catch {
-      return String(val);
-    }
-  }
-  return String(val);
-}
-
-function normalizeExpected(val: string): string {
-  return val.trim();
-}
-
-function compareOutputs(actual: string, expected: string): boolean {
-  if (actual === expected) return true;
-  // Try JSON equivalence (e.g. array spacing "[0, 1]" vs "[0,1]")
-  try {
-    const actObj = JSON.parse(actual);
-    const expObj = JSON.parse(expected);
-    if (Array.isArray(actObj) && Array.isArray(expObj)) {
-      if (actObj.length !== expObj.length) return false;
-      // If 2D arrays like in 3Sum or GroupAnagrams, sort for comparison
-      return JSON.stringify(actObj) === JSON.stringify(expObj);
-    }
-    return actObj === expObj;
-  } catch {
-    return actual.replace(/\s+/g, '') === expected.replace(/\s+/g, '');
-  }
-}

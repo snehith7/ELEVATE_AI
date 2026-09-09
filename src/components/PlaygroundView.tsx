@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { Problem, SupportedLanguage, Submission, AiCodeReview, User } from '../types';
 import { PracticeSheetView } from './PracticeSheetView';
+import Editor from '@monaco-editor/react';
 
 function renderMentorMarkdown(text: string) {
   const lines = text.split('\n');
@@ -117,6 +118,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [activeTestTab, setActiveTestTab] = useState<string>('t1');
+  const [consoleTab, setConsoleTab] = useState<'cases' | 'logs'>('cases');
 
   // Test results
   const [testResults, setTestResults] = useState<{
@@ -126,6 +128,17 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
     executionTimeMs: number;
     memoryKb: number;
     testResults: any[];
+    compileError?: {
+      message: string;
+      line?: number;
+      column?: number;
+      stack?: string;
+    };
+    runtimeError?: {
+      message: string;
+      stack?: string;
+    };
+    stdout?: string;
   } | null>(null);
 
   // AI Review state
@@ -151,6 +164,11 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
   const [expandedSubmissionId, setExpandedSubmissionId] = useState<string | null>(null);
   const [copySuccessId, setCopySuccessId] = useState<string | null>(null);
   const [loadedNotice, setLoadedNotice] = useState<string | null>(null);
+  const [isProblemSolved, setIsProblemSolved] = useState<boolean>(Boolean(problem.solvedByCurrentUser));
+
+  useEffect(() => {
+    setIsProblemSolved(Boolean(problem.solvedByCurrentUser));
+  }, [problem.id, problem.solvedByCurrentUser]);
 
   // Fetch prior submissions for this problem
   const fetchSubmissions = async () => {
@@ -168,6 +186,36 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
     } finally {
       setIsLoadingSubmissions(false);
     }
+  };
+
+  // Define custom dark theme for Monaco Editor that matches CodeElevate UI aesthetic
+  const handleEditorWillMount = (monaco: any) => {
+    monaco.editor.defineTheme('codeelevate-dark', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [
+        { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
+        { token: 'keyword', foreground: '818cf8', fontStyle: 'bold' },
+        { token: 'string', foreground: '34d399' },
+        { token: 'number', foreground: 'f59e0b' },
+        { token: 'type', foreground: '38bdf8' },
+        { token: 'identifier', foreground: 'f1f5f9' },
+        { token: 'delimiter', foreground: '94a3b8' }
+      ],
+      colors: {
+        'editor.background': '#070b14',
+        'editor.foreground': '#f1f5f9',
+        'editor.lineHighlightBackground': '#0f172a60',
+        'editorLineNumber.foreground': '#475569',
+        'editorLineNumber.activeForeground': '#818cf8',
+        'editorIndentGuide.background': '#1e293b60',
+        'editorIndentGuide.activeBackground': '#334155',
+        'editorBracketMatch.background': '#312e81',
+        'editorBracketMatch.border': '#6366f1',
+        'editorCursor.foreground': '#60a5fa',
+        'editor.selectionBackground': '#3730a370'
+      }
+    });
   };
 
   // Strictly reset state and load clean starter code for unsolved problem
@@ -295,8 +343,19 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
         totalCount: submission.totalCases,
         executionTimeMs: submission.executionTimeMs,
         memoryKb: submission.memoryKb,
-        testResults: submission.testResults || []
+        testResults: submission.testResults || [],
+        compileError: (submission as any).compileError,
+        runtimeError: (submission as any).runtimeError,
+        stdout: (submission as any).stdout
       });
+
+      // Switch to first failed test case if any failed, or first case
+      const firstFailed = submission.testResults?.find(r => !r.passed);
+      if (firstFailed?.testId) {
+        setActiveTestTab(firstFailed.testId);
+      } else if (submission.testResults?.[0]?.testId) {
+        setActiveTestTab(submission.testResults[0].testId);
+      }
 
       if (submission.aiReview) {
         setAiReview(submission.aiReview);
@@ -305,6 +364,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
       setPriorSubmissions(prev => [submission, ...prev]);
 
       if (isPassed) {
+        setIsProblemSolved(true);
         confetti({
           particleCount: 80,
           spread: 70,
@@ -388,6 +448,12 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
             <span className={`text-[9px] sm:text-[10px] uppercase font-bold px-1.5 sm:px-2 py-0.5 rounded-full border shrink-0 ${diffColor}`}>
               {problem.difficulty}
             </span>
+            {isProblemSolved && (
+              <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shrink-0">
+                <CheckCircle2 className="w-3 h-3" />
+                <span>Solved</span>
+              </span>
+            )}
           </h2>
         </div>
 
@@ -401,8 +467,8 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
               aria-label="Select programming language"
               className="bg-slate-800 text-[11px] sm:text-xs font-mono font-medium text-indigo-300 rounded-lg px-2 sm:px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-indigo-500"
             >
-              <option value="javascript">JS</option>
-              <option value="typescript">TS</option>
+              <option value="javascript">JavaScript</option>
+              <option value="typescript">TypeScript</option>
               <option value="python">Python</option>
               <option value="java">Java</option>
               <option value="cpp">C++</option>
@@ -798,90 +864,198 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
             <div className="flex items-center justify-between px-3 sm:px-4 py-2 bg-[#0d1322] border-b border-slate-800 text-xs text-slate-400 shrink-0">
               <div className="flex items-center space-x-2">
                 <FileCode2 className="w-3.5 h-3.5 text-indigo-400" />
-                <span className="font-mono font-semibold text-slate-200">solution.{selectedLanguage === 'python' ? 'py' : selectedLanguage === 'java' ? 'java' : selectedLanguage === 'cpp' ? 'cpp' : selectedLanguage === 'go' ? 'go' : selectedLanguage === 'typescript' ? 'ts' : 'js'}</span>
+                <span className="font-mono font-semibold text-slate-200">
+                  solution.{selectedLanguage === 'python' ? 'py' : selectedLanguage === 'java' ? 'java' : selectedLanguage === 'cpp' ? 'cpp' : selectedLanguage === 'go' ? 'go' : selectedLanguage === 'typescript' ? 'ts' : 'js'}
+                </span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-950/70 text-indigo-300 border border-indigo-700/50 font-mono font-semibold uppercase tracking-wider">
+                  {selectedLanguage}
+                </span>
               </div>
-              <div className="flex items-center space-x-3 text-[11px]">
-                <span>Tab Size: 2</span>
+              <div className="flex items-center space-x-3 text-[11px] text-slate-400">
+                <span className="hidden sm:inline-flex items-center space-x-1 text-slate-500">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span>Monaco Editor</span>
+                </span>
+                <span>Tab: 2</span>
                 <span>UTF-8</span>
               </div>
             </div>
 
-            <textarea
-              value={code}
-              onChange={e => setCode(e.target.value)}
-              onKeyDown={e => {
-                // Tab indentation support
-                if (e.key === 'Tab') {
-                  e.preventDefault();
-                  const target = e.target as HTMLTextAreaElement;
-                  const start = target.selectionStart;
-                  const end = target.selectionEnd;
-                  setCode(code.substring(0, start) + '  ' + code.substring(end));
-                  setTimeout(() => {
-                    target.selectionStart = target.selectionEnd = start + 2;
-                  }, 0);
+            {/* Rich Monaco Code Editor */}
+            <div className="flex-1 w-full h-full relative min-h-0 bg-[#070b14]">
+              <Editor
+                height="100%"
+                language={selectedLanguage}
+                value={code}
+                theme="codeelevate-dark"
+                beforeMount={handleEditorWillMount}
+                onChange={(val) => setCode(val ?? '')}
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 13,
+                  fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+                  fontLigatures: true,
+                  tabSize: 2,
+                  insertSpaces: true,
+                  autoClosingBrackets: 'always',
+                  autoClosingQuotes: 'always',
+                  autoClosingOvertype: 'always',
+                  autoIndent: 'full',
+                  formatOnPaste: true,
+                  formatOnType: true,
+                  scrollBeyondLastLine: false,
+                  lineNumbers: 'on',
+                  renderLineHighlight: 'all',
+                  matchBrackets: 'always',
+                  bracketPairColorization: { enabled: true },
+                  automaticLayout: true,
+                  cursorBlinking: 'smooth',
+                  smoothScrolling: true,
+                  wordWrap: 'on',
+                  padding: { top: 12, bottom: 12 },
+                  suggestOnTriggerCharacters: true,
+                  quickSuggestions: true,
+                  fixedOverflowWidgets: true
+                }}
+                loading={
+                  <div className="flex items-center justify-center h-full text-slate-400 text-xs space-x-2 bg-[#070b14]">
+                    <Loader2 className="w-4 h-4 animate-spin text-indigo-400" />
+                    <span>Loading Monaco Code Editor...</span>
+                  </div>
                 }
-              }}
-              spellCheck={false}
-              className="w-full h-full p-3 sm:p-4 font-mono text-xs sm:text-sm text-slate-100 bg-transparent resize-none focus:outline-none leading-relaxed selection:bg-indigo-500/30"
-              placeholder="// Write your solution here..."
-            />
+              />
+            </div>
           </div>
 
           {/* Test Runner Bottom Drawer / Console */}
-          <div className={`${mobilePane === 'code' ? 'hidden' : 'flex'} lg:flex ${mobilePane === 'tests' ? 'flex-1' : 'h-64 sm:h-72'} border-t border-slate-800 bg-[#0d1322] flex-col overflow-hidden shrink-0 lg:shrink-0`}>
+          <div className={`${mobilePane === 'code' ? 'hidden' : 'flex'} lg:flex ${mobilePane === 'tests' ? 'flex-1' : 'h-72 sm:h-80'} border-t border-slate-800 bg-[#0d1322] flex-col overflow-hidden shrink-0 lg:shrink-0`}>
             {/* Console Tabs */}
-            <div className="flex items-center justify-between px-4 py-1.5 border-b border-slate-800 bg-[#0f172a] text-xs">
-              <div className="flex items-center space-x-2">
-                <span className="font-bold text-slate-300">Test Cases</span>
+            <div className="flex items-center justify-between px-3 sm:px-4 py-2 border-b border-slate-800 bg-[#0f172a] text-xs shrink-0 flex-wrap gap-2">
+              <div className="flex items-center space-x-2 overflow-x-auto max-w-full pb-1 sm:pb-0">
+                <span className="font-bold text-slate-300 hidden sm:inline text-xs">Console</span>
                 <div className="flex items-center space-x-1">
-                  {problem.testCases.map((tc, idx) => {
-                    const testResult = testResults?.testResults?.find((r: any) => r.testId === tc.id);
-                    return (
-                      <button
-                        key={tc.id}
-                        onClick={() => {
-                          setActiveTestTab(tc.id);
-                          setIsCustomMode(false);
-                        }}
-                        className={`px-2.5 py-1 rounded text-[11px] font-mono font-semibold transition-colors flex items-center space-x-1 ${
-                          activeTestTab === tc.id && !isCustomMode
-                            ? 'bg-indigo-600/30 text-indigo-200 border border-indigo-500/50'
-                            : 'bg-slate-800 text-slate-400 hover:text-slate-200'
-                        }`}
-                      >
-                        {testResult && (
-                          testResult.passed ? <CheckCircle2 className="w-3 h-3 text-emerald-400" /> : <XCircle className="w-3 h-3 text-rose-400" />
-                        )}
-                        <span>Case {idx + 1}</span>
-                      </button>
-                    );
-                  })}
+                  {/* Test case tabs from testResults or problem */}
+                  {(() => {
+                    const casesToDisplay = testResults?.testResults?.length
+                      ? testResults.testResults
+                      : problem.testCases;
+
+                    return casesToDisplay.map((tc: any, idx: number) => {
+                      const caseId = tc.testId || tc.id;
+                      const isSelected = activeTestTab === caseId && !isCustomMode && consoleTab === 'cases';
+                      const res = testResults?.testResults?.find((r: any) => r.testId === caseId) || (tc.passed !== undefined ? tc : null);
+
+                      let statusIcon = null;
+                      if (res) {
+                        if (res.passed) {
+                          statusIcon = <CheckCircle2 className="w-3 h-3 text-emerald-400" />;
+                        } else if (res.status === 'Syntax Error') {
+                          statusIcon = <AlertCircle className="w-3 h-3 text-rose-400" />;
+                        } else if (res.status === 'Runtime Error') {
+                          statusIcon = <AlertCircle className="w-3 h-3 text-amber-400" />;
+                        } else if (res.status === 'Time Limit Exceeded') {
+                          statusIcon = <Clock className="w-3 h-3 text-purple-400" />;
+                        } else {
+                          statusIcon = <XCircle className="w-3 h-3 text-rose-400" />;
+                        }
+                      }
+
+                      return (
+                        <button
+                          key={caseId}
+                          onClick={() => {
+                            setActiveTestTab(caseId);
+                            setIsCustomMode(false);
+                            setConsoleTab('cases');
+                          }}
+                          className={`px-2.5 py-1 rounded text-[11px] font-mono font-semibold transition-colors flex items-center space-x-1.5 shrink-0 ${
+                            isSelected
+                              ? 'bg-indigo-600/30 text-indigo-200 border border-indigo-500/50 shadow-sm'
+                              : 'bg-slate-800/80 text-slate-400 hover:text-slate-200 border border-transparent'
+                          }`}
+                        >
+                          {statusIcon}
+                          <span>{tc.isHidden ? `Hidden ${idx + 1}` : `Case ${idx + 1}`}</span>
+                        </button>
+                      );
+                    });
+                  })()}
+
                   <button
-                    onClick={() => setIsCustomMode(true)}
-                    className={`px-2 py-1 rounded text-[11px] font-mono transition-colors ${
-                      isCustomMode ? 'bg-indigo-600/30 text-indigo-200 border border-indigo-500/50' : 'bg-slate-800 text-slate-400'
+                    onClick={() => {
+                      setIsCustomMode(true);
+                      setConsoleTab('cases');
+                    }}
+                    className={`px-2 py-1 rounded text-[11px] font-mono transition-colors shrink-0 ${
+                      isCustomMode && consoleTab === 'cases'
+                        ? 'bg-indigo-600/30 text-indigo-200 border border-indigo-500/50'
+                        : 'bg-slate-800 text-slate-400 hover:text-slate-200'
                     }`}
                   >
                     + Custom Input
                   </button>
+
+                  {/* Stdout Logs Tab */}
+                  {(testResults?.stdout || testResults?.testResults?.some((r: any) => r.stdout)) && (
+                    <button
+                      onClick={() => setConsoleTab('logs')}
+                      className={`px-2.5 py-1 rounded text-[11px] font-mono transition-colors flex items-center space-x-1 shrink-0 ${
+                        consoleTab === 'logs'
+                          ? 'bg-cyan-600/30 text-cyan-200 border border-cyan-500/50'
+                          : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      <Terminal className="w-3 h-3" />
+                      <span>Stdout</span>
+                    </button>
+                  )}
                 </div>
               </div>
 
               {testResults && (
-                <div className="flex items-center space-x-3 text-[11px] font-mono">
-                  <span className={testResults.passed ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
-                    {testResults.passed ? 'ACCEPTED' : 'TESTS FAILED'} ({testResults.passedCount}/{testResults.totalCount})
+                <div className="flex items-center space-x-3 text-[11px] font-mono shrink-0">
+                  {testResults.compileError ? (
+                    <span className="text-rose-400 font-bold flex items-center space-x-1">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      <span>SYNTAX ERROR</span>
+                    </span>
+                  ) : testResults.runtimeError ? (
+                    <span className="text-amber-400 font-bold flex items-center space-x-1">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      <span>RUNTIME ERROR</span>
+                    </span>
+                  ) : (
+                    <span className={testResults.passed ? 'text-emerald-400 font-bold flex items-center space-x-1' : 'text-rose-400 font-bold flex items-center space-x-1'}>
+                      {testResults.passed ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
+                      <span>{testResults.passed ? 'ACCEPTED' : 'TESTS FAILED'}</span>
+                      <span className="text-slate-400 font-normal">({testResults.passedCount}/{testResults.totalCount})</span>
+                    </span>
+                  )}
+                  <span className="text-slate-400 flex items-center space-x-1">
+                    <Clock className="w-3 h-3 text-slate-500" />
+                    <span>{testResults.executionTimeMs} ms</span>
                   </span>
-                  <span className="text-slate-400">{testResults.executionTimeMs} ms</span>
                 </div>
               )}
             </div>
 
-            {/* Test Case Body */}
+            {/* Test Case & Error Body */}
             <div className="flex-1 p-3.5 overflow-y-auto font-mono text-xs space-y-3">
-              {isCustomMode ? (
+              {consoleTab === 'logs' ? (
                 <div className="space-y-2">
+                  <div className="flex items-center justify-between text-slate-400 text-[11px]">
+                    <span className="flex items-center space-x-1.5">
+                      <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+                      <span className="text-slate-200 font-semibold">Standard Output (Console Logs)</span>
+                    </span>
+                    <span>Captured from sandbox</span>
+                  </div>
+                  <pre className="p-3 rounded-xl bg-black/80 border border-slate-800 text-cyan-300 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap">
+                    {testResults?.stdout || 'No stdout printed during execution.'}
+                  </pre>
+                </div>
+              ) : isCustomMode ? (
+                <div className="space-y-2.5">
                   <div className="text-slate-400 text-[11px]">Enter Custom Argument Parameters:</div>
                   <input
                     type="text"
@@ -891,38 +1065,158 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                     className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-indigo-500"
                   />
                   <p className="text-[11px] text-slate-500">Run code to test your function directly against this input.</p>
+
+                  {testResults?.testResults?.[0] && (
+                    <div className="mt-3 p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2">
+                      <div className="text-[11px] text-slate-400 font-semibold">Custom Run Result:</div>
+                      <div className="p-2 rounded-lg bg-black/60 font-mono text-slate-200 text-xs">
+                        {testResults.testResults[0].actual}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 (() => {
-                  const currCase = problem.testCases.find(tc => tc.id === activeTestTab) || problem.testCases[0];
-                  const currRes = testResults?.testResults?.find((r: any) => r.testId === currCase?.id);
+                  const currCase = (problem.testCases.find(tc => tc.id === activeTestTab) ||
+                    testResults?.testResults?.find((r: any) => r.testId === activeTestTab) ||
+                    problem.testCases[0]) as any;
+                  const currRes = testResults?.testResults?.find((r: any) => r.testId === currCase?.id || r.testId === currCase?.testId);
 
                   return (
-                    <div className="space-y-2.5">
+                    <div className="space-y-3">
+                      {/* Global or Test-specific Syntax Error Banner */}
+                      {(testResults?.compileError || currRes?.status === 'Syntax Error') && (
+                        <div className="p-3.5 rounded-xl bg-rose-950/30 border border-rose-800/60 space-y-2">
+                          <div className="flex items-center justify-between text-rose-300 font-semibold text-xs">
+                            <div className="flex items-center space-x-2">
+                              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                              <span>Syntax / Compilation Error</span>
+                            </div>
+                            {testResults?.compileError?.line && (
+                              <span className="px-2 py-0.5 rounded bg-rose-900/60 text-rose-200 text-[10px] font-mono">
+                                Line {testResults.compileError.line}{testResults.compileError.column ? `, Col ${testResults.compileError.column}` : ''}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-rose-200 font-mono text-xs">
+                            {testResults?.compileError?.message || currRes?.error}
+                          </p>
+                          {(testResults?.compileError?.stack || currRes?.stack) && (
+                            <pre className="p-2.5 rounded-lg bg-black/80 border border-rose-900/50 text-rose-300 font-mono text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap">
+                              {testResults?.compileError?.stack || currRes?.stack}
+                            </pre>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Runtime Error Banner */}
+                      {!testResults?.compileError && (currRes?.status === 'Runtime Error' || (testResults?.runtimeError && !currRes?.passed)) && (
+                        <div className="p-3.5 rounded-xl bg-amber-950/30 border border-amber-800/60 space-y-2">
+                          <div className="flex items-center space-x-2 text-amber-300 font-semibold text-xs">
+                            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                            <span>Runtime Error</span>
+                          </div>
+                          <p className="text-amber-200 font-mono text-xs">
+                            {currRes?.error || testResults?.runtimeError?.message}
+                          </p>
+                          {(currRes?.stack || testResults?.runtimeError?.stack) && (
+                            <pre className="p-2.5 rounded-lg bg-black/80 border border-amber-900/50 text-amber-300 font-mono text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap">
+                              {currRes?.stack || testResults?.runtimeError?.stack}
+                            </pre>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Test Case Status & Metadata Header */}
+                      <div className="flex items-center justify-between text-xs pb-1 border-b border-slate-800/80">
+                        <div className="flex items-center space-x-2">
+                          {currRes ? (
+                            currRes.passed ? (
+                              <span className="px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-700/50 font-semibold flex items-center space-x-1">
+                                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                <span>Passed</span>
+                              </span>
+                            ) : currRes.status === 'Wrong Answer' ? (
+                              <span className="px-2.5 py-0.5 rounded-full bg-rose-950/80 text-rose-300 border border-rose-700/50 font-semibold flex items-center space-x-1">
+                                <XCircle className="w-3 h-3 text-rose-400" />
+                                <span>Logic Failure: Output Mismatch</span>
+                              </span>
+                            ) : currRes.status === 'Time Limit Exceeded' ? (
+                              <span className="px-2.5 py-0.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-700/50 font-semibold flex items-center space-x-1">
+                                <Clock className="w-3 h-3 text-purple-400" />
+                                <span>Time Limit Exceeded (3000ms)</span>
+                              </span>
+                            ) : (
+                              <span className="px-2.5 py-0.5 rounded-full bg-rose-950/80 text-rose-300 border border-rose-700/50 font-semibold flex items-center space-x-1">
+                                <AlertCircle className="w-3 h-3 text-rose-400" />
+                                <span>{currRes.status || 'Failed'}</span>
+                              </span>
+                            )
+                          ) : (
+                            <span className="text-slate-400 text-[11px]">Pending execution</span>
+                          )}
+                          {(currCase?.isHidden || currRes?.isHidden) && (
+                            <span className="px-2 py-0.5 rounded bg-indigo-950/60 text-indigo-300 border border-indigo-800/50 text-[10px]">
+                              Hidden Evaluation Case
+                            </span>
+                          )}
+                        </div>
+
+                        {currRes?.executionTimeMs !== undefined && (
+                          <span className="text-[11px] text-slate-400 font-mono">
+                            {currRes.executionTimeMs} ms
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Inputs & Outputs Grid */}
                       <div>
-                        <div className="text-[11px] text-slate-500 mb-1">Input:</div>
-                        <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800 text-slate-200">
+                        <div className="text-[11px] text-slate-500 mb-1 font-semibold">Input:</div>
+                        <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 text-slate-200 select-text overflow-x-auto">
                           {currCase?.input}
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                         <div>
-                          <div className="text-[11px] text-slate-500 mb-1">Expected Output:</div>
-                          <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800 text-emerald-400">
+                          <div className="text-[11px] text-slate-500 mb-1 font-semibold">Expected Output:</div>
+                          <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 text-emerald-400 font-mono select-text overflow-x-auto">
                             {currCase?.expectedOutput}
                           </div>
                         </div>
 
                         <div>
-                          <div className="text-[11px] text-slate-500 mb-1">Actual Output:</div>
-                          <div className={`p-2 rounded-lg bg-slate-900/80 border ${
-                            currRes ? (currRes.passed ? 'border-emerald-500/40 text-emerald-300' : 'border-rose-500/40 text-rose-300') : 'border-slate-800 text-slate-400'
+                          <div className="text-[11px] text-slate-500 mb-1 font-semibold">Actual Output:</div>
+                          <div className={`p-2.5 rounded-lg bg-slate-900/80 border font-mono select-text overflow-x-auto ${
+                            currRes
+                              ? (currRes.passed ? 'border-emerald-500/40 text-emerald-300 bg-emerald-950/20' : 'border-rose-500/40 text-rose-300 bg-rose-950/20')
+                              : 'border-slate-800 text-slate-400'
                           }`}>
                             {currRes ? currRes.actual : 'Click "Run" to test'}
                           </div>
                         </div>
                       </div>
+
+                      {/* Logic failure explanation */}
+                      {currRes && !currRes.passed && currRes.status === 'Wrong Answer' && (
+                        <div className="p-2.5 rounded-lg bg-rose-950/20 border border-rose-900/30 text-rose-300 text-[11px] space-y-1">
+                          <span className="font-semibold text-rose-200">Logic Failure: </span>
+                          <span>The returned value does not match the expected result for this test case. Inspect the difference between Expected and Actual above.</span>
+                        </div>
+                      )}
+
+                      {/* Per-test case stdout logs */}
+                      {currRes?.stdout && (
+                        <div className="space-y-1 pt-1">
+                          <div className="text-[11px] text-slate-400 flex items-center space-x-1">
+                            <Terminal className="w-3 h-3 text-cyan-400" />
+                            <span>Case Console Output:</span>
+                          </div>
+                          <pre className="p-2 rounded-lg bg-black/70 border border-slate-800 text-cyan-300 font-mono text-[11px] whitespace-pre-wrap overflow-x-auto">
+                            {currRes.stdout}
+                          </pre>
+                        </div>
+                      )}
                     </div>
                   );
                 })()
