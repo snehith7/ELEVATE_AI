@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Background subtle gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141419" />
+      <stop offset="100%" stop-color="#08080b" />
+    </linearGradient>
+
+    <!-- Coral Line Gradient -->
+    <linearGradient id="coralGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF4528" />
+      <stop offset="50%" stop-color="#FF5D47" />
+      <stop offset="100%" stop-color="#FF7A66" />
+    </linearGradient>
+
+    <!-- Outer Coral Glow -->
+    <filter id="coralGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Rounded Container matching user image -->
+  <rect x="12" y="12" width="232" height="232" rx="54" fill="url(#bgGrad)" stroke="#23232e" stroke-width="3" />
+
+  <!-- Code Bracket "<" in crisp white on left side -->
+  <path
+    d="M 116 76 L 62 128 L 116 180"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="20"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Ascending Performance Chart Line in Vibrant Coral -->
+  <!-- Starts bottom-left, goes up, dips down, ascends to top-right with star arrowhead -->
+  <!-- Underlying glow trace -->
+  <path
+    d="M 44 200 L 92 146 L 126 172 L 176 102 L 202 68"
+    fill="none"
+    stroke="#FF573D"
+    stroke-width="22"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.3"
+    filter="url(#coralGlow)"
+  />
+
+  <!-- Main Coral Trend Track -->
+  <path
+    d="M 44 200 L 92 146 L 126 172 L 176 102 L 202 68"
+    fill="none"
+    stroke="url(#coralGrad)"
+    stroke-width="15"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Graph Node Dots at inflection vertices -->
+  <circle cx="92" cy="146" r="6" fill="#FFFFFF" stroke="#FF573D" stroke-width="3" />
+  <circle cx="126" cy="172" r="6" fill="#FFFFFF" stroke="#FF573D" stroke-width="3" />
+  <circle cx="176" cy="102" r="6" fill="#FFFFFF" stroke="#FF573D" stroke-width="3" />
+
+  <!-- Arrowhead pointing up-right at (208, 62) -->
+  <path
+    d="M 184 46 L 222 58 L 210 96 Z"
+    fill="#FF573D"
+    stroke="#FF7A66"
+    stroke-width="2"
+  />
+
+  <!-- Star inside Arrowhead -->
+  <!-- Star centered around (206, 68) -->
+  <path
+    d="M 206 60 L 208.5 65.5 L 214 66 L 209.8 70 L 211 75.5 L 206 72.5 L 201 75.5 L 202.2 70 L 198 66 L 203.5 65.5 Z"
+    fill="#16161c"
+  />
+</svg>

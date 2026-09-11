@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { UserPlus, X, Mail, User as UserIcon, KeyRound, Target, Code, Award, Flame, AlertCircle } from 'lucide-react';
 import { SupportedLanguage } from '../types';
+import { getAuthHeaders } from '../utils/apiAuth';
 
 interface AddUserModalProps {
   isOpen: boolean;
@@ -59,7 +60,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
     try {
       const res = await fetch('/api/admin/users', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders('admin'),
         body: JSON.stringify({
           username: username.trim(),
           email: email.trim().toLowerCase(),
@@ -95,13 +96,13 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-lg bg-[#0f172a] border border-purple-900/50 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+      <div className="relative w-full max-w-lg bg-[#0e0e15] border border-[#242436] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="p-5 border-b border-slate-800 bg-gradient-to-r from-purple-950/50 via-slate-900 to-slate-900 flex items-center justify-between">
+        <div className="p-5 border-b border-[#1c1c28] bg-gradient-to-r from-[#170e10] via-[#0d0d14] to-[#07070a] flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-purple-600/30 text-purple-300 flex items-center justify-center">
-              <UserPlus className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-xl bg-[#FF5A43]/20 border border-[#FF5A43]/30 text-[#FF8570] flex items-center justify-center">
+              <UserPlus className="w-4 h-4 text-[#FF5A43]" />
             </div>
             <div>
               <h3 className="font-bold text-white text-base">Enroll New User</h3>
@@ -110,7 +111,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-[#14141e] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -135,7 +136,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
                   value={username}
                   onChange={e => setUsername(e.target.value)}
                   placeholder="e.g. jordan_algo"
-                  className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                  className="w-full pl-8 pr-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
                   required
                 />
               </div>
@@ -150,7 +151,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="e.g. jordan@student.io"
-                  className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                  className="w-full pl-8 pr-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
                   required
                 />
               </div>
@@ -167,7 +168,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="studentpass123"
-                  className="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                  className="w-full pl-8 pr-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
                 />
               </div>
             </div>
@@ -177,7 +178,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
               <select
                 value={role}
                 onChange={e => handleRoleChange(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white focus:outline-none focus:border-purple-500 font-medium"
+                className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white focus:outline-none focus:border-[#FF5A43] font-medium"
               >
                 <option value="student">Student (Learner)</option>
                 <option value="faculty">Faculty (Instructor / Batch Mentor)</option>
@@ -196,7 +197,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
                 value={batch}
                 onChange={e => setBatch(e.target.value)}
                 placeholder="e.g. Batch 2026-A or CS-Section-101"
-                className="w-full px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
                 required
               />
             </div>
@@ -206,7 +207,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
               <select
                 value={skillLevel}
                 onChange={e => setSkillLevel(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white focus:outline-none focus:border-purple-500"
+                className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white focus:outline-none focus:border-[#FF5A43]"
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -219,7 +220,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
               <select
                 value={preferredLanguage}
                 onChange={e => setPreferredLanguage(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white focus:outline-none focus:border-purple-500"
+                className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white focus:outline-none focus:border-[#FF5A43]"
               >
                 <option value="javascript">JavaScript</option>
                 <option value="python">Python</option>
@@ -233,7 +234,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
 
           <div>
             <label className="block font-semibold text-slate-300 mb-1 flex items-center space-x-1.5">
-              <Target className="w-3.5 h-3.5 text-indigo-400" />
+              <Target className="w-3.5 h-3.5 text-[#FF8570]" />
               <span>Target Learning Goal</span>
             </label>
             <input
@@ -241,14 +242,14 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
               value={targetGoal}
               onChange={e => setTargetGoal(e.target.value)}
               placeholder="e.g. Master dynamic programming and trees for interview preparation"
-              className="w-full px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+              className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3.5">
             <div>
               <label className="block font-semibold text-slate-300 mb-1 flex items-center space-x-1">
-                <Flame className="w-3.5 h-3.5 text-amber-400" />
+                <Flame className="w-3.5 h-3.5 text-[#FF5A43]" />
                 <span>Initial Streak (Days)</span>
               </label>
               <input
@@ -256,7 +257,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
                 min="0"
                 value={streakDays}
                 onChange={e => setStreakDays(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white focus:outline-none focus:border-purple-500"
+                className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white focus:outline-none focus:border-[#FF5A43]"
               />
             </div>
 
@@ -270,23 +271,23 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
                 min="0"
                 value={totalSolved}
                 onChange={e => setTotalSolved(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white focus:outline-none focus:border-purple-500"
+                className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white focus:outline-none focus:border-[#FF5A43]"
               />
             </div>
           </div>
 
-          <div className="pt-3 flex items-center justify-end space-x-3 border-t border-slate-800">
+          <div className="pt-3 flex items-center justify-end space-x-3 border-t border-[#1c1c28]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+              className="px-4 py-2 rounded-xl bg-[#14141e] hover:bg-[#1c1c28] text-slate-300 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2 rounded-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/20 transition-all flex items-center space-x-2 disabled:opacity-50"
+              className="px-4 py-2 rounded-xl font-bold bg-[#FF5A43] hover:bg-[#F03E23] text-white shadow-lg shadow-[#FF5A43]/20 transition-all flex items-center space-x-2 disabled:opacity-50 cursor-pointer"
             >
               <UserPlus className="w-3.5 h-3.5" />
               <span>{isLoading ? 'Creating User...' : 'Add User to Database'}</span>

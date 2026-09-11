@@ -4,13 +4,11 @@ import {
   BrainCircuit,
   Target,
   AlertTriangle,
-  CheckCircle2,
   TrendingUp,
   Sparkles,
   ArrowRight,
   Flame,
   Award,
-  BookOpen,
   Zap,
   Activity,
   Code2
@@ -28,14 +26,12 @@ interface AnalyticsViewProps {
 export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
   analytics,
   currentUser,
-  onOpenAiGenerator,
-  onSelectProblemById,
-  allProblems
+  onOpenAiGenerator
 }) => {
   if (!analytics) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center text-slate-400">
-        <Activity className="w-8 h-8 mx-auto mb-3 text-indigo-400 animate-pulse" />
+        <Activity className="w-8 h-8 mx-auto mb-3 text-[#FF5A43] animate-pulse" />
         <p className="text-sm">Compiling performance analytics and AI mistake observations...</p>
       </div>
     );
@@ -44,10 +40,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-5 sm:space-y-8 text-slate-100">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/60 to-slate-900 border border-slate-800 shadow-xl">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 sm:p-6 rounded-3xl bg-gradient-to-r from-[#170e10] via-[#0d0d14] to-[#07070a] border border-[#2b1c22] shadow-2xl">
         <div className="space-y-1">
-          <div className="flex items-center space-x-2 text-xs font-semibold text-indigo-400 uppercase tracking-wider">
-            <BrainCircuit className="w-4 h-4" />
+          <div className="flex items-center space-x-2 text-xs font-semibold text-[#FF8570] uppercase tracking-wider">
+            <BrainCircuit className="w-4 h-4 text-[#FF5A43]" />
             <span>AI Diagnostic Engine</span>
           </div>
           <h1 className="text-2xl font-extrabold text-white">Coding Talent & Mistake Analysis</h1>
@@ -58,7 +54,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
         <button
           onClick={onOpenAiGenerator}
-          className="flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-indigo-500/20 transition-all cursor-pointer"
+          className="flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#FF5A43] via-[#FF6F59] to-[#FF8570] hover:from-[#F04428] hover:to-[#FF5A43] shadow-lg shadow-[#FF5A43]/25 transition-all cursor-pointer whitespace-nowrap"
         >
           <Sparkles className="w-4 h-4" />
           <span>Synthesize Adaptive AI Question</span>
@@ -67,7 +63,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
       {/* Top Stat Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+        <div className="p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28]">
           <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
             <span>Accuracy Rate</span>
             <Target className="w-4 h-4 text-emerald-400" />
@@ -78,34 +74,34 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+        <div className="p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28]">
           <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
             <span>Daily Streak</span>
-            <Flame className="w-4 h-4 text-amber-400 fill-amber-400/20" />
+            <Flame className="w-4 h-4 text-[#FF5A43] fill-[#FF5A43]/20" />
           </div>
-          <div className="text-2xl font-black text-amber-400">{currentUser?.streakDays || 1} Days</div>
+          <div className="text-2xl font-black text-[#FF8570]">{currentUser?.streakDays || 1} Days</div>
           <div className="text-[11px] text-slate-500 mt-1">Consistent daily practice</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+        <div className="p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28]">
           <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
             <span>Target Goal</span>
-            <Award className="w-4 h-4 text-indigo-400" />
+            <Award className="w-4 h-4 text-[#FF5A43]" />
           </div>
           <div className="text-xs font-bold text-slate-200 line-clamp-2 mt-1">
             {currentUser?.targetGoal || 'Elevate algorithmic and problem-solving skills'}
           </div>
-          <div className="text-[11px] text-indigo-400 font-semibold capitalize mt-1">
+          <div className="text-[11px] text-[#FF8570] font-semibold capitalize mt-1">
             {currentUser?.skillLevel || 'Intermediate'} Track
           </div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+        <div className="p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28]">
           <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
             <span>Preferred Language</span>
-            <Code2 className="w-4 h-4 text-cyan-400" />
+            <Code2 className="w-4 h-4 text-[#FF8570]" />
           </div>
-          <div className="text-xl font-bold font-mono text-cyan-300 capitalize">
+          <div className="text-xl font-bold font-mono text-white capitalize">
             {currentUser?.preferredLanguage || 'JavaScript'}
           </div>
           <div className="text-[11px] text-slate-500 mt-1">Active editor environment</div>
@@ -116,7 +112,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* LEFT: AI Identified Mistakes (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+          <div className="p-6 rounded-3xl bg-[#0e0e15] border border-[#1c1c28] space-y-4 shadow-xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <AlertTriangle className="w-5 h-5 text-amber-400" />
@@ -132,7 +128,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
             <div className="space-y-3">
               {analytics.identifiedMistakes.length === 0 ? (
-                <div className="p-4 rounded-xl bg-slate-800/40 text-center text-xs text-slate-400">
+                <div className="p-4 rounded-xl bg-[#14141e] text-center text-xs text-slate-400 border border-[#222232]">
                   No recurring mistakes detected yet. Solve more problems to unlock tailored diagnostics!
                 </div>
               ) : (
@@ -142,14 +138,14 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                       ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
                       : mistake.severity === 'medium'
                       ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
-                      : 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30';
+                      : 'bg-[#FF5A43]/15 text-[#FF8570] border-[#FF5A43]/30';
 
                   return (
-                    <div key={idx} className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/80 space-y-2">
+                    <div key={idx} className="p-4 rounded-2xl bg-[#14141e] border border-[#222232] space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                           <span className="text-sm font-bold text-white">{mistake.mistakePattern}</span>
-                          <span className="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
+                          <span className="text-[11px] px-2 py-0.5 rounded bg-[#0a0a10] text-slate-400 border border-[#242436]">
                             {mistake.category}
                           </span>
                         </div>
@@ -159,11 +155,11 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                       </div>
 
                       <p className="text-xs text-slate-300 leading-relaxed">
-                        <span className="font-semibold text-indigo-300">Observation: </span>
+                        <span className="font-semibold text-[#FF8570]">Observation: </span>
                         {mistake.description}
                       </p>
 
-                      <div className="p-2.5 rounded-lg bg-indigo-950/40 border border-indigo-500/20 text-xs text-indigo-200">
+                      <div className="p-2.5 rounded-xl bg-[#FF5A43]/10 border border-[#FF5A43]/20 text-xs text-[#FF8570]">
                         <span className="font-semibold text-white">How to Overcome: </span>
                         {mistake.remedyAction}
                       </div>
@@ -172,7 +168,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                         <span>Triggered {mistake.frequency} time{mistake.frequency > 1 ? 's' : ''} in submissions</span>
                         <button
                           onClick={onOpenAiGenerator}
-                          className="text-cyan-400 hover:underline font-semibold flex items-center space-x-1"
+                          className="text-[#FF8570] hover:text-white hover:underline font-semibold flex items-center space-x-1 cursor-pointer"
                         >
                           <span>Practice Similar Problems</span>
                           <ArrowRight className="w-3 h-3" />
@@ -186,9 +182,9 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </div>
 
           {/* Where Student Needs to Focus Next */}
-          <div className="p-6 rounded-2xl bg-gradient-to-br from-indigo-950/30 via-slate-900 to-slate-900 border border-indigo-900/40 space-y-4">
-            <div className="flex items-center space-x-2 text-indigo-300">
-              <Zap className="w-5 h-5" />
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-[#1c0f12]/60 via-[#0e0e15] to-[#0a0a10] border border-[#301820] space-y-4 shadow-xl">
+            <div className="flex items-center space-x-2 text-[#FF8570]">
+              <Zap className="w-5 h-5 text-[#FF5A43]" />
               <h3 className="text-base font-bold text-white">Where You Need To Focus Next</h3>
             </div>
             <p className="text-xs text-slate-400">
@@ -204,8 +200,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                 const difficulty = isObj ? rec.difficulty : null;
 
                 return (
-                  <div key={i} className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700 flex items-start space-x-3">
-                    <div className="w-6 h-6 rounded-full bg-indigo-600/30 text-indigo-300 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  <div key={i} className="p-3.5 rounded-2xl bg-[#14141e] border border-[#242436] flex items-start space-x-3">
+                    <div className="w-6 h-6 rounded-full bg-[#FF5A43]/20 text-[#FF8570] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 border border-[#FF5A43]/30">
                       {i + 1}
                     </div>
                     <div className="flex-1 space-y-1">
@@ -215,14 +211,14 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                           <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${
                             difficulty === 'basic' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' :
                             difficulty === 'intermediate' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' :
-                            'text-rose-400 bg-rose-500/10 border-rose-500/20'
+                            'text-[#FF8570] bg-[#FF5A43]/10 border-[#FF5A43]/20'
                           }`}>
                             {difficulty}
                           </span>
                         )}
                       </div>
                       {category && (
-                        <div className="text-[11px] text-indigo-300 font-medium">{category}</div>
+                        <div className="text-[11px] text-[#FF8570] font-medium">{category}</div>
                       )}
                       {reason && (
                         <p className="text-xs text-slate-300 leading-relaxed">{reason}</p>
@@ -238,7 +234,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         {/* RIGHT: Roadmap Progression & Category Mastery (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
           {/* Difficulty Tier Progress */}
-          <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+          <div className="p-6 rounded-3xl bg-[#0e0e15] border border-[#1c1c28] space-y-4 shadow-xl">
             <h3 className="text-base font-bold text-white flex items-center space-x-2">
               <TrendingUp className="w-5 h-5 text-emerald-400" />
               <span>Curriculum Tier Progression</span>
@@ -253,7 +249,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     {analytics.difficultyBreakdown.basic.solved} / {analytics.difficultyBreakdown.basic.total} Solved
                   </span>
                 </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-[#14141e] h-2 rounded-full overflow-hidden border border-[#222232]">
                   <div
                     className="bg-emerald-500 h-full rounded-full transition-all"
                     style={{
@@ -271,7 +267,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     {analytics.difficultyBreakdown.intermediate.solved} / {analytics.difficultyBreakdown.intermediate.total} Solved
                   </span>
                 </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-[#14141e] h-2 rounded-full overflow-hidden border border-[#222232]">
                   <div
                     className="bg-amber-500 h-full rounded-full transition-all"
                     style={{
@@ -284,14 +280,14 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
               {/* Advanced */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs font-semibold">
-                  <span className="text-rose-400">Advanced Tier</span>
+                  <span className="text-[#FF8570]">Advanced Tier</span>
                   <span className="text-slate-400 font-mono">
                     {analytics.difficultyBreakdown.advanced.solved} / {analytics.difficultyBreakdown.advanced.total} Solved
                   </span>
                 </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-[#14141e] h-2 rounded-full overflow-hidden border border-[#222232]">
                   <div
-                    className="bg-rose-500 h-full rounded-full transition-all"
+                    className="bg-[#FF5A43] h-full rounded-full transition-all"
                     style={{
                       width: `${analytics.difficultyBreakdown.advanced.total ? (analytics.difficultyBreakdown.advanced.solved / analytics.difficultyBreakdown.advanced.total) * 100 : 0}%`
                     }}
@@ -302,9 +298,9 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </div>
 
           {/* Category Mastery Breakdown */}
-          <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+          <div className="p-6 rounded-3xl bg-[#0e0e15] border border-[#1c1c28] space-y-4 shadow-xl">
             <h3 className="text-base font-bold text-white flex items-center space-x-2">
-              <BarChart3 className="w-5 h-5 text-indigo-400" />
+              <BarChart3 className="w-5 h-5 text-[#FF5A43]" />
               <span>Category Mastery Radar</span>
             </h3>
 
@@ -315,10 +311,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                     ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
                     : cat.status === 'improving'
                     ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
-                    : 'bg-rose-500/10 text-rose-400 border-rose-500/30';
+                    : 'bg-[#FF5A43]/15 text-[#FF8570] border-[#FF5A43]/30';
 
                 return (
-                  <div key={idx} className="p-3 rounded-xl bg-slate-800/40 border border-slate-800 space-y-1.5">
+                  <div key={idx} className="p-3 rounded-2xl bg-[#14141e] border border-[#222232] space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-semibold text-slate-200">{cat.category}</span>
                       <div className="flex items-center space-x-2">
@@ -328,10 +324,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                         </span>
                       </div>
                     </div>
-                    <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-[#0a0a10] h-1.5 rounded-full overflow-hidden border border-[#222232]">
                       <div
                         className={`h-full rounded-full ${
-                          cat.status === 'mastered' ? 'bg-emerald-500' : cat.status === 'improving' ? 'bg-amber-500' : 'bg-rose-500'
+                          cat.status === 'mastered' ? 'bg-emerald-500' : cat.status === 'improving' ? 'bg-amber-500' : 'bg-[#FF5A43]'
                         }`}
                         style={{ width: `${cat.percent}%` }}
                       ></div>
@@ -343,9 +339,9 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </div>
 
           {/* Recent 7-Day Activity Chart */}
-          <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+          <div className="p-6 rounded-3xl bg-[#0e0e15] border border-[#1c1c28] space-y-4 shadow-xl">
             <h3 className="text-base font-bold text-white flex items-center space-x-2">
-              <Activity className="w-5 h-5 text-cyan-400" />
+              <Activity className="w-5 h-5 text-[#FF5A43]" />
               <span>7-Day Submission Volume</span>
             </h3>
 
@@ -358,7 +354,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                   <div key={i} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end">
                     <div className="text-[10px] font-mono text-slate-400">{act.count}</div>
                     <div
-                      className="w-full rounded-t-lg bg-indigo-500/30 hover:bg-indigo-500 transition-colors relative group"
+                      className="w-full rounded-t-lg bg-[#FF5A43]/30 hover:bg-[#FF5A43] transition-colors relative group"
                       style={{ height: `${heightPercent}%` }}
                     >
                       {act.passed > 0 && (
@@ -373,9 +369,9 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                 );
               })}
             </div>
-            <div className="flex items-center justify-center space-x-4 text-[11px] text-slate-400 pt-1 border-t border-slate-800">
+            <div className="flex items-center justify-center space-x-4 text-[11px] text-slate-400 pt-1 border-t border-[#1c1c28]">
               <span className="flex items-center space-x-1.5">
-                <span className="w-2.5 h-2.5 rounded bg-indigo-500"></span>
+                <span className="w-2.5 h-2.5 rounded bg-[#FF5A43]"></span>
                 <span>Attempts</span>
               </span>
               <span className="flex items-center space-x-1.5">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { KeyRound, X, AlertCircle, CheckCircle2, ShieldCheck, Lock } from 'lucide-react';
 import { AdminStudentMetric } from '../types';
+import { getAuthHeaders } from '../utils/apiAuth';
 
 interface ChangeUserPasswordModalProps {
   isOpen: boolean;
@@ -43,7 +44,7 @@ export const ChangeUserPasswordModal: React.FC<ChangeUserPasswordModalProps> = (
     try {
       const res = await fetch(`/api/admin/users/${user.id}/password`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders('admin'),
         body: JSON.stringify({ newPassword })
       });
 

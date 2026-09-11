@@ -51,12 +51,12 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-5 sm:space-y-8">
-      {/* Hero Banner with AI Adaptive Callout */}
-      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950/70 to-slate-900 border border-slate-800 p-4 sm:p-8 shadow-xl">
+      {/* Hero Banner with Coral Theme */}
+      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#170e10] via-[#0d0d14] to-[#07070a] border border-[#2b1c22] p-4 sm:p-8 shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
-              <Compass className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#FF5A43]/15 border border-[#FF5A43]/30 text-[#FF8570] text-xs font-semibold">
+              <Compass className="w-3.5 h-3.5 text-[#FF5A43]" />
               <span>Structured Mastery Curricula</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -70,17 +70,17 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
           <div className="flex flex-col sm:flex-row gap-3 shrink-0">
             <button
               onClick={onOpenAiGenerator}
-              className="flex items-center justify-center space-x-2 px-5 py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 shadow-lg shadow-indigo-500/25 hover:opacity-95 transition-all cursor-pointer"
+              className="flex items-center justify-center space-x-2 px-5 py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#FF5A43] via-[#FF6F59] to-[#FF8570] hover:from-[#F04428] hover:to-[#FF5A43] shadow-lg shadow-[#FF5A43]/30 transition-all cursor-pointer"
             >
-              <Sparkles className="w-4 h-4 text-cyan-200" />
+              <Sparkles className="w-4 h-4 text-white" />
               <span>Generate AI Practice Question</span>
             </button>
           </div>
         </div>
 
-        {/* Decorative subtle background accents */}
-        <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute -left-10 -top-10 w-64 h-64 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        {/* Subtle decorative coral background accents */}
+        <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-[#FF5A43]/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -left-10 -top-10 w-64 h-64 bg-[#FF5A43]/8 rounded-full blur-3xl pointer-events-none"></div>
       </div>
 
       {/* 3-Tier Roadmap Track Overview Cards */}
@@ -90,8 +90,8 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
           onClick={() => setSelectedDifficulty('basic')}
           className={`text-left p-5 rounded-2xl border transition-all cursor-pointer ${
             selectedDifficulty === 'basic'
-              ? 'bg-emerald-950/30 border-emerald-500 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500'
-              : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 hover:bg-slate-800/40'
+              ? 'bg-[#151c16] border-emerald-500 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500'
+              : 'bg-[#0e0e15] border-[#1c1c28] hover:border-[#2a2a3d] hover:bg-[#14141e]'
           }`}
         >
           <div className="flex items-center justify-between mb-3">
@@ -107,7 +107,7 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
           <p className="text-xs text-slate-400 mb-4 line-clamp-2">
             Arrays, Strings, HashMaps, Two-Pointers basics, and boundary condition awareness.
           </p>
-          <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-[#181824] h-1.5 rounded-full overflow-hidden">
             <div
               className="bg-emerald-500 h-full rounded-full transition-all duration-500"
               style={{ width: `${basicProblems.length ? (basicSolved / basicProblems.length) * 100 : 0}%` }}
@@ -120,8 +120,8 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
           onClick={() => setSelectedDifficulty('intermediate')}
           className={`text-left p-5 rounded-2xl border transition-all cursor-pointer ${
             selectedDifficulty === 'intermediate'
-              ? 'bg-amber-950/30 border-amber-500 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500'
-              : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 hover:bg-slate-800/40'
+              ? 'bg-[#1e1710] border-amber-500 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500'
+              : 'bg-[#0e0e15] border-[#1c1c28] hover:border-[#2a2a3d] hover:bg-[#14141e]'
           }`}
         >
           <div className="flex items-center justify-between mb-3">
@@ -137,7 +137,7 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
           <p className="text-xs text-slate-400 mb-4 line-clamp-2">
             Sliding Window, Binary Trees, Stacks, Queues, Sorting invariants, and Hash groupings.
           </p>
-          <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-[#181824] h-1.5 rounded-full overflow-hidden">
             <div
               className="bg-amber-500 h-full rounded-full transition-all duration-500"
               style={{ width: `${intermediateProblems.length ? (intermediateSolved / intermediateProblems.length) * 100 : 0}%` }}
@@ -150,14 +150,14 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
           onClick={() => setSelectedDifficulty('advanced')}
           className={`text-left p-5 rounded-2xl border transition-all cursor-pointer ${
             selectedDifficulty === 'advanced'
-              ? 'bg-rose-950/30 border-rose-500 shadow-lg shadow-rose-500/10 ring-1 ring-rose-500'
-              : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 hover:bg-slate-800/40'
+              ? 'bg-[#201014] border-[#FF5A43] shadow-lg shadow-[#FF5A43]/10 ring-1 ring-[#FF5A43]'
+              : 'bg-[#0e0e15] border-[#1c1c28] hover:border-[#2a2a3d] hover:bg-[#14141e]'
           }`}
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
-              <span className="text-xs font-bold uppercase tracking-wider text-rose-400">Tier 3 • Advanced</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#FF5A43]"></span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#FF8570]">Tier 3 • Advanced</span>
             </div>
             <span className="text-xs font-mono text-slate-400">
               {advancedSolved}/{advancedProblems.length} Solved
@@ -167,9 +167,9 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
           <p className="text-xs text-slate-400 mb-4 line-clamp-2">
             State Transitions, Monotonic Stacks, Kahn's Topological Sort, BFS Shortest Path, and Greedy bounds.
           </p>
-          <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-[#181824] h-1.5 rounded-full overflow-hidden">
             <div
-              className="bg-rose-500 h-full rounded-full transition-all duration-500"
+              className="bg-[#FF5A43] h-full rounded-full transition-all duration-500"
               style={{ width: `${advancedProblems.length ? (advancedSolved / advancedProblems.length) * 100 : 0}%` }}
             ></div>
           </div>
@@ -177,8 +177,8 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-        <div className="flex items-center space-x-2 flex-1 max-w-md bg-slate-800/80 px-3 py-2 rounded-lg border border-slate-700">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28]">
+        <div className="flex items-center space-x-2 flex-1 max-w-md bg-[#14141e] px-3.5 py-2.5 rounded-xl border border-[#242436]">
           <Search className="w-4 h-4 text-slate-400 shrink-0" />
           <input
             type="text"
@@ -200,10 +200,10 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
             <button
               key={diff}
               onClick={() => setSelectedDifficulty(diff)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-colors ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-all cursor-pointer ${
                 selectedDifficulty === diff
-                  ? 'bg-indigo-600 text-white shadow'
-                  : 'bg-slate-800/60 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                  ? 'bg-[#FF5A43] text-white shadow-md shadow-[#FF5A43]/25 font-bold'
+                  : 'bg-[#14141e] text-slate-400 hover:text-slate-200 hover:bg-[#1b1b28] border border-[#222232]'
               }`}
             >
               {diff === 'all' ? 'All Tiers' : diff}
@@ -218,7 +218,7 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
             value={selectedCategory}
             onChange={e => setSelectedCategory(e.target.value)}
             aria-label="Filter problems by category"
-            className="bg-slate-800 text-xs text-slate-200 rounded-lg px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-indigo-500"
+            className="bg-[#14141e] text-xs text-slate-200 rounded-xl px-3 py-2 border border-[#242436] focus:outline-none focus:border-[#FF5A43]"
           >
             <option value="all">All Categories ({problems.length})</option>
             {categories.map(cat => (
@@ -243,26 +243,26 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
                 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
                 : problem.difficulty === 'intermediate'
                 ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
-                : 'bg-rose-500/10 text-rose-400 border-rose-500/30';
+                : 'bg-[#FF5A43]/15 text-[#FF8570] border-[#FF5A43]/30';
 
             return (
               <div
                 key={problem.id}
                 onClick={() => onSelectProblem(problem)}
-                className="group p-4 sm:p-5 rounded-xl bg-[#0f172a] hover:bg-slate-800/60 border border-slate-800 hover:border-indigo-500/50 transition-all cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
+                className="group p-4 sm:p-5 rounded-2xl bg-[#0e0e15] hover:bg-[#14141e] border border-[#1c1c28] hover:border-[#FF5A43]/50 transition-all cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
               >
                 <div className="flex items-start space-x-3.5">
                   <div className="mt-0.5">
                     {isSolved ? (
                       <CheckCircle2 className="w-5 h-5 text-emerald-400 fill-emerald-400/20" />
                     ) : (
-                      <Circle className="w-5 h-5 text-slate-600 group-hover:text-indigo-400 transition-colors" />
+                      <Circle className="w-5 h-5 text-slate-600 group-hover:text-[#FF5A43] transition-colors" />
                     )}
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex items-center flex-wrap gap-2">
-                      <h4 className="text-sm sm:text-base font-bold text-white group-hover:text-indigo-300 transition-colors">
+                      <h4 className="text-sm sm:text-base font-bold text-white group-hover:text-[#FF8570] transition-colors">
                         {problem.title}
                       </h4>
 
@@ -270,13 +270,13 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
                         {problem.difficulty}
                       </span>
 
-                      <span className="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">
+                      <span className="text-[11px] px-2 py-0.5 rounded-lg bg-[#14141e] text-slate-300 border border-[#222232]">
                         {problem.category}
                       </span>
 
                       {problem.isAiGenerated && (
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 flex items-center space-x-1">
-                          <Sparkles className="w-3 h-3 text-cyan-300" />
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#FF5A43]/15 text-[#FF8570] border border-[#FF5A43]/30 flex items-center space-x-1">
+                          <Sparkles className="w-3 h-3 text-[#FF5A43]" />
                           <span>AI Generated</span>
                         </span>
                       )}
@@ -290,7 +290,7 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
                     {problem.tags && problem.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 pt-1">
                         {problem.tags.map((t, idx) => (
-                          <span key={idx} className="text-[10px] text-slate-400 bg-slate-800/40 px-1.5 py-0.5 rounded">
+                          <span key={idx} className="text-[10px] text-slate-400 bg-[#161622] px-2 py-0.5 rounded-md border border-[#222232]">
                             #{t}
                           </span>
                         ))}
@@ -312,10 +312,10 @@ export const RoadmapView: React.FC<RoadmapViewProps> = ({
                       e.stopPropagation();
                       onSelectProblem(problem);
                     }}
-                    className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                    className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                       isSolved
-                        ? 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                        : 'bg-indigo-600 text-white hover:bg-indigo-500 shadow-md shadow-indigo-500/20'
+                        ? 'bg-[#181824] text-slate-300 hover:bg-[#202030] border border-[#252538]'
+                        : 'bg-gradient-to-r from-[#FF5A43] to-[#FF7B69] hover:from-[#F04428] hover:to-[#FF5A43] text-white shadow-md shadow-[#FF5A43]/20 font-bold'
                     }`}
                   >
                     <span>{isSolved ? 'Review Code' : 'Solve'}</span>

@@ -203,17 +203,17 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
         { token: 'delimiter', foreground: '94a3b8' }
       ],
       colors: {
-        'editor.background': '#070b14',
+        'editor.background': '#07070a',
         'editor.foreground': '#f1f5f9',
-        'editor.lineHighlightBackground': '#0f172a60',
+        'editor.lineHighlightBackground': '#14141e80',
         'editorLineNumber.foreground': '#475569',
-        'editorLineNumber.activeForeground': '#818cf8',
-        'editorIndentGuide.background': '#1e293b60',
-        'editorIndentGuide.activeBackground': '#334155',
-        'editorBracketMatch.background': '#312e81',
-        'editorBracketMatch.border': '#6366f1',
-        'editorCursor.foreground': '#60a5fa',
-        'editor.selectionBackground': '#3730a370'
+        'editorLineNumber.activeForeground': '#FF5A43',
+        'editorIndentGuide.background': '#1c1c2860',
+        'editorIndentGuide.activeBackground': '#252536',
+        'editorBracketMatch.background': '#3d1410',
+        'editorBracketMatch.border': '#FF5A43',
+        'editorCursor.foreground': '#FF5A43',
+        'editor.selectionBackground': '#FF5A4340'
       }
     });
   };
@@ -424,25 +424,25 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
       : 'bg-rose-500/10 text-rose-400 border-rose-500/30';
 
   return (
-    <div className="flex flex-col h-screen bg-[#0b0f19] text-slate-100 overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#07070a] text-slate-100 overflow-hidden">
       {/* Top Action Bar */}
-      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between px-3 sm:px-4 py-2 sm:py-2.5 bg-[#0f172a] border-b border-slate-800 gap-2 shrink-0">
+      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between px-3 sm:px-4 py-2 sm:py-2.5 bg-[#0a0a10] border-b border-[#1c1c28] gap-2 shrink-0">
         <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
           <button
             onClick={onBackToSheet}
-            className="flex items-center gap-1.5 text-xs font-semibold text-indigo-300 hover:text-white px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/30 transition-all cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[#FF8570] hover:text-white px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#FF5A43]/15 hover:bg-[#FF5A43]/25 border border-[#FF5A43]/30 transition-all cursor-pointer shrink-0"
             title="Return to Problem Practice Sheet"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
+            <ArrowLeft className="w-3.5 h-3.5 text-[#FF5A43]" />
             <span className="hidden xs:inline sm:inline">Practice Sheet</span>
           </button>
           <button
             onClick={onBackToRoadmap}
-            className="text-xs font-medium text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer hidden md:block shrink-0"
+            className="text-xs font-medium text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg hover:bg-[#14141e] transition-colors cursor-pointer hidden md:block shrink-0"
           >
             Roadmap
           </button>
-          <div className="h-4 w-px bg-slate-800 hidden sm:block"></div>
+          <div className="h-4 w-px bg-[#1c1c28] hidden sm:block"></div>
           <h2 className="text-xs sm:text-sm font-bold text-white flex items-center space-x-1.5 sm:space-x-2 min-w-0">
             <span className="truncate max-w-[110px] xs:max-w-[160px] sm:max-w-xs md:max-w-md">{problem.title}</span>
             <span className={`text-[9px] sm:text-[10px] uppercase font-bold px-1.5 sm:px-2 py-0.5 rounded-full border shrink-0 ${diffColor}`}>
@@ -465,7 +465,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
               value={selectedLanguage}
               onChange={e => setSelectedLanguage(e.target.value as SupportedLanguage)}
               aria-label="Select programming language"
-              className="bg-slate-800 text-[11px] sm:text-xs font-mono font-medium text-indigo-300 rounded-lg px-2 sm:px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-indigo-500"
+              className="bg-[#14141e] text-[11px] sm:text-xs font-mono font-medium text-[#FF8570] rounded-lg px-2 sm:px-2.5 py-1.5 border border-[#242436] focus:outline-none focus:border-[#FF5A43]"
             >
               <option value="javascript">JavaScript</option>
               <option value="typescript">TypeScript</option>
@@ -480,7 +480,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
           <button
             onClick={handleResetCode}
             title="Reset Starter Template"
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-[#14141e] transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
@@ -492,11 +492,11 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
             title="Open Live AI Mentor & Code Tutor"
             className={`flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${
               isTutorOpen
-                ? 'bg-indigo-600/30 text-indigo-200 border-indigo-500 shadow-sm shadow-indigo-500/20'
-                : 'bg-indigo-950/40 text-indigo-300 border-indigo-500/30 hover:bg-indigo-900/60 hover:text-white'
+                ? 'bg-[#FF5A43]/20 text-white border-[#FF5A43] shadow-sm shadow-[#FF5A43]/20'
+                : 'bg-[#FF5A43]/15 text-[#FF8570] border-[#FF5A43]/30 hover:bg-[#FF5A43]/25 hover:text-white'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+            <Sparkles className="w-3.5 h-3.5 text-[#FF5A43] shrink-0" />
             <span className="font-semibold">AI Mentor</span>
           </button>
 
@@ -504,7 +504,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
           <button
             onClick={handleRunCode}
             disabled={isRunning || isSubmitting}
-            className="flex items-center space-x-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 disabled:opacity-50 transition-colors cursor-pointer"
+            className="flex items-center space-x-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-200 bg-[#14141e] hover:bg-[#1c1c28] border border-[#242436] disabled:opacity-50 transition-colors cursor-pointer"
           >
             {isRunning ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5 text-emerald-400" />}
             <span>Run</span>
@@ -514,7 +514,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
           <button
             onClick={handleFinalSubmit}
             disabled={isRunning || isSubmitting}
-            className="flex items-center space-x-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 shadow-md shadow-emerald-600/20 transition-all cursor-pointer"
+            className="flex items-center space-x-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-[#FF5A43] to-[#FF7B69] hover:from-[#F04428] hover:to-[#FF5A43] disabled:opacity-50 shadow-md shadow-[#FF5A43]/20 transition-all cursor-pointer"
           >
             {isSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
             <span>Submit</span>
@@ -523,12 +523,12 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
       </div>
 
       {/* Mobile Sub-Navigation Bar (< lg) */}
-      <div className="lg:hidden flex items-center justify-around border-b border-slate-800 bg-[#0c1220] px-2 py-1.5 shrink-0 text-xs font-semibold">
+      <div className="lg:hidden flex items-center justify-around border-b border-[#1c1c28] bg-[#0a0a10] px-2 py-1.5 shrink-0 text-xs font-semibold">
         <button
           onClick={() => setMobilePane('problem')}
           className={`flex-1 py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
             mobilePane === 'problem'
-              ? 'bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 shadow-sm'
+              ? 'bg-[#FF5A43]/20 text-white border border-[#FF5A43]/40 shadow-sm'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
@@ -539,7 +539,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
           onClick={() => setMobilePane('code')}
           className={`flex-1 py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
             mobilePane === 'code'
-              ? 'bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 shadow-sm'
+              ? 'bg-[#FF5A43]/20 text-white border border-[#FF5A43]/40 shadow-sm'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
@@ -550,7 +550,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
           onClick={() => setMobilePane('tests')}
           className={`flex-1 py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
             mobilePane === 'tests'
-              ? 'bg-indigo-600/30 text-indigo-200 border border-indigo-500/40 shadow-sm'
+              ? 'bg-[#FF5A43]/20 text-white border border-[#FF5A43]/40 shadow-sm'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
@@ -565,13 +565,13 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
       {/* Main Workspace Split Grid */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden relative">
         {/* LEFT COLUMN: Problem Details, Hints & History (5 cols on lg) */}
-        <div className={`${mobilePane === 'problem' ? 'flex' : 'hidden'} lg:flex lg:col-span-5 border-r border-slate-800 flex-col h-full bg-[#0d1322] overflow-hidden`}>
+        <div className={`${mobilePane === 'problem' ? 'flex' : 'hidden'} lg:flex lg:col-span-5 border-r border-[#1c1c28] flex-col h-full bg-[#0a0a10] overflow-hidden`}>
           {/* Subtabs */}
-          <div className="flex items-center space-x-1 px-4 py-2 border-b border-slate-800 bg-[#0f172a]/60">
+          <div className="flex items-center space-x-1 px-4 py-2 border-b border-[#1c1c28] bg-[#0e0e15]">
             <button
               onClick={() => setLeftTab('description')}
               className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
-                leftTab === 'description' ? 'bg-indigo-600/20 text-indigo-300' : 'text-slate-400 hover:text-slate-200'
+                leftTab === 'description' ? 'bg-[#FF5A43]/20 text-[#FF8570]' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               Description
@@ -579,16 +579,16 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
             <button
               onClick={() => setLeftTab('hints')}
               className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors flex items-center space-x-1 ${
-                leftTab === 'hints' ? 'bg-indigo-600/20 text-indigo-300' : 'text-slate-400 hover:text-slate-200'
+                leftTab === 'hints' ? 'bg-[#FF5A43]/20 text-[#FF8570]' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Lightbulb className="w-3 h-3" />
+              <Lightbulb className="w-3 h-3 text-[#FF5A43]" />
               <span>Hints ({problem.hints?.length || 0})</span>
             </button>
             <button
               onClick={() => setLeftTab('submissions')}
               className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
-                leftTab === 'submissions' ? 'bg-indigo-600/20 text-indigo-300' : 'text-slate-400 hover:text-slate-200'
+                leftTab === 'submissions' ? 'bg-[#FF5A43]/20 text-[#FF8570]' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               Submissions
@@ -602,7 +602,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                 <div>
                   <h3 className="text-lg font-bold text-white mb-2">{problem.title}</h3>
                   <div className="flex items-center space-x-2 text-xs text-slate-400 mb-4">
-                    <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300">{problem.category}</span>
+                    <span className="px-2 py-0.5 rounded bg-[#14141e] text-slate-300 border border-[#242436]">{problem.category}</span>
                     {problem.acceptanceRate && <span>• {problem.acceptanceRate}% Acceptance</span>}
                   </div>
                   <div className="prose prose-invert prose-sm max-w-none text-slate-300 leading-relaxed whitespace-pre-line">
@@ -614,13 +614,13 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                 <div className="space-y-4">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Examples</h4>
                   {problem.examples.map((ex, idx) => (
-                    <div key={idx} className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
-                      <div className="text-xs font-semibold text-indigo-300">Example {idx + 1}:</div>
+                    <div key={idx} className="p-3.5 rounded-xl bg-[#14141e] border border-[#242436] space-y-2">
+                      <div className="text-xs font-semibold text-[#FF8570]">Example {idx + 1}:</div>
                       <div className="font-mono text-xs text-slate-200 space-y-1">
                         <div><span className="text-slate-500">Input: </span>{ex.input}</div>
                         <div><span className="text-slate-500">Output: </span>{ex.output}</div>
                         {ex.explanation && (
-                          <div className="text-slate-400 text-[11px] pt-1 border-t border-slate-800/80">
+                          <div className="text-slate-400 text-[11px] pt-1 border-t border-[#1c1c28]">
                             <span className="text-slate-500">Explanation: </span>{ex.explanation}
                           </div>
                         )}
@@ -635,7 +635,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                   <ul className="space-y-1 text-xs font-mono text-slate-400">
                     {problem.constraints.map((c, i) => (
                       <li key={i} className="flex items-start space-x-2">
-                        <span className="text-indigo-400">•</span>
+                        <span className="text-[#FF5A43]">•</span>
                         <span>{c}</span>
                       </li>
                     ))}
@@ -648,7 +648,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Progressive Hints</h4>
-                  <span className="text-xs text-indigo-300">
+                  <span className="text-xs text-[#FF8570]">
                     Revealed {revealedHints} of {problem.hints?.length || 0}
                   </span>
                 </div>
@@ -662,15 +662,15 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                     <div
                       key={idx}
                       className={`p-4 rounded-xl border transition-all ${
-                        isRevealed ? 'bg-slate-900/80 border-indigo-500/30 text-slate-200' : 'bg-slate-900/40 border-slate-800'
+                        isRevealed ? 'bg-[#14141e] border-[#FF5A43]/40 text-slate-200' : 'bg-[#0e0e15] border-[#1c1c28]'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-bold text-indigo-400">Hint {idx + 1}</span>
+                        <span className="text-xs font-bold text-[#FF8570]">Hint {idx + 1}</span>
                         {!isRevealed && (
                           <button
                             onClick={() => setRevealedHints(idx + 1)}
-                            className="text-xs text-cyan-400 hover:underline font-semibold"
+                            className="text-xs text-[#FF8570] hover:underline font-semibold cursor-pointer"
                           >
                             Reveal Hint
                           </button>
@@ -688,7 +688,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                 {revealedHints < (problem.hints?.length || 0) && (
                   <button
                     onClick={() => setRevealedHints(prev => prev + 1)}
-                    className="w-full py-2.5 rounded-xl border border-indigo-500/30 text-xs font-bold text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 transition-colors"
+                    className="w-full py-2.5 rounded-xl border border-[#FF5A43]/40 text-xs font-bold text-[#FF8570] bg-[#FF5A43]/15 hover:bg-[#FF5A43]/25 transition-colors cursor-pointer"
                   >
                     Unlock Next Hint ({revealedHints + 1})
                   </button>
@@ -701,9 +701,9 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                       setIsTutorOpen(true);
                       handleSendTutorMessage('Can you guide me on the key algorithmic strategy for this problem without giving away the complete solution?');
                     }}
-                    className="w-full py-2.5 px-3 rounded-xl border border-emerald-500/30 text-xs font-bold text-emerald-300 bg-emerald-950/20 hover:bg-emerald-900/40 transition-colors flex items-center justify-center space-x-2 cursor-pointer"
+                    className="w-full py-2.5 px-3 rounded-xl border border-[#FF5A43]/30 text-xs font-bold text-[#FF8570] bg-[#FF5A43]/10 hover:bg-[#FF5A43]/20 transition-colors flex items-center justify-center space-x-2 cursor-pointer"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#FF5A43]" />
                     <span>Ask AI Mentor For Personalized Guidance</span>
                   </button>
                 </div>
@@ -712,10 +712,10 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
 
             {leftTab === 'submissions' && (
               <div className="space-y-3">
-                <div className="flex items-center justify-between pb-1 border-b border-slate-800/80">
+                <div className="flex items-center justify-between pb-1 border-b border-[#1c1c28]">
                   <div className="flex items-center space-x-2">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Attempt History</h4>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono font-semibold">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#14141e] text-slate-300 font-mono font-semibold border border-[#242436]">
                       {priorSubmissions.length}
                     </span>
                   </div>
@@ -725,18 +725,18 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                     className="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
                     title="Refresh attempts"
                   >
-                    <RefreshCw className={`w-3 h-3 ${isLoadingSubmissions ? 'animate-spin text-indigo-400' : ''}`} />
+                    <RefreshCw className={`w-3 h-3 ${isLoadingSubmissions ? 'animate-spin text-[#FF5A43]' : ''}`} />
                     <span>Refresh</span>
                   </button>
                 </div>
 
                 {loadedNotice && (
-                  <div className="p-2.5 rounded-xl bg-indigo-950/70 border border-indigo-500/40 text-xs text-indigo-200 flex items-center justify-between shadow-sm">
+                  <div className="p-2.5 rounded-xl bg-[#FF5A43]/15 border border-[#FF5A43]/40 text-xs text-[#FF8570] flex items-center justify-between shadow-sm">
                     <div className="flex items-center space-x-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#FF5A43] shrink-0" />
                       <span>{loadedNotice}</span>
                     </div>
-                    <button onClick={() => setLoadedNotice(null)} className="text-indigo-400 hover:text-indigo-200 text-xs font-bold ml-2 cursor-pointer">✕</button>
+                    <button onClick={() => setLoadedNotice(null)} className="text-[#FF8570] hover:text-white text-xs font-bold ml-2 cursor-pointer">✕</button>
                   </div>
                 )}
 
@@ -968,10 +968,10 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                             setIsCustomMode(false);
                             setConsoleTab('cases');
                           }}
-                          className={`px-2.5 py-1 rounded text-[11px] font-mono font-semibold transition-colors flex items-center space-x-1.5 shrink-0 ${
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold transition-colors flex items-center space-x-1.5 shrink-0 ${
                             isSelected
-                              ? 'bg-indigo-600/30 text-indigo-200 border border-indigo-500/50 shadow-sm'
-                              : 'bg-slate-800/80 text-slate-400 hover:text-slate-200 border border-transparent'
+                              ? 'bg-[#FF5A43]/20 text-[#FF8570] border border-[#FF5A43]/50 shadow-sm'
+                              : 'bg-[#14141e] text-slate-400 hover:text-slate-200 border border-[#242436]'
                           }`}
                         >
                           {statusIcon}
@@ -986,10 +986,10 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                       setIsCustomMode(true);
                       setConsoleTab('cases');
                     }}
-                    className={`px-2 py-1 rounded text-[11px] font-mono transition-colors shrink-0 ${
+                    className={`px-2 py-1 rounded-lg text-[11px] font-mono transition-colors shrink-0 ${
                       isCustomMode && consoleTab === 'cases'
-                        ? 'bg-indigo-600/30 text-indigo-200 border border-indigo-500/50'
-                        : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                        ? 'bg-[#FF5A43]/20 text-[#FF8570] border border-[#FF5A43]/50'
+                        : 'bg-[#14141e] text-slate-400 hover:text-slate-200 border border-[#242436]'
                     }`}
                   >
                     + Custom Input
@@ -999,10 +999,10 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                   {(testResults?.stdout || testResults?.testResults?.some((r: any) => r.stdout)) && (
                     <button
                       onClick={() => setConsoleTab('logs')}
-                      className={`px-2.5 py-1 rounded text-[11px] font-mono transition-colors flex items-center space-x-1 shrink-0 ${
+                      className={`px-2.5 py-1 rounded-lg text-[11px] font-mono transition-colors flex items-center space-x-1 shrink-0 ${
                         consoleTab === 'logs'
-                          ? 'bg-cyan-600/30 text-cyan-200 border border-cyan-500/50'
-                          : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                          ? 'bg-[#FF5A43]/20 text-[#FF8570] border border-[#FF5A43]/50'
+                          : 'bg-[#14141e] text-slate-400 hover:text-slate-200 border border-[#242436]'
                       }`}
                     >
                       <Terminal className="w-3 h-3" />
@@ -1045,12 +1045,12 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-slate-400 text-[11px]">
                     <span className="flex items-center space-x-1.5">
-                      <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+                      <Terminal className="w-3.5 h-3.5 text-[#FF8570]" />
                       <span className="text-slate-200 font-semibold">Standard Output (Console Logs)</span>
                     </span>
                     <span>Captured from sandbox</span>
                   </div>
-                  <pre className="p-3 rounded-xl bg-black/80 border border-slate-800 text-cyan-300 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap">
+                  <pre className="p-3 rounded-xl bg-black/80 border border-[#1c1c28] text-slate-200 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap">
                     {testResults?.stdout || 'No stdout printed during execution.'}
                   </pre>
                 </div>
@@ -1062,7 +1062,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                     value={customInput}
                     onChange={e => setCustomInput(e.target.value)}
                     placeholder='e.g. [2,7,11,15], 9'
-                    className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-white font-mono focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-lg bg-[#14141e] border border-[#242436] text-white font-mono focus:outline-none focus:border-[#FF5A43]"
                   />
                   <p className="text-[11px] text-slate-500">Run code to test your function directly against this input.</p>
 
@@ -1318,8 +1318,8 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
               {/* Suggested Code Snippet */}
               {aiReview.suggestedOptimizedSnippet && (
                 <div className="space-y-1.5">
-                  <div className="font-semibold text-indigo-300">Clean Reference Implementation:</div>
-                  <pre className="p-3 rounded-xl bg-slate-950 font-mono text-[11px] text-slate-200 overflow-x-auto border border-slate-800">
+                  <div className="font-semibold text-[#FF8570]">Clean Reference Implementation:</div>
+                  <pre className="p-3 rounded-xl bg-[#08080c] font-mono text-[11px] text-slate-200 overflow-x-auto border border-[#1c1c28]">
                     {typeof aiReview.suggestedOptimizedSnippet === 'object' && aiReview.suggestedOptimizedSnippet !== null
                       ? (aiReview.suggestedOptimizedSnippet.code || JSON.stringify(aiReview.suggestedOptimizedSnippet, null, 2))
                       : String(aiReview.suggestedOptimizedSnippet)}
@@ -1332,38 +1332,38 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
 
         {/* FLOATING AI TUTOR CHAT DRAWER */}
         {isTutorOpen && (
-          <div className="absolute right-2 sm:right-4 bottom-2 sm:bottom-4 w-[calc(100vw-1rem)] sm:w-96 max-w-sm h-[440px] max-h-[75vh] bg-[#0f172a] border border-slate-700 rounded-2xl shadow-2xl z-40 flex flex-col overflow-hidden">
+          <div className="absolute right-2 sm:right-4 bottom-2 sm:bottom-4 w-[calc(100vw-1rem)] sm:w-96 max-w-sm h-[440px] max-h-[75vh] bg-[#0c0c14] border border-[#252536] rounded-2xl shadow-2xl z-40 flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="p-3 border-b border-slate-800 bg-gradient-to-r from-indigo-950 via-slate-900 to-slate-900 flex items-center justify-between">
+            <div className="p-3 border-b border-[#1c1c28] bg-gradient-to-r from-[#1f1012] via-[#14141e] to-[#0c0c14] flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Bot className="w-4 h-4 text-cyan-400" />
+                <Bot className="w-4 h-4 text-[#FF5A43]" />
                 <span className="font-bold text-xs text-white">Elevate AI Coding Tutor</span>
               </div>
               <button
                 onClick={() => setIsTutorOpen(false)}
-                className="p-1 rounded text-slate-400 hover:text-white"
+                className="p-1 rounded text-slate-400 hover:text-white cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             {/* Quick Prompt Chips */}
-            <div className="p-2 border-b border-slate-800/80 bg-slate-900/60 flex flex-wrap gap-1">
+            <div className="p-2 border-b border-[#1c1c28] bg-[#0e0e16] flex flex-wrap gap-1">
               <button
                 onClick={() => handleSendTutorMessage('Can you give me a subtle conceptual hint?')}
-                className="text-[10px] px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700"
+                className="text-[10px] px-2 py-0.5 rounded-lg bg-[#14141e] hover:bg-[#1c1c28] text-[#FF8570] border border-[#222232] cursor-pointer"
               >
                 💡 Give me a hint
               </button>
               <button
                 onClick={() => handleSendTutorMessage('Why might my solution fail on large inputs?')}
-                className="text-[10px] px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700"
+                className="text-[10px] px-2 py-0.5 rounded-lg bg-[#14141e] hover:bg-[#1c1c28] text-[#FF8570] border border-[#222232] cursor-pointer"
               >
                 ⏱️ Check complexity
               </button>
               <button
                 onClick={() => handleSendTutorMessage('What edge cases should I test for this problem?')}
-                className="text-[10px] px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700"
+                className="text-[10px] px-2 py-0.5 rounded-lg bg-[#14141e] hover:bg-[#1c1c28] text-[#FF8570] border border-[#222232] cursor-pointer"
               >
                 🎯 Edge cases
               </button>
@@ -1376,8 +1376,8 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                   key={i}
                   className={`p-2.5 rounded-xl leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-indigo-600 text-white ml-6'
-                      : 'bg-slate-800/90 text-slate-200 border border-slate-700/80 mr-3 shadow-sm'
+                      ? 'bg-[#FF5A43] text-white ml-6 font-medium'
+                      : 'bg-[#14141e] text-slate-200 border border-[#242436] mr-3 shadow-sm'
                   }`}
                 >
                   {msg.role === 'user' ? (
@@ -1390,8 +1390,8 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
                 </div>
               ))}
               {isTutorThinking && (
-                <div className="p-2.5 rounded-xl bg-slate-800/90 text-slate-400 text-xs flex items-center space-x-2 mr-3 border border-slate-700/60">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-400" />
+                <div className="p-2.5 rounded-xl bg-[#14141e] text-slate-400 text-xs flex items-center space-x-2 mr-3 border border-[#242436]">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#FF5A43]" />
                   <span>AI Mentor is analyzing your code and question...</span>
                 </div>
               )}
@@ -1399,19 +1399,19 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
             </div>
 
             {/* Input box */}
-            <div className="p-2.5 border-t border-slate-800 bg-slate-900 flex items-center space-x-1.5">
+            <div className="p-2.5 border-t border-[#1c1c28] bg-[#0e0e16] flex items-center space-x-1.5">
               <input
                 type="text"
                 value={tutorInput}
                 onChange={e => setTutorInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleSendTutorMessage()}
                 placeholder="Ask about your code or algorithmic logic..."
-                className="flex-1 bg-slate-800 text-xs text-white px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-indigo-500"
+                className="flex-1 bg-[#14141e] text-xs text-white px-3 py-2 rounded-xl border border-[#242436] focus:outline-none focus:border-[#FF5A43]"
               />
               <button
                 onClick={() => handleSendTutorMessage()}
                 disabled={isTutorThinking || !tutorInput.trim()}
-                className="p-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white disabled:opacity-50 transition-colors"
+                className="p-2 rounded-xl bg-[#FF5A43] hover:bg-[#F03E23] text-white disabled:opacity-50 transition-colors cursor-pointer"
               >
                 <Send className="w-3.5 h-3.5" />
               </button>

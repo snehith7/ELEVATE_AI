@@ -49,9 +49,87 @@ export async function seedInitialData() {
       batch: 'Administration',
       streakDays: 0,
       totalSolved: 0,
+      status: 'Verified',
+      isVerified: true,
+      emailVerified: true,
       createdAt: new Date().toISOString()
     };
     await usersCol.insertOne(singleAdmin);
+  }
+
+  // Ensure Default Faculty Account exists
+  const rootFacultyExists = await usersCol.findOne({
+    $or: [
+      { email: 'faculty@codeelevate.io' },
+      { id: 'usr_faculty_mentor' }
+    ]
+  });
+
+  if (!rootFacultyExists) {
+    const singleFaculty = {
+      id: 'usr_faculty_mentor',
+      username: 'Prof. Alan Turing',
+      email: 'faculty@codeelevate.io',
+      password: 'FacultyPass123!',
+      role: 'faculty',
+      skillLevel: 'advanced',
+      preferredLanguage: 'python',
+      targetGoal: 'Instruct curriculum and guide batch performance',
+      batch: 'Batch 2026-A',
+      streakDays: 14,
+      totalSolved: 45,
+      status: 'Verified',
+      isVerified: true,
+      emailVerified: true,
+      createdAt: new Date().toISOString()
+    };
+    await usersCol.insertOne(singleFaculty);
+  }
+
+  // Ensure Default Student Account exists
+  const rootStudentExists = await usersCol.findOne({
+    $or: [
+      { email: 'student@codeelevate.io' },
+      { id: 'usr_student_active' }
+    ]
+  });
+
+  if (!rootStudentExists) {
+    const singleStudent = {
+      id: 'usr_student_active',
+      username: 'Demo Student',
+      email: 'student@codeelevate.io',
+      password: 'StudentPass123!',
+      role: 'student',
+      skillLevel: 'intermediate',
+      preferredLanguage: 'javascript',
+      targetGoal: 'Master algorithms and technical interviews',
+      batch: 'Batch 2026-A',
+      streakDays: 5,
+      totalSolved: 12,
+      status: 'Verified',
+      isVerified: true,
+      emailVerified: true,
+      createdAt: new Date().toISOString()
+    };
+    await usersCol.insertOne(singleStudent);
+
+    // Seed sample submission for this student
+    await submissionsCol.insertOne({
+      id: 'sub_sample_student_01',
+      userId: 'usr_student_active',
+      problemId: 'prob_two_sum',
+      problemTitle: 'Two Sum',
+      language: 'javascript',
+      status: 'Passed',
+      passedCases: 3,
+      totalCases: 3,
+      executionTimeMs: 14,
+      memoryKb: 2048,
+      category: 'Arrays & Hash Maps',
+      difficulty: 'basic',
+      createdAt: new Date().toISOString()
+    });
   }
 
   console.log('Seeding & synchronizing initial CodeElevate curriculum with clean boilerplate...');

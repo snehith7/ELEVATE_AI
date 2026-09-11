@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import {
-  Code2,
   Lock,
   Mail,
   KeyRound,
   User as UserIcon,
   Sparkles,
   AlertCircle,
-  CheckCircle2,
   ArrowRight,
   ShieldCheck,
   GraduationCap
 } from 'lucide-react';
 import { SupportedLanguage, SkillLevel } from '../types';
+import { CodeElevateLogo, CodeElevateIcon } from './CodeElevateLogo';
+import { VerificationModal } from './VerificationModal';
 
 interface StudentLoginPageProps {
   onLoginSuccess: (user: any, token: string) => void;
@@ -35,6 +35,10 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Email Verification State
+  const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +71,20 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
 
       const data = await res.json();
       if (!res.ok) {
+        // Handle unverified account attempting to login
+        if (data.requiresVerification) {
+          setVerificationEmail(data.email || email.trim().toLowerCase());
+          setIsVerificationModalOpen(true);
+          return;
+        }
         throw new Error(data.error || 'Authentication failed.');
+      }
+
+      // If backend registration requires email OTP verification
+      if (data.requiresVerification) {
+        setVerificationEmail(data.email || email.trim().toLowerCase());
+        setIsVerificationModalOpen(true);
+        return;
       }
 
       onLoginSuccess(data.user, data.token);
@@ -79,57 +96,54 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col justify-between selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-[#07070a] text-slate-100 flex flex-col justify-between selection:bg-[#FF5A43]/30 selection:text-white">
       {/* Top Header */}
-      <header className="px-6 py-4 border-b border-slate-800/80 bg-slate-900/40 backdrop-blur-md flex items-center justify-between">
-        <div className="flex items-center space-x-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-            <Code2 className="w-4 h-4 text-white" />
-          </div>
-          <div>
-            <span className="font-extrabold text-sm tracking-tight text-white">CodeElevate</span>
-            <span className="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-              STUDENT PORTAL
-            </span>
-          </div>
+      <header className="px-6 py-4 border-b border-[#1c1c28] bg-[#09090e]/80 backdrop-blur-md flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <CodeElevateLogo size="sm" showText={true} showSubtitle={true} />
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#FF5A43]/15 text-[#FF8570] border border-[#FF5A43]/30 tracking-wider">
+            STUDENT ACADEMY
+          </span>
         </div>
 
         {/* Links to Separate Faculty & Admin Portals */}
         <div className="flex items-center space-x-2">
           <button
             onClick={onGoToFacultyLogin}
-            className="flex items-center space-x-1 text-xs font-semibold text-cyan-300 hover:text-white transition-colors cursor-pointer py-1.5 px-3 rounded-lg bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/40"
+            className="flex items-center space-x-1 text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer py-1.5 px-3 rounded-lg bg-[#14141e] hover:bg-[#1a1a28] border border-[#252535]"
           >
             <span>Faculty Portal</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#FF5A43]" />
           </button>
           <button
             onClick={onGoToAdminLogin}
-            className="flex items-center space-x-1 text-xs font-semibold text-purple-300 hover:text-white transition-colors cursor-pointer py-1.5 px-3 rounded-lg bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/40"
+            className="flex items-center space-x-1 text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer py-1.5 px-3 rounded-lg bg-[#14141e] hover:bg-[#1a1a28] border border-[#252535]"
           >
             <span>Admin Portal</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#FF5A43]" />
           </button>
         </div>
       </header>
 
       {/* Main Login Card */}
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
-        <div className="w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-          {/* Subtle Ambient Glow */}
-          <div className="absolute -top-24 -right-24 w-56 h-56 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute -bottom-24 -left-24 w-56 h-56 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="w-full max-w-md bg-[#0f0f16] border border-[#222230] rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/80 relative overflow-hidden">
+          {/* Subtle Ambient Coral Glow */}
+          <div className="absolute -top-24 -right-24 w-60 h-60 bg-[#FF5A43]/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute -bottom-24 -left-24 w-60 h-60 bg-[#FF5A43]/5 rounded-full blur-3xl pointer-events-none"></div>
 
-          {/* Header */}
+          {/* Header with user provided brand emblem */}
           <div className="text-center space-y-2 mb-6">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 mb-3">
-              <GraduationCap className="w-7 h-7 text-white" />
+            <div className="flex justify-center mb-4">
+              <CodeElevateIcon size={64} className="shadow-2xl shadow-[#FF5A43]/20" />
             </div>
-            <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">
-              <Sparkles className="w-3 h-3" />
+
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FF5A43]/10 text-[#FF8570] border border-[#FF5A43]/30">
+              <Sparkles className="w-3 h-3 text-[#FF5A43]" />
               <span>Learner Authentication</span>
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-white">
+
+            <h1 className="text-2xl font-black tracking-tight text-white mt-1">
               {isRegisterMode ? 'Create Student Account' : 'Student Sign-In'}
             </h1>
             <p className="text-xs text-slate-400 max-w-xs mx-auto">
@@ -159,7 +173,7 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
                     value={username}
                     onChange={e => setUsername(e.target.value)}
                     placeholder="e.g. dev_jordan"
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#161622] border border-[#272738] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43] transition-colors"
                     required={isRegisterMode}
                   />
                 </div>
@@ -175,7 +189,7 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="student@codeelevate.io"
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#161622] border border-[#272738] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43] transition-colors"
                   required
                 />
               </div>
@@ -190,7 +204,7 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#161622] border border-[#272738] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43] transition-colors"
                   required
                 />
               </div>
@@ -204,7 +218,7 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
                     <select
                       value={skillLevel}
                       onChange={e => setSkillLevel(e.target.value as SkillLevel)}
-                      className="w-full px-2.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:outline-none focus:border-indigo-500"
+                      className="w-full px-2.5 py-2.5 rounded-xl bg-[#161622] border border-[#272738] text-xs text-white focus:outline-none focus:border-[#FF5A43]"
                     >
                       <option value="beginner">Beginner</option>
                       <option value="intermediate">Intermediate</option>
@@ -217,7 +231,7 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
                     <select
                       value={preferredLanguage}
                       onChange={e => setPreferredLanguage(e.target.value as SupportedLanguage)}
-                      className="w-full px-2.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:outline-none focus:border-indigo-500"
+                      className="w-full px-2.5 py-2.5 rounded-xl bg-[#161622] border border-[#272738] text-xs text-white focus:outline-none focus:border-[#FF5A43]"
                     >
                       <option value="javascript">JavaScript</option>
                       <option value="python">Python</option>
@@ -236,7 +250,7 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
                     value={targetGoal}
                     onChange={e => setTargetGoal(e.target.value)}
                     placeholder="e.g. Master dynamic programming and algorithms"
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2.5 rounded-xl bg-[#161622] border border-[#272738] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
                   />
                 </div>
               </>
@@ -245,7 +259,7 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white shadow-lg shadow-indigo-600/25 transition-all flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50 mt-2"
+              className="w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-[#FF5A43] via-[#FF6A54] to-[#FFA07A] hover:from-[#F04428] hover:to-[#FF5A43] text-white shadow-lg shadow-[#FF5A43]/25 transition-all flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50 mt-2 hover:scale-[1.01]"
             >
               <span>{isLoading ? 'Authenticating...' : isRegisterMode ? 'Complete Registration' : 'Sign In as Student'}</span>
               <ArrowRight className="w-4 h-4" />
@@ -260,7 +274,7 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
                 setIsRegisterMode(!isRegisterMode);
                 setErrorMsg(null);
               }}
-              className="text-xs text-slate-400 hover:text-indigo-300 font-medium transition-colors cursor-pointer"
+              className="text-xs text-slate-400 hover:text-[#FF8570] font-medium transition-colors cursor-pointer"
             >
               {isRegisterMode
                 ? 'Already registered? Sign In to your account'
@@ -271,23 +285,38 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
       </div>
 
       {/* Footer */}
-      <footer className="px-6 py-4 border-t border-slate-800/80 text-center text-xs text-slate-500">
+      <footer className="px-6 py-4 border-t border-[#1c1c28] text-center text-xs text-slate-500">
         <div className="flex items-center justify-center space-x-4">
           <button
             onClick={onGoToFacultyLogin}
-            className="text-cyan-400 hover:text-cyan-300 font-semibold underline underline-offset-2 transition-colors cursor-pointer"
+            className="text-[#FF8570] hover:text-white font-semibold underline underline-offset-2 transition-colors cursor-pointer"
           >
             Faculty Sign-In Portal
           </button>
           <span>•</span>
           <button
             onClick={onGoToAdminLogin}
-            className="text-purple-400 hover:text-purple-300 font-semibold underline underline-offset-2 transition-colors cursor-pointer"
+            className="text-slate-400 hover:text-white font-semibold underline underline-offset-2 transition-colors cursor-pointer"
           >
             Root Administrator Gateway
           </button>
         </div>
       </footer>
+
+      {/* 6-Digit Email OTP Verification Modal */}
+      <VerificationModal
+        isOpen={isVerificationModalOpen}
+        email={verificationEmail}
+        onClose={() => setIsVerificationModalOpen(false)}
+        onEmailChangeRequested={() => {
+          setIsVerificationModalOpen(false);
+          setIsRegisterMode(true);
+        }}
+        onSuccess={(user, token) => {
+          setIsVerificationModalOpen(false);
+          onLoginSuccess(user, token);
+        }}
+      />
     </div>
   );
 };

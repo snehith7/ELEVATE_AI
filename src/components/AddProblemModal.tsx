@@ -13,6 +13,7 @@ import {
   ListChecks
 } from 'lucide-react';
 import { Difficulty, SupportedLanguage, ProblemExample, TestCase } from '../types';
+import { getAuthHeaders } from '../utils/apiAuth';
 
 interface AddProblemModalProps {
   isOpen: boolean;
@@ -114,7 +115,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
     try {
       const res = await fetch('/api/admin/problems/generate-draft', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           topic: title || currentCategory,
           category: currentCategory,
@@ -217,7 +218,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
     try {
       const res = await fetch('/api/admin/problems', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           title: title.trim(),
           difficulty,
@@ -246,18 +247,18 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-4xl bg-[#0f172a] border border-purple-900/50 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
+      <div className="relative w-full max-w-4xl bg-[#0e0e15] border border-[#242436] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="p-5 border-b border-slate-800 bg-gradient-to-r from-purple-950/60 via-slate-900 to-slate-900 flex items-center justify-between">
+        <div className="p-5 border-b border-[#1c1c28] bg-gradient-to-r from-[#170e10] via-[#0d0d14] to-[#07070a] flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center">
-              <Code2 className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-2xl bg-[#FF5A43]/20 border border-[#FF5A43]/30 text-[#FF8570] flex items-center justify-center">
+              <Code2 className="w-5 h-5 text-[#FF5A43]" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <h3 className="font-bold text-white text-base">Add Curriculum Problem</h3>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-[#FF5A43]/20 text-[#FF8570] border border-[#FF5A43]/30">
                   Categorical Authoring
                 </span>
               </div>
@@ -272,7 +273,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
               type="button"
               onClick={handleAiDraftProblem}
               disabled={isAiDrafting}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white shadow-lg shadow-cyan-500/20 transition-all cursor-pointer disabled:opacity-50"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#FF5A43] hover:bg-[#F03E23] text-white shadow-lg shadow-[#FF5A43]/20 transition-all cursor-pointer disabled:opacity-50"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>{isAiDrafting ? 'Drafting with AI...' : 'Draft with AI'}</span>
@@ -280,7 +281,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
 
             <button
               onClick={onClose}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-[#14141e] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -297,9 +298,9 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
           )}
 
           {/* Section 1: Classification (Difficulty & Category) */}
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-3">
-            <h4 className="font-bold text-white uppercase tracking-wider text-[11px] flex items-center space-x-1.5 text-purple-300">
-              <Layers className="w-4 h-4" />
+          <div className="p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28] space-y-3">
+            <h4 className="font-bold text-[#FF8570] uppercase tracking-wider text-[11px] flex items-center space-x-1.5">
+              <Layers className="w-4 h-4 text-[#FF5A43]" />
               <span>1. Categorical Classification & Difficulty Level</span>
             </h4>
 
@@ -318,9 +319,9 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                           ? lvl === 'basic'
                             ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50'
                             : lvl === 'intermediate'
-                            ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/50'
+                            ? 'bg-[#FF5A43]/20 text-[#FF8570] border-[#FF5A43]/50'
                             : 'bg-rose-500/20 text-rose-300 border-rose-500/50'
-                          : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-750'
+                          : 'bg-[#14141e] text-slate-400 border-[#242436] hover:bg-[#1c1c28]'
                       }`}
                     >
                       {lvl}
@@ -336,7 +337,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsCustomCategory(!isCustomCategory)}
-                    className="text-[10px] text-purple-400 hover:text-purple-300"
+                    className="text-[10px] text-[#FF8570] hover:text-white cursor-pointer"
                   >
                     {isCustomCategory ? 'Pick Standard' : '+ Custom Category'}
                   </button>
@@ -347,14 +348,14 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                     value={customCategory}
                     onChange={e => setCustomCategory(e.target.value)}
                     placeholder="e.g. Trie & Prefix Trees"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
                     required
                   />
                 ) : (
                   <select
                     value={selectedCategory}
                     onChange={e => setSelectedCategory(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white focus:outline-none focus:border-[#FF5A43]"
                   >
                     {COMMON_CATEGORIES.map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -371,16 +372,16 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                   value={tagsInput}
                   onChange={e => setTagsInput(e.target.value)}
                   placeholder="e.g. array, hash-table, two-pointers"
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
                 />
               </div>
             </div>
           </div>
 
           {/* Section 2: Problem Metadata */}
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-3">
-            <h4 className="font-bold text-white uppercase tracking-wider text-[11px] flex items-center space-x-1.5 text-purple-300">
-              <FileCode className="w-4 h-4" />
+          <div className="p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28] space-y-3">
+            <h4 className="font-bold text-[#FF8570] uppercase tracking-wider text-[11px] flex items-center space-x-1.5">
+              <FileCode className="w-4 h-4 text-[#FF5A43]" />
               <span>2. Problem Title & Statement</span>
             </h4>
 
@@ -390,7 +391,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                 <button
                   type="button"
                   onClick={handleGenerateBoilerplate}
-                  className="text-[10px] text-indigo-400 hover:text-indigo-300"
+                  className="text-[10px] text-[#FF8570] hover:text-white cursor-pointer"
                 >
                   Generate Function Name for Starters
                 </button>
@@ -400,7 +401,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 placeholder="e.g. Longest Substring Without Repeating Characters"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm font-semibold placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#14141e] border border-[#242436] text-white text-sm font-semibold placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
                 required
               />
             </div>
@@ -412,30 +413,30 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                 value={description}
                 onChange={e => setDescription(e.target.value)}
                 placeholder="Given a string s, find the length of the longest substring without repeating characters..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 font-mono text-xs leading-relaxed"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#14141e] border border-[#242436] text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43] font-mono text-xs leading-relaxed"
                 required
               />
             </div>
           </div>
 
           {/* Section 3: Multi-Language Starter Code */}
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-3">
+          <div className="p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28] space-y-3">
             <div className="flex items-center justify-between">
-              <h4 className="font-bold text-white uppercase tracking-wider text-[11px] flex items-center space-x-1.5 text-purple-300">
-                <Code2 className="w-4 h-4" />
+              <h4 className="font-bold text-[#FF8570] uppercase tracking-wider text-[11px] flex items-center space-x-1.5">
+                <Code2 className="w-4 h-4 text-[#FF5A43]" />
                 <span>3. Language-Specific Starter Code</span>
               </h4>
               <button
                 type="button"
                 onClick={handleGenerateBoilerplate}
-                className="text-[11px] text-cyan-400 hover:text-cyan-300 font-medium"
+                className="text-[11px] text-[#FF8570] hover:text-white font-medium cursor-pointer"
               >
                 Reset Boilerplates
               </button>
             </div>
 
             {/* Language Tabs */}
-            <div className="flex items-center space-x-1 border-b border-slate-800 pb-2 overflow-x-auto">
+            <div className="flex items-center space-x-1 border-b border-[#1c1c28] pb-2 overflow-x-auto">
               {(['javascript', 'python', 'typescript', 'java', 'cpp', 'go'] as SupportedLanguage[]).map(lang => (
                 <button
                   key={lang}
@@ -443,8 +444,8 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                   onClick={() => setActiveLangTab(lang)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-mono capitalize transition-colors cursor-pointer ${
                     activeLangTab === lang
-                      ? 'bg-purple-600/30 text-purple-200 border border-purple-500/40 font-bold'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                      ? 'bg-[#FF5A43]/20 text-[#FF8570] border border-[#FF5A43]/50 font-bold'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-[#14141e]'
                   }`}
                 >
                   {lang === 'cpp' ? 'C++' : lang}
@@ -460,22 +461,22 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                   const val = e.target.value;
                   setStarterCodes(prev => ({ ...prev, [activeLangTab]: val }));
                 }}
-                className="w-full p-3 rounded-xl bg-[#0a0f1d] border border-slate-800 text-slate-200 font-mono text-xs leading-relaxed focus:outline-none focus:border-purple-500"
+                className="w-full p-3 rounded-xl bg-[#07070a] border border-[#242436] text-slate-200 font-mono text-xs leading-relaxed focus:outline-none focus:border-[#FF5A43]"
               />
             </div>
           </div>
 
           {/* Section 4: Examples & Constraints */}
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-3">
+          <div className="p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28] space-y-3">
             <div className="flex items-center justify-between">
-              <h4 className="font-bold text-white uppercase tracking-wider text-[11px] flex items-center space-x-1.5 text-purple-300">
-                <ListChecks className="w-4 h-4" />
+              <h4 className="font-bold text-[#FF8570] uppercase tracking-wider text-[11px] flex items-center space-x-1.5">
+                <ListChecks className="w-4 h-4 text-[#FF5A43]" />
                 <span>4. Examples & Constraints</span>
               </h4>
               <button
                 type="button"
                 onClick={handleAddExample}
-                className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center space-x-1"
+                className="text-[11px] text-[#FF8570] hover:text-white flex items-center space-x-1 cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add Example</span>
@@ -484,14 +485,14 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
 
             <div className="space-y-3">
               {examples.map((ex, idx) => (
-                <div key={idx} className="p-3 rounded-xl bg-slate-800/60 border border-slate-700 space-y-2 relative">
+                <div key={idx} className="p-3 rounded-xl bg-[#14141e] border border-[#242436] space-y-2 relative">
                   <div className="flex items-center justify-between text-[11px] font-bold text-slate-300">
                     <span>Example {idx + 1}</span>
                     {examples.length > 1 && (
                       <button
                         type="button"
                         onClick={() => handleRemoveExample(idx)}
-                        className="text-rose-400 hover:text-rose-300"
+                        className="text-rose-400 hover:text-rose-300 cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -508,7 +509,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                           setExamples(prev => prev.map((item, i) => i === idx ? { ...item, input: val } : item));
                         }}
                         placeholder="nums = [2,7,11,15], target = 9"
-                        className="w-full px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white font-mono"
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-[#07070a] border border-[#242436] text-white font-mono"
                       />
                     </div>
                     <div>
@@ -521,7 +522,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                           setExamples(prev => prev.map((item, i) => i === idx ? { ...item, output: val } : item));
                         }}
                         placeholder="[0, 1]"
-                        className="w-full px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white font-mono"
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-[#07070a] border border-[#242436] text-white font-mono"
                       />
                     </div>
                   </div>
@@ -535,7 +536,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                         setExamples(prev => prev.map((item, i) => i === idx ? { ...item, explanation: val } : item));
                       }}
                       placeholder="Because nums[0] + nums[1] == 9"
-                      className="w-full px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white"
+                      className="w-full px-2.5 py-1.5 rounded-lg bg-[#07070a] border border-[#242436] text-white"
                     />
                   </div>
                 </div>
@@ -549,22 +550,22 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                 value={constraintsText}
                 onChange={e => setConstraintsText(e.target.value)}
                 placeholder="1 <= s.length <= 10^5&#10;Target time complexity: O(N)"
-                className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white font-mono"
+                className="w-full px-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white font-mono"
               />
             </div>
           </div>
 
           {/* Section 5: Executable Test Cases */}
-          <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-3">
+          <div className="p-4 rounded-2xl bg-[#0e0e15] border border-[#1c1c28] space-y-3">
             <div className="flex items-center justify-between">
-              <h4 className="font-bold text-white uppercase tracking-wider text-[11px] flex items-center space-x-1.5 text-purple-300">
-                <CheckCircle2 className="w-4 h-4" />
+              <h4 className="font-bold text-[#FF8570] uppercase tracking-wider text-[11px] flex items-center space-x-1.5">
+                <CheckCircle2 className="w-4 h-4 text-[#FF5A43]" />
                 <span>5. Automated Test Cases</span>
               </h4>
               <button
                 type="button"
                 onClick={handleAddTestCase}
-                className="text-[11px] text-indigo-400 hover:text-indigo-300 flex items-center space-x-1"
+                className="text-[11px] text-[#FF8570] hover:text-white flex items-center space-x-1 cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add Test Case</span>
@@ -573,7 +574,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
 
             <div className="space-y-2">
               {testCases.map((tc, idx) => (
-                <div key={idx} className="flex items-center space-x-2 p-2.5 rounded-xl bg-slate-800/60 border border-slate-700">
+                <div key={idx} className="flex items-center space-x-2 p-2.5 rounded-xl bg-[#14141e] border border-[#242436]">
                   <span className="text-[11px] font-mono text-slate-400 w-8">#{idx + 1}</span>
                   <div className="flex-1">
                     <input
@@ -584,7 +585,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                         setTestCases(prev => prev.map((item, i) => i === idx ? { ...item, input: val } : item));
                       }}
                       placeholder="Input parameters"
-                      className="w-full px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white font-mono"
+                      className="w-full px-2.5 py-1.5 rounded-lg bg-[#07070a] border border-[#242436] text-white font-mono"
                       required
                     />
                   </div>
@@ -597,7 +598,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                         setTestCases(prev => prev.map((item, i) => i === idx ? { ...item, expectedOutput: val } : item));
                       }}
                       placeholder="Expected Output"
-                      className="w-full px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white font-mono"
+                      className="w-full px-2.5 py-1.5 rounded-lg bg-[#07070a] border border-[#242436] text-white font-mono"
                       required
                     />
                   </div>
@@ -609,7 +610,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                         const checked = e.target.checked;
                         setTestCases(prev => prev.map((item, i) => i === idx ? { ...item, isHidden: checked } : item));
                       }}
-                      className="rounded border-slate-700 text-purple-600 focus:ring-purple-500"
+                      className="rounded border-[#242436] text-[#FF5A43] focus:ring-[#FF5A43]"
                     />
                     <span>Secret</span>
                   </label>
@@ -617,7 +618,7 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
                     <button
                       type="button"
                       onClick={() => handleRemoveTestCase(idx)}
-                      className="text-rose-400 hover:text-rose-300 p-1"
+                      className="text-rose-400 hover:text-rose-300 p-1 cursor-pointer"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -628,18 +629,18 @@ export const AddProblemModal: React.FC<AddProblemModalProps> = ({
           </div>
 
           {/* Submit Actions */}
-          <div className="pt-3 flex items-center justify-end space-x-3 border-t border-slate-800">
+          <div className="pt-3 flex items-center justify-end space-x-3 border-t border-[#1c1c28]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+              className="px-4 py-2 rounded-xl bg-[#14141e] hover:bg-[#1c1c28] text-slate-300 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-5 py-2 rounded-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/20 transition-all flex items-center space-x-2 disabled:opacity-50 cursor-pointer"
+              className="px-5 py-2 rounded-xl font-bold bg-[#FF5A43] hover:bg-[#F03E23] text-white shadow-lg shadow-[#FF5A43]/20 transition-all flex items-center space-x-2 disabled:opacity-50 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>{isLoading ? 'Saving Problem...' : 'Publish to Curriculum'}</span>

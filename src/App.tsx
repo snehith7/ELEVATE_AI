@@ -13,6 +13,8 @@ import { AiProblemModal } from './components/AiProblemModal';
 import { DatabaseModal } from './components/DatabaseModal';
 import { Problem, User, AnalyticsReport, DatabaseStatus, Submission } from './types';
 import { ArrowLeft, GraduationCap, Menu, Flame, Sparkles, Code2 } from 'lucide-react';
+import { testFirestoreConnection } from './firebase';
+import { CodeElevateLogo } from './components/CodeElevateLogo';
 
 export default function App() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -247,6 +249,7 @@ export default function App() {
   };
 
   useEffect(() => {
+    testFirestoreConnection().catch(console.warn);
     if (studentSession) {
       fetchUserProfile();
       fetchAnalytics(studentSession.user.id);
@@ -392,7 +395,7 @@ export default function App() {
 
   // Authenticated Student Academy Dashboard
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-row selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-[#07070a] text-slate-100 flex flex-row selection:bg-[#FF5A43]/30 selection:text-white">
       {/* Fixed Left Vertical Sidebar (Hidden on mobile, slide-in drawer supported) */}
       <Sidebar
         currentTab={currentTab}
@@ -409,37 +412,32 @@ export default function App() {
       {/* Main Content Area to the right of sidebar */}
       <div className="flex-1 w-full min-w-0 flex flex-col min-h-screen overflow-x-hidden">
         {/* Mobile Top Header with Hamburger Navigation Menu */}
-        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#0c1222] border-b border-slate-800 sticky top-0 z-20 shrink-0">
+        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#08080c] border-b border-[#1c1c28] sticky top-0 z-20 shrink-0">
           <div className="flex items-center gap-2.5">
             <button
               id="mobile-menu-hamburger-btn"
               onClick={() => setIsMobileNavOpen(true)}
-              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+              className="p-2 rounded-xl bg-[#12121a] border border-[#252535] text-slate-300 hover:text-white hover:bg-[#1a1a26] transition-colors cursor-pointer"
               aria-label="Open navigation menu"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center shadow-md shadow-indigo-500/20 shrink-0">
-                <Code2 className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-extrabold text-sm tracking-tight text-white">CodeElevate</span>
-            </div>
+            <CodeElevateLogo size="sm" showText={true} />
           </div>
 
           <div className="flex items-center gap-2">
             {currentUser && (
               <div
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs font-semibold"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#FF5A43]/10 border border-[#FF5A43]/25 text-[#FF8570] text-xs font-semibold"
                 title="Active Streak"
               >
-                <Flame className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                <Flame className="w-3.5 h-3.5 fill-[#FF5A43] text-[#FF5A43]" />
                 <span>{currentUser.streakDays ?? 0}d</span>
               </div>
             )}
             <button
               onClick={() => setIsAiModalOpen(true)}
-              className="p-1.5 rounded-lg bg-indigo-600/20 border border-indigo-500/30 text-indigo-300 hover:text-white transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg bg-[#FF5A43]/20 border border-[#FF5A43]/30 text-[#FF8570] hover:text-white transition-colors cursor-pointer"
               title="Generate Practice Challenge with AI"
               aria-label="Generate AI Challenge"
             >
@@ -509,11 +507,11 @@ export default function App() {
 
         {/* Student Dashboard Footer (omitted when actively solving problem in IDE) */}
         {!(currentTab === 'playground' && selectedProblem) && (
-          <footer className="border-t border-slate-800/80 bg-slate-950/60 py-6 text-xs text-slate-500 mt-auto shrink-0">
+          <footer className="border-t border-[#1c1c28] bg-[#08080c]/90 py-6 text-xs text-slate-500 mt-auto shrink-0">
             <div className="px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-slate-300">CodeElevate Academy</span>
-                <span>•</span>
+                <span className="text-[#FF5A43]">•</span>
                 <span>Adaptive Coding, Instant Diagnostics & Automated Evaluations</span>
               </div>
 

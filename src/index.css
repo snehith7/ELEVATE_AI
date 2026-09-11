@@ -1,26 +1,142 @@
 @import "tailwindcss";
 
+@theme {
+  --color-coral-50: #fff5f2;
+  --color-coral-100: #ffe8e4;
+  --color-coral-200: #ffd4cc;
+  --color-coral-300: #ffb4a6;
+  --color-coral-400: #ff8570;
+  --color-coral-500: #ff5a43;
+  --color-coral-600: #f03e23;
+  --color-coral-700: #c92f17;
+  --color-coral-800: #a62917;
+  --color-coral-900: #882719;
+  --color-coral-950: #4a1008;
+
+  --color-obsidian-950: #050507;
+  --color-obsidian-900: #07070a;
+  --color-obsidian-850: #0e0e15;
+  --color-obsidian-800: #14141e;
+  --color-obsidian-750: #1c1c28;
+  --color-obsidian-700: #252536;
+  --color-obsidian-600: #333348;
+
+  /* Global primary aliases */
+  --color-primary-50: #fff5f2;
+  --color-primary-100: #ffe8e4;
+  --color-primary-200: #ffd4cc;
+  --color-primary-300: #ffb4a6;
+  --color-primary-400: #ff8570;
+  --color-primary-500: #ff5a43;
+  --color-primary-600: #f03e23;
+  --color-primary-700: #c92f17;
+  --color-primary-800: #a62917;
+  --color-primary-900: #882719;
+  --color-primary-950: #4a1008;
+
+  /* Remap legacy indigo utilities globally to coral */
+  --color-indigo-50: #fff5f2;
+  --color-indigo-100: #ffe8e4;
+  --color-indigo-200: #ffd4cc;
+  --color-indigo-300: #ffb4a6;
+  --color-indigo-400: #ff8570;
+  --color-indigo-500: #ff5a43;
+  --color-indigo-600: #ff5a43;
+  --color-indigo-700: #f03e23;
+  --color-indigo-800: #c92f17;
+  --color-indigo-900: #882719;
+  --color-indigo-950: #4a1008;
+
+  /* Remap legacy purple utilities globally to coral */
+  --color-purple-50: #fff5f2;
+  --color-purple-100: #ffe8e4;
+  --color-purple-200: #ffd4cc;
+  --color-purple-300: #ffb4a6;
+  --color-purple-400: #ff8570;
+  --color-purple-500: #ff5a43;
+  --color-purple-600: #ff5a43;
+  --color-purple-700: #f03e23;
+  --color-purple-800: #c92f17;
+  --color-purple-900: #882719;
+  --color-purple-950: #4a1008;
+
+  /* Remap legacy blue utilities globally to coral */
+  --color-blue-50: #fff5f2;
+  --color-blue-100: #ffe8e4;
+  --color-blue-200: #ffd4cc;
+  --color-blue-300: #ffb4a6;
+  --color-blue-400: #ff8570;
+  --color-blue-500: #ff5a43;
+  --color-blue-600: #ff5a43;
+  --color-blue-700: #f03e23;
+  --color-blue-800: #c92f17;
+  --color-blue-900: #882719;
+  --color-blue-950: #4a1008;
+}
+
 @layer base {
+  :root {
+    --bg-main: #07070a;
+    --bg-card: #0e0e15;
+    --bg-card-hover: #14141e;
+    --border-main: #1c1c28;
+    --accent-coral: #ff5a43;
+    --accent-coral-hover: #f03e23;
+    --accent-coral-light: #ff8570;
+  }
+
+  * {
+    border-color: #1c1c28;
+  }
+
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #07070a;
+    color: #f1f5f9;
   }
+
   code, pre, .font-mono {
     font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
+
+  /* Global Focus Rings and Selection */
+  ::selection {
+    background-color: rgba(255, 90, 67, 0.35);
+    color: #ffffff;
+  }
+
+  *:focus-visible {
+    outline: 2px solid #ff5a43;
+    outline-offset: 2px;
+  }
 }
 
-/* Custom scrollbars for dark ide theme */
+/* Custom scrollbars for dark coral & black theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(7, 7, 10, 0.95);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(71, 85, 105, 0.6);
+  background: rgba(255, 90, 67, 0.3);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.9);
+  background: rgba(255, 90, 67, 0.65);
+}
+
+/* Coral glow pulse helper */
+@keyframes coralPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 90, 67, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 90, 67, 0.55);
+  }
+}
+
+.coral-glow {
+  animation: coralPulse 3s infinite ease-in-out;
 }

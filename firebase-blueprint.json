@@ -1,0 +1,136 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Registered platform user (Student, Faculty, or Admin)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique user identifier" },
+        "username": { "type": "string", "description": "Display handle or name" },
+        "email": { "type": "string", "format": "email", "description": "User email address" },
+        "password": { "type": "string", "description": "Hashed password using scrypt" },
+        "role": { "type": "string", "enum": ["student", "faculty", "admin"], "description": "Access control role" },
+        "batch": { "type": "string", "description": "Assigned learning cohort or batch" },
+        "skillLevel": { "type": "string", "description": "Self-identified programming experience" },
+        "preferredLanguage": { "type": "string", "description": "Primary preferred programming language" },
+        "targetGoal": { "type": "string", "description": "Student or mentor learning objective" },
+        "streakDays": { "type": "number", "description": "Consecutive days coding streak" },
+        "totalSolved": { "type": "number", "description": "Total unique problems solved" },
+        "status": { "type": "string", "enum": ["PendingVerification", "Verified"], "description": "Account verification lifecycle status" },
+        "isVerified": { "type": "boolean", "description": "Flag indicating email verification completion" },
+        "emailVerified": { "type": "boolean", "description": "Flag indicating verified email address" },
+        "verificationOtp": { "type": "string", "description": "6-digit OTP verification code" },
+        "verificationOtpExpiresAt": { "type": "string", "description": "ISO timestamp when the 6-digit OTP expires" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of account creation" }
+      },
+      "required": ["id", "username", "email", "role"]
+    },
+    "Problem": {
+      "title": "Problem",
+      "description": "Curriculum or AI-generated coding challenge",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique problem identifier" },
+        "title": { "type": "string", "description": "Title of the problem" },
+        "description": { "type": "string", "description": "Problem statement and instructions" },
+        "difficulty": { "type": "string", "enum": ["easy", "medium", "hard"], "description": "Problem difficulty" },
+        "category": { "type": "string", "description": "Algorithmic topic or category" },
+        "tags": { "type": "array", "description": "Keywords and skill tags" },
+        "testCases": { "type": "array", "description": "Evaluation test cases" },
+        "starterCode": { "type": "object", "description": "Language-specific starter boilerplates" },
+        "hints": { "type": "array", "description": "Progressive guidance hints" },
+        "isAiGenerated": { "type": "boolean", "description": "Flag if created dynamically by AI" },
+        "authorId": { "type": "string", "description": "Creator user identifier" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of publication" }
+      },
+      "required": ["id", "title", "description", "difficulty", "category"]
+    },
+    "Submission": {
+      "title": "Submission",
+      "description": "Student code evaluation record and test results",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique submission identifier" },
+        "problemId": { "type": "string", "description": "Problem identifier" },
+        "userId": { "type": "string", "description": "Student user identifier" },
+        "username": { "type": "string", "description": "Student display name" },
+        "code": { "type": "string", "description": "Submitted source code" },
+        "language": { "type": "string", "description": "Programming language used" },
+        "status": { "type": "string", "description": "Evaluation status (Passed, Failed, etc.)" },
+        "executionTimeMs": { "type": "number", "description": "Execution benchmark duration" },
+        "passedTestCases": { "type": "number", "description": "Count of passing test cases" },
+        "totalTestCases": { "type": "number", "description": "Total test cases executed" },
+        "aiReview": { "type": "object", "description": "AI feedback and correctness score" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of submission" }
+      },
+      "required": ["id", "problemId", "userId", "code", "language", "status"]
+    },
+    "CommunityMessage": {
+      "title": "CommunityMessage",
+      "description": "Collaborative peer forum and community message",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique message identifier" },
+        "userId": { "type": "string", "description": "Author user identifier" },
+        "username": { "type": "string", "description": "Author display name" },
+        "role": { "type": "string", "description": "Role of the author" },
+        "content": { "type": "string", "description": "Message text body" },
+        "problemId": { "type": "string", "description": "Referenced problem ID if any" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of message" }
+      },
+      "required": ["id", "userId", "username", "content"]
+    },
+    "Analytics": {
+      "title": "Analytics",
+      "description": "Precomputed performance and radar metrics per student",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Identifier matching userId" },
+        "userId": { "type": "string", "description": "Student user identifier" },
+        "streakDays": { "type": "number", "description": "Active streak days" },
+        "totalSolved": { "type": "number", "description": "Total unique problems solved" },
+        "totalSubmissions": { "type": "number", "description": "Total submissions made" },
+        "passRate": { "type": "number", "description": "Overall pass percentage" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["id", "userId"]
+    },
+    "SystemStatus": {
+      "title": "SystemStatus",
+      "description": "Health checks, heartbeat and sync verification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Document identifier" },
+        "ping": { "type": "string", "description": "Healthcheck payload" },
+        "timestamp": { "type": "number", "description": "Timestamp epoch" }
+      },
+      "required": ["id"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and credentials"
+    },
+    "/problems/{problemId}": {
+      "schema": "Problem",
+      "description": "Curriculum and AI coding challenges"
+    },
+    "/submissions/{submissionId}": {
+      "schema": "Submission",
+      "description": "Student code submissions and execution logs"
+    },
+    "/messages/{messageId}": {
+      "schema": "CommunityMessage",
+      "description": "Community discussion messages and peer help"
+    },
+    "/analytics/{userId}": {
+      "schema": "Analytics",
+      "description": "Student mastery and performance metrics"
+    },
+    "/system/{docId}": {
+      "schema": "SystemStatus",
+      "description": "System health and database connectivity pings"
+    }
+  }
+}

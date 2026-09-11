@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Trash2, AlertTriangle, X, ShieldAlert } from 'lucide-react';
 import { AdminStudentMetric } from '../types';
+import { getAuthHeaders } from '../utils/apiAuth';
 
 interface DeleteUserModalProps {
   isOpen: boolean;
@@ -33,7 +34,8 @@ export const DeleteUserModal: React.FC<DeleteUserModalProps> = ({
 
     try {
       const res = await fetch(`/api/admin/users/${student.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: getAuthHeaders('admin')
       });
       const data = await res.json();
       if (!res.ok) {

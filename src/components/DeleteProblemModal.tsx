@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Trash2, AlertTriangle, X, ShieldAlert, Code2 } from 'lucide-react';
 import { Problem } from '../types';
+import { getAuthHeaders } from '../utils/apiAuth';
 
 interface DeleteProblemModalProps {
   isOpen: boolean;
@@ -26,7 +27,8 @@ export const DeleteProblemModal: React.FC<DeleteProblemModalProps> = ({
 
     try {
       const res = await fetch(`/api/admin/problems/${problem.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: getAuthHeaders()
       });
       const data = await res.json();
       if (!res.ok) {

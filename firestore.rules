@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // System collection for health verification
+    match /system/{docId} {
+      allow get, create, update, delete: if isValidId(docId);
+      allow list: if true;
+    }
+
+    // Platform Users
+    match /users/{userId} {
+      allow get, create, update, delete: if isValidId(userId);
+      allow list: if true;
+    }
+
+    // Curriculum Problems
+    match /problems/{problemId} {
+      allow get, create, update, delete: if isValidId(problemId);
+      allow list: if true;
+    }
+
+    // Student Code Submissions
+    match /submissions/{submissionId} {
+      allow get, create, update, delete: if isValidId(submissionId);
+      allow list: if true;
+    }
+
+    // Community and Discussion Messages
+    match /messages/{messageId} {
+      allow get, create, update, delete: if isValidId(messageId);
+      allow list: if true;
+    }
+
+    // Student Analytics and Metrics
+    match /analytics/{userId} {
+      allow get, create, update, delete: if isValidId(userId);
+      allow list: if true;
+    }
+  }
+}

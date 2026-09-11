@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="favBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141419" />
+      <stop offset="100%" stop-color="#08080b" />
+    </linearGradient>
+    <linearGradient id="favCoral" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF4528" />
+      <stop offset="50%" stop-color="#FF5D47" />
+      <stop offset="100%" stop-color="#FF7A66" />
+    </linearGradient>
+  </defs>
+
+  <rect x="12" y="12" width="232" height="232" rx="54" fill="url(#favBg)" stroke="#23232e" stroke-width="3" />
+
+  <path
+    d="M 116 76 L 62 128 L 116 180"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="20"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <path
+    d="M 44 200 L 92 146 L 126 172 L 176 102 L 202 68"
+    fill="none"
+    stroke="url(#favCoral)"
+    stroke-width="16"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <circle cx="92" cy="146" r="6" fill="#FFFFFF" stroke="#FF573D" stroke-width="3" />
+  <circle cx="126" cy="172" r="6" fill="#FFFFFF" stroke="#FF573D" stroke-width="3" />
+  <circle cx="176" cy="102" r="6" fill="#FFFFFF" stroke="#FF573D" stroke-width="3" />
+
+  <path
+    d="M 184 46 L 222 58 L 210 96 Z"
+    fill="#FF573D"
+    stroke="#FF7A66"
+    stroke-width="2"
+  />
+
+  <path
+    d="M 206 60 L 208.5 65.5 L 214 66 L 209.8 70 L 211 75.5 L 206 72.5 L 201 75.5 L 202.2 70 L 198 66 L 203.5 65.5 Z"
+    fill="#16161c"
+  />
+</svg>

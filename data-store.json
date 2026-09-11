@@ -27,31 +27,221 @@
       "streakDays": 2,
       "totalSolved": 1,
       "createdAt": "2026-09-07T12:00:18.135Z"
+    },
+    {
+      "id": "usr_mtwzboksorg7",
+      "username": "dd",
+      "email": "faculty@123",
+      "password": "faculty@123",
+      "role": "faculty",
+      "batch": "Faculty Department",
+      "skillLevel": "intermediate",
+      "preferredLanguage": "javascript",
+      "targetGoal": "Curriculum instruction, problem authoring & batch cohort tracking",
+      "streakDays": 0,
+      "totalSolved": 0,
+      "createdAt": "2026-09-11T13:15:47.116Z"
+    },
+    {
+      "id": "usr_faculty_mentor",
+      "role": "faculty",
+      "skillLevel": "advanced",
+      "totalSolved": 45,
+      "createdAt": "2026-09-11T13:32:15.821Z",
+      "streakDays": 14,
+      "targetGoal": "Instruct curriculum and guide batch performance",
+      "username": "Prof. Alan Turing",
+      "password": "FacultyPass123!",
+      "updatedAt": "2026-09-11T16:43:59.203Z",
+      "preferredLanguage": "python",
+      "batch": "Batch 2026-A",
+      "email": "faculty@codeelevate.io"
+    },
+    {
+      "id": "usr_student_active",
+      "batch": "Batch 2026-A",
+      "email": "student@codeelevate.io",
+      "solvedProblems": [
+        "prob_two_sum",
+        "two-sum"
+      ],
+      "username": "Demo Student",
+      "role": "student",
+      "targetGoal": "Master algorithms and technical interviews",
+      "streakDays": 5,
+      "createdAt": "2026-09-11T13:49:27.301Z",
+      "preferredLanguage": "javascript",
+      "totalSolved": 12,
+      "skillLevel": "intermediate",
+      "password": "StudentPass123!"
+    },
+    {
+      "id": "usr_test_verification",
+      "role": "student",
+      "username": "TestUser"
+    },
+    {
+      "id": "usr_mtx6ddv48q0h",
+      "verifiedAt": "2026-09-11T16:33:10.469Z",
+      "skillLevel": "intermediate",
+      "password": "scrypt:fc4fd601e3409701f79ad680f52de2cc:dc472077e3b1d1784872dd8f69f32893c4c3f82fda57eec57b7da85d2d5401f35ba3e938e805c7d9cc4eaa6b4908b08c98c0410539a2fc400f9639c36ddf6d01",
+      "role": "student",
+      "preferredLanguage": "typescript",
+      "targetGoal": "Master algorithms",
+      "streakDays": 0,
+      "isVerified": true,
+      "totalSolved": 0,
+      "verificationOtpExpiresAt": "2026-09-11T16:43:03.856Z",
+      "emailVerified": true,
+      "status": "Verified",
+      "createdAt": "2026-09-11T16:33:03.944Z",
+      "username": "OTP Test Student",
+      "verificationOtp": "236115",
+      "batch": "Batch 2026-A",
+      "email": "new_student_1789144383622@example.com"
+    },
+    {
+      "id": "usr_mtx6dj103vdc",
+      "verificationOtpExpiresAt": "2026-09-11T16:43:15.864Z",
+      "role": "student",
+      "username": "Pending Student",
+      "updatedAt": "2026-09-11T16:33:15.864Z",
+      "totalSolved": 0,
+      "status": "PendingVerification",
+      "createdAt": "2026-09-11T16:33:10.595Z",
+      "skillLevel": "beginner",
+      "preferredLanguage": "javascript",
+      "emailVerified": false,
+      "password": "scrypt:1a17a377689359be96bde5ca170aad21:64cc3c7b00dc1272a1df16abaaf8e2a330ad54da610d46e4242ad35e0f24650c36c2ad559d26c2dc47398a63e9d3f43ece4a72c6a4aa5f62dc2a4f62dfb78b1a",
+      "batch": "Batch 2026-A",
+      "email": "pending_1789144390545@example.com",
+      "targetGoal": "Elevate my software development and coding interview skills",
+      "streakDays": 0,
+      "verificationOtp": "940870",
+      "isVerified": false
+    },
+    {
+      "id": "usr_mtx6eg9s8fl2",
+      "verifiedAt": "2026-09-11T16:33:59.439Z",
+      "totalSolved": 0,
+      "skillLevel": "intermediate",
+      "status": "Verified",
+      "username": "OTP Test Student",
+      "role": "student",
+      "createdAt": "2026-09-11T16:33:53.712Z",
+      "streakDays": 0,
+      "targetGoal": "Master algorithms",
+      "batch": "Batch 2026-A",
+      "email": "new_student_1789144433423@example.com",
+      "isVerified": true,
+      "emailVerified": true,
+      "password": "scrypt:7cba55c58fa0ce727bd36c59fba4b532:2c9ab2ed4ef9dccfff15087bfafa9f0e04c5c3b595cf40a9463d2756c01ea24487f568fd24b5f019ad94b48a45b6167f0ddf4aee19e1897920bb5c081fd65a07",
+      "preferredLanguage": "typescript"
+    },
+    {
+      "id": "usr_mtx6ekswkjm2",
+      "streakDays": 0,
+      "targetGoal": "Elevate my software development and coding interview skills",
+      "isVerified": false,
+      "batch": "Batch 2026-A",
+      "email": "pending_1789144439501@example.com",
+      "status": "PendingVerification",
+      "verificationOtpExpiresAt": "2026-09-11T16:44:04.831Z",
+      "role": "student",
+      "username": "Pending Student",
+      "updatedAt": "2026-09-11T16:34:04.831Z",
+      "skillLevel": "beginner",
+      "totalSolved": 0,
+      "password": "scrypt:745d746dfb815701588930475bdb0eb5:238ce4bd317d94cb9ad95b5d535cc5e1741845e76ce18f58e65198449b709abf289e0199bf27d491df544f28e6ce995bcb27701d17ca12a9609b5d518336eb55",
+      "createdAt": "2026-09-11T16:33:59.553Z",
+      "emailVerified": false,
+      "preferredLanguage": "javascript",
+      "verificationOtp": "426684"
+    },
+    {
+      "id": "usr_mtx6exzb4awx",
+      "emailVerified": true,
+      "password": "scrypt:75bf78d3fbcc589f47c136a467ea2168:c1a22a70987766b326b2c28c0eeebfdc0a21ef52edc39c5fce011c79b0ac7e4f897a6f4b8cba459d704c56b145560ed1094fda5b8195b4ed55a5c45fda65728b",
+      "createdAt": "2026-09-11T16:34:16.665Z",
+      "role": "student",
+      "totalSolved": 0,
+      "preferredLanguage": "typescript",
+      "username": "OTP Test Student",
+      "batch": "Batch 2026-A",
+      "email": "new_student_1789144456383@example.com",
+      "streakDays": 0,
+      "targetGoal": "Master algorithms",
+      "isVerified": true,
+      "verifiedAt": "2026-09-11T16:34:22.790Z",
+      "status": "Verified",
+      "skillLevel": "intermediate"
+    },
+    {
+      "id": "usr_mtx6f2tmdeah",
+      "totalSolved": 0,
+      "emailVerified": false,
+      "batch": "Batch 2026-A",
+      "email": "pending_1789144462855@example.com",
+      "role": "student",
+      "preferredLanguage": "javascript",
+      "verificationOtp": "124980",
+      "status": "PendingVerification",
+      "createdAt": "2026-09-11T16:34:22.909Z",
+      "password": "scrypt:14edb9ff0dada19524f512bfcee3ec6a:20303e1e36f0df54379c9bdd85a90be4a7bade947b4d5e18a4e0a49f73aee2995cdf0df27d81abf7ca2bc7674a2f9d2193359137335be074069d333e38de7dcf",
+      "username": "Pending Student",
+      "skillLevel": "beginner",
+      "updatedAt": "2026-09-11T16:34:27.516Z",
+      "verificationOtpExpiresAt": "2026-09-11T16:44:27.516Z",
+      "isVerified": false,
+      "targetGoal": "Elevate my software development and coding interview skills",
+      "streakDays": 0
+    },
+    {
+      "id": "usr_mtx6qxrp7roo",
+      "isVerified": true,
+      "password": "scrypt:157622866e669d4bc769682dc8aeda4f:7b972d8cc4d92bc51bf4f94e651e05d7324ed700e6c6f5e6a7a987314e96419e10fd69cab0d01280ba9a6eb6f694f29b1cb2165e5573ce0aa6dac004dc276d71",
+      "targetGoal": "Master algorithms",
+      "role": "student",
+      "streakDays": 0,
+      "skillLevel": "intermediate",
+      "status": "Verified",
+      "totalSolved": 0,
+      "verifiedAt": "2026-09-11T16:43:36.429Z",
+      "createdAt": "2026-09-11T16:43:36.264Z",
+      "email": "new_student_1789145015938@example.com",
+      "batch": "Batch 2026-A",
+      "emailVerified": true,
+      "username": "OTP Test Student",
+      "preferredLanguage": "typescript"
+    },
+    {
+      "id": "usr_mtx6qy0lghat",
+      "skillLevel": "beginner",
+      "password": "scrypt:337fb3eb2f7fe82c30555fc938213419:b0b59ff94b56182540348183fcfc0b7d3fdb3b09ee5f5c89dddcdc9056b27f9f77acde2a2d8b66fdec633dca118bd4f1681a39fdeef67912d9f7de156550f1fe",
+      "verificationOtp": "107593",
+      "createdAt": "2026-09-11T16:43:36.551Z",
+      "verificationOtpExpiresAt": "2026-09-11T16:53:36.501Z",
+      "preferredLanguage": "javascript",
+      "isVerified": false,
+      "streakDays": 0,
+      "targetGoal": "Elevate my software development and coding interview skills",
+      "status": "PendingVerification",
+      "totalSolved": 0,
+      "role": "student",
+      "batch": "Batch 2026-A",
+      "email": "pending_1789145016495@example.com",
+      "emailVerified": false,
+      "username": "Pending Student"
     }
   ],
   "problems": [
     {
       "id": "prob_two_sum",
-      "title": "Two Sum",
-      "slug": "two-sum",
-      "difficulty": "basic",
       "category": "Arrays & Hash Maps",
-      "description": "Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have **exactly one solution**, and you may not use the same element twice.\n\nYou can return the answer in any order.",
-      "examples": [
-        {
-          "input": "nums = [2,7,11,15], target = 9",
-          "output": "[0, 1]",
-          "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
-        },
-        {
-          "input": "nums = [3,2,4], target = 6",
-          "output": "[1, 2]",
-          "explanation": "Because nums[1] + nums[2] == 6, we return [1, 2]."
-        },
-        {
-          "input": "nums = [3,3], target = 6",
-          "output": "[0, 1]"
-        }
+      "tags": [
+        "Array",
+        "Hash Table",
+        "Beginner Friendly"
       ],
       "constraints": [
         "2 <= nums.length <= 10^4",
@@ -59,6 +249,45 @@
         "-10^9 <= target <= 10^9",
         "Only one valid answer exists.",
         "Target time complexity: O(N)"
+      ],
+      "testCases": [
+        {
+          "expectedOutput": "[0,1]",
+          "id": "t1",
+          "input": "[2,7,11,15], 9"
+        },
+        {
+          "id": "t2",
+          "expectedOutput": "[1,2]",
+          "input": "[3,2,4], 6"
+        },
+        {
+          "expectedOutput": "[0,1]",
+          "id": "t3",
+          "input": "[3,3], 6"
+        },
+        {
+          "input": "[1,5,8,3], 4",
+          "expectedOutput": "[0,3]",
+          "id": "t4",
+          "isHidden": true
+        }
+      ],
+      "examples": [
+        {
+          "input": "nums = [2,7,11,15], target = 9",
+          "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1].",
+          "output": "[0, 1]"
+        },
+        {
+          "output": "[1, 2]",
+          "explanation": "Because nums[1] + nums[2] == 6, we return [1, 2].",
+          "input": "nums = [3,2,4], target = 6"
+        },
+        {
+          "input": "nums = [3,3], target = 6",
+          "output": "[0, 1]"
+        }
       ],
       "starterCode": {
         "javascript": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nfunction twoSum(nums, target) {\n  // Write your code here\n  return [];\n}",
@@ -68,69 +297,30 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Write your code here\n        return {};\n    }\n};",
         "go": "package main\n\nfunc twoSum(nums []int, target int) []int {\n    // Write your code here\n    return []int{}\n}"
       },
-      "testCases": [
-        {
-          "id": "t1",
-          "input": "[2,7,11,15], 9",
-          "expectedOutput": "[0,1]"
-        },
-        {
-          "id": "t2",
-          "input": "[3,2,4], 6",
-          "expectedOutput": "[1,2]"
-        },
-        {
-          "id": "t3",
-          "input": "[3,3], 6",
-          "expectedOutput": "[0,1]"
-        },
-        {
-          "id": "t4",
-          "input": "[1,5,8,3], 4",
-          "expectedOutput": "[0,3]",
-          "isHidden": true
-        }
-      ],
       "hints": [
         "A brute-force solution checks every pair with two nested loops in O(N^2). Can you do better?",
         "Can you use a Hash Map to store numbers you have already visited and check for the complement in O(1) time?"
       ],
-      "tags": [
-        "Array",
-        "Hash Table",
-        "Beginner Friendly"
-      ],
-      "acceptanceRate": 88
+      "difficulty": "basic",
+      "acceptanceRate": 88,
+      "title": "Two Sum",
+      "slug": "two-sum",
+      "description": "Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have **exactly one solution**, and you may not use the same element twice.\n\nYou can return the answer in any order."
     },
     {
       "id": "prob_valid_palindrome",
-      "title": "Valid Palindrome",
-      "slug": "valid-palindrome",
-      "difficulty": "basic",
-      "category": "Two Pointers & Strings",
-      "description": "A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\n\nGiven a string `s`, return `true` if it is a palindrome, or `false` otherwise.",
-      "examples": [
-        {
-          "input": "s = \"A man, a plan, a canal: Panama\"",
-          "output": "true",
-          "explanation": "\"amanaplanacanalpanama\" is a palindrome."
-        },
-        {
-          "input": "s = \"race a car\"",
-          "output": "false",
-          "explanation": "\"raceacar\" is not a palindrome."
-        },
-        {
-          "input": "s = \" \"",
-          "output": "true",
-          "explanation": "An empty string reads the same forward and backward."
-        }
+      "tags": [
+        "Two Pointers",
+        "String",
+        "Easy"
       ],
       "constraints": [
         "1 <= s.length <= 2 * 10^5",
         "`s` consists only of printable ASCII characters.",
         "Optimal space complexity: O(1) using two pointers"
       ],
+      "acceptanceRate": 79,
+      "difficulty": "basic",
       "starterCode": {
         "javascript": "/**\n * @param {string} s\n * @return {boolean}\n */\nfunction isPalindrome(s) {\n  // Write your code here\n  return false;\n}",
         "python": "def isPalindrome(s: str) -> bool:\n    # Write your code here\n    return False",
@@ -139,46 +329,57 @@
         "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isPalindrome(string s) {\n        // Write your code here\n        return false;\n    }\n};",
         "go": "package main\n\nfunc isPalindrome(s string) bool {\n    // Write your code here\n    return false\n}"
       },
+      "slug": "valid-palindrome",
       "testCases": [
         {
+          "expectedOutput": "true",
           "id": "t1",
-          "input": "\"A man, a plan, a canal: Panama\"",
-          "expectedOutput": "true"
+          "input": "\"A man, a plan, a canal: Panama\""
         },
         {
-          "id": "t2",
-          "input": "\"race a car\"",
-          "expectedOutput": "false"
-        },
-        {
-          "id": "t3",
-          "input": "\" \"",
-          "expectedOutput": "true"
-        },
-        {
-          "id": "t4",
-          "input": "\"0P\"",
           "expectedOutput": "false",
-          "isHidden": true
+          "input": "\"race a car\"",
+          "id": "t2"
+        },
+        {
+          "expectedOutput": "true",
+          "id": "t3",
+          "input": "\" \""
+        },
+        {
+          "expectedOutput": "false",
+          "isHidden": true,
+          "input": "\"0P\"",
+          "id": "t4"
+        }
+      ],
+      "title": "Valid Palindrome",
+      "examples": [
+        {
+          "input": "s = \"A man, a plan, a canal: Panama\"",
+          "output": "true",
+          "explanation": "\"amanaplanacanalpanama\" is a palindrome."
+        },
+        {
+          "explanation": "\"raceacar\" is not a palindrome.",
+          "input": "s = \"race a car\"",
+          "output": "false"
+        },
+        {
+          "output": "true",
+          "input": "s = \" \"",
+          "explanation": "An empty string reads the same forward and backward."
         }
       ],
       "hints": [
         "Consider two pointers starting at the beginning and the end of the string.",
         "Increment the left pointer and decrement the right pointer until both point to alphanumeric characters."
       ],
-      "tags": [
-        "Two Pointers",
-        "String",
-        "Easy"
-      ],
-      "acceptanceRate": 79
+      "description": "A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\n\nGiven a string `s`, return `true` if it is a palindrome, or `false` otherwise.",
+      "category": "Two Pointers & Strings"
     },
     {
       "id": "prob_contains_duplicate",
-      "title": "Contains Duplicate",
-      "slug": "contains-duplicate",
-      "difficulty": "basic",
-      "category": "Arrays & Hash Maps",
       "description": "Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.",
       "examples": [
         {
@@ -186,17 +387,17 @@
           "output": "true"
         },
         {
-          "input": "nums = [1,2,3,4]",
-          "output": "false"
+          "output": "false",
+          "input": "nums = [1,2,3,4]"
         },
         {
           "input": "nums = [1,1,1,3,3,4,3,2,4,2]",
           "output": "true"
         }
       ],
-      "constraints": [
-        "1 <= nums.length <= 10^5",
-        "-10^9 <= nums[i] <= 10^9"
+      "acceptanceRate": 85,
+      "hints": [
+        "A Set only contains unique elements. What happens when you compare the size of a Set to the length of the array?"
       ],
       "starterCode": {
         "javascript": "/**\n * @param {number[]} nums\n * @return {boolean}\n */\nfunction containsDuplicate(nums) {\n  // Write your code here\n  return false;\n}",
@@ -206,59 +407,47 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool containsDuplicate(vector<int>& nums) {\n        // Write your code here\n        return false;\n    }\n};",
         "go": "package main\n\nfunc containsDuplicate(nums []int) bool {\n    // Write your code here\n    return false\n}"
       },
+      "difficulty": "basic",
       "testCases": [
         {
           "id": "t1",
-          "input": "[1,2,3,1]",
-          "expectedOutput": "true"
+          "expectedOutput": "true",
+          "input": "[1,2,3,1]"
         },
         {
           "id": "t2",
-          "input": "[1,2,3,4]",
-          "expectedOutput": "false"
+          "expectedOutput": "false",
+          "input": "[1,2,3,4]"
         },
         {
-          "id": "t3",
           "input": "[1,1,1,3,3,4,3,2,4,2]",
+          "id": "t3",
           "expectedOutput": "true"
         }
       ],
-      "hints": [
-        "A Set only contains unique elements. What happens when you compare the size of a Set to the length of the array?"
-      ],
+      "category": "Arrays & Hash Maps",
+      "title": "Contains Duplicate",
       "tags": [
         "Array",
         "Hash Table",
         "Set"
       ],
-      "acceptanceRate": 85
+      "constraints": [
+        "1 <= nums.length <= 10^5",
+        "-10^9 <= nums[i] <= 10^9"
+      ],
+      "slug": "contains-duplicate"
     },
     {
       "id": "prob_3sum",
-      "title": "3Sum",
       "slug": "3sum",
-      "difficulty": "intermediate",
+      "title": "3Sum",
       "category": "Two Pointers",
+      "difficulty": "intermediate",
       "description": "Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.\n\nNotice that the solution set must not contain duplicate triplets.",
-      "examples": [
-        {
-          "input": "nums = [-1,0,1,2,-1,-4]",
-          "output": "[[-1,-1,2],[-1,0,1]]",
-          "explanation": "nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.\nnums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.\nnums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.\nThe distinct triplets are [-1,0,1] and [-1,-1,2]."
-        },
-        {
-          "input": "nums = [0,1,1]",
-          "output": "[]"
-        },
-        {
-          "input": "nums = [0,0,0]",
-          "output": "[[0,0,0]]"
-        }
-      ],
-      "constraints": [
-        "3 <= nums.length <= 3000",
-        "-10^5 <= nums[i] <= 10^5",
-        "Time complexity: O(N^2)"
+      "hints": [
+        "Sorting the array first makes it easy to avoid duplicate triplets and enables the two-pointer technique.",
+        "Fix the first element nums[i] and use two pointers (left and right) to find pairs that sum to -nums[i]."
       ],
       "starterCode": {
         "javascript": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nfunction threeSum(nums) {\n  // Write your code here\n  return [];\n}",
@@ -268,26 +457,25 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        // Write your code here\n        return {};\n    }\n};",
         "go": "package main\n\nfunc threeSum(nums []int) [][]int {\n    // Write your code here\n    return [][]int{}\n}"
       },
-      "testCases": [
+      "examples": [
         {
-          "id": "t1",
-          "input": "[-1,0,1,2,-1,-4]",
-          "expectedOutput": "[[-1,-1,2],[-1,0,1]]"
+          "explanation": "nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.\nnums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.\nnums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.\nThe distinct triplets are [-1,0,1] and [-1,-1,2].",
+          "output": "[[-1,-1,2],[-1,0,1]]",
+          "input": "nums = [-1,0,1,2,-1,-4]"
         },
         {
-          "id": "t2",
-          "input": "[0,1,1]",
-          "expectedOutput": "[]"
+          "output": "[]",
+          "input": "nums = [0,1,1]"
         },
         {
-          "id": "t3",
-          "input": "[0,0,0]",
-          "expectedOutput": "[[0,0,0]]"
+          "output": "[[0,0,0]]",
+          "input": "nums = [0,0,0]"
         }
       ],
-      "hints": [
-        "Sorting the array first makes it easy to avoid duplicate triplets and enables the two-pointer technique.",
-        "Fix the first element nums[i] and use two pointers (left and right) to find pairs that sum to -nums[i]."
+      "constraints": [
+        "3 <= nums.length <= 3000",
+        "-10^5 <= nums[i] <= 10^5",
+        "Time complexity: O(N^2)"
       ],
       "tags": [
         "Array",
@@ -295,25 +483,50 @@
         "Sorting",
         "Interview Classic"
       ],
+      "testCases": [
+        {
+          "expectedOutput": "[[-1,-1,2],[-1,0,1]]",
+          "input": "[-1,0,1,2,-1,-4]",
+          "id": "t1"
+        },
+        {
+          "input": "[0,1,1]",
+          "expectedOutput": "[]",
+          "id": "t2"
+        },
+        {
+          "expectedOutput": "[[0,0,0]]",
+          "input": "[0,0,0]",
+          "id": "t3"
+        }
+      ],
       "acceptanceRate": 46
     },
     {
       "id": "prob_longest_substring",
-      "title": "Longest Substring Without Repeating Characters",
-      "slug": "longest-substring-without-repeating-characters",
-      "difficulty": "intermediate",
+      "acceptanceRate": 54,
+      "tags": [
+        "Hash Table",
+        "String",
+        "Sliding Window"
+      ],
       "category": "Sliding Window",
-      "description": "Given a string `s`, find the length of the **longest substring** without duplicate characters.",
+      "difficulty": "intermediate",
+      "constraints": [
+        "0 <= s.length <= 5 * 10^4",
+        "`s` consists of English letters, digits, symbols and spaces.",
+        "Target time complexity: O(N)"
+      ],
       "examples": [
         {
-          "input": "s = \"abcabcbb\"",
           "output": "3",
+          "input": "s = \"abcabcbb\"",
           "explanation": "The answer is \"abc\", with the length of 3."
         },
         {
-          "input": "s = \"bbbbb\"",
           "output": "1",
-          "explanation": "The answer is \"b\", with the length of 1."
+          "explanation": "The answer is \"b\", with the length of 1.",
+          "input": "s = \"bbbbb\""
         },
         {
           "input": "s = \"pwwkew\"",
@@ -321,10 +534,33 @@
           "explanation": "The answer is \"wke\", with the length of 3. Notice that \"pwke\" is a subsequence and not a substring."
         }
       ],
-      "constraints": [
-        "0 <= s.length <= 5 * 10^4",
-        "`s` consists of English letters, digits, symbols and spaces.",
-        "Target time complexity: O(N)"
+      "hints": [
+        "Use the sliding window technique with two pointers [left, right].",
+        "Store the last seen index of each character to quickly advance the left boundary."
+      ],
+      "slug": "longest-substring-without-repeating-characters",
+      "testCases": [
+        {
+          "expectedOutput": "3",
+          "input": "\"abcabcbb\"",
+          "id": "t1"
+        },
+        {
+          "id": "t2",
+          "expectedOutput": "1",
+          "input": "\"bbbbb\""
+        },
+        {
+          "input": "\"pwwkew\"",
+          "expectedOutput": "3",
+          "id": "t3"
+        },
+        {
+          "isHidden": true,
+          "input": "\"\"",
+          "expectedOutput": "0",
+          "id": "t4"
+        }
       ],
       "starterCode": {
         "javascript": "/**\n * @param {string} s\n * @return {number}\n */\nfunction lengthOfLongestSubstring(s) {\n  // Write your code here\n  return 0;\n}",
@@ -334,65 +570,60 @@
         "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        // Write your code here\n        return 0;\n    }\n};",
         "go": "package main\n\nfunc lengthOfLongestSubstring(s string) int {\n    // Write your code here\n    return 0\n}"
       },
-      "testCases": [
-        {
-          "id": "t1",
-          "input": "\"abcabcbb\"",
-          "expectedOutput": "3"
-        },
-        {
-          "id": "t2",
-          "input": "\"bbbbb\"",
-          "expectedOutput": "1"
-        },
-        {
-          "id": "t3",
-          "input": "\"pwwkew\"",
-          "expectedOutput": "3"
-        },
-        {
-          "id": "t4",
-          "input": "\"\"",
-          "expectedOutput": "0",
-          "isHidden": true
-        }
-      ],
-      "hints": [
-        "Use the sliding window technique with two pointers [left, right].",
-        "Store the last seen index of each character to quickly advance the left boundary."
-      ],
-      "tags": [
-        "Hash Table",
-        "String",
-        "Sliding Window"
-      ],
-      "acceptanceRate": 54
+      "title": "Longest Substring Without Repeating Characters",
+      "description": "Given a string `s`, find the length of the **longest substring** without duplicate characters."
     },
     {
       "id": "prob_group_anagrams",
-      "title": "Group Anagrams",
-      "slug": "group-anagrams",
+      "constraints": [
+        "1 <= strs.length <= 10^4",
+        "0 <= strs[i].length <= 100",
+        "`strs[i]` consists of lowercase English letters."
+      ],
       "difficulty": "intermediate",
       "category": "Hash Maps & Strings",
-      "description": "Given an array of strings `strs`, group the **anagrams** together. You can return the answer in **any order**.\n\nAn Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+      "hints": [
+        "Two words are anagrams if and only if their sorted character representations are identical."
+      ],
+      "title": "Group Anagrams",
       "examples": [
         {
           "input": "strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
           "output": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
         },
         {
-          "input": "strs = [\"\"]",
-          "output": "[[\"\"]]"
+          "output": "[[\"\"]]",
+          "input": "strs = [\"\"]"
         },
         {
           "input": "strs = [\"a\"]",
           "output": "[[\"a\"]]"
         }
       ],
-      "constraints": [
-        "1 <= strs.length <= 10^4",
-        "0 <= strs[i].length <= 100",
-        "`strs[i]` consists of lowercase English letters."
+      "tags": [
+        "Array",
+        "Hash Table",
+        "String",
+        "Sorting"
+      ],
+      "acceptanceRate": 67,
+      "description": "Given an array of strings `strs`, group the **anagrams** together. You can return the answer in **any order**.\n\nAn Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+      "testCases": [
+        {
+          "id": "t1",
+          "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+          "expectedOutput": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
+        },
+        {
+          "id": "t2",
+          "expectedOutput": "[[\"\"]]",
+          "input": "[\"\"]"
+        },
+        {
+          "id": "t3",
+          "input": "[\"a\"]",
+          "expectedOutput": "[[\"a\"]]"
+        }
       ],
       "starterCode": {
         "javascript": "/**\n * @param {string[]} strs\n * @return {string[][]}\n */\nfunction groupAnagrams(strs) {\n  // Write your code here\n  return [];\n}",
@@ -402,58 +633,43 @@
         "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        // Write your code here\n        return {};\n    }\n};",
         "go": "package main\n\nfunc groupAnagrams(strs []string) [][]string {\n    // Write your code here\n    return [][]string{}\n}"
       },
-      "testCases": [
-        {
-          "id": "t1",
-          "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
-          "expectedOutput": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
-        },
-        {
-          "id": "t2",
-          "input": "[\"\"]",
-          "expectedOutput": "[[\"\"]]"
-        },
-        {
-          "id": "t3",
-          "input": "[\"a\"]",
-          "expectedOutput": "[[\"a\"]]"
-        }
-      ],
-      "hints": [
-        "Two words are anagrams if and only if their sorted character representations are identical."
-      ],
-      "tags": [
-        "Array",
-        "Hash Table",
-        "String",
-        "Sorting"
-      ],
-      "acceptanceRate": 67
+      "slug": "group-anagrams"
     },
     {
       "id": "prob_trapping_rain_water",
-      "title": "Trapping Rain Water",
       "slug": "trapping-rain-water",
       "difficulty": "advanced",
-      "category": "Two Pointers & Monotonic Stack",
-      "description": "Given `n` non-negative integers representing an elevation map where the width of each bar is `1`, compute how much water it can trap after raining.",
-      "examples": [
-        {
-          "input": "height = [0,1,0,2,1,0,1,3,2,1,2,1]",
-          "output": "6",
-          "explanation": "The elevation map traps 6 units of rain water."
-        },
-        {
-          "input": "height = [4,2,0,3,2,5]",
-          "output": "9"
-        }
-      ],
       "constraints": [
         "n == height.length",
         "1 <= n <= 2 * 10^4",
         "0 <= height[i] <= 10^5",
         "Optimal time: O(N), Optimal space: O(1)"
       ],
+      "testCases": [
+        {
+          "expectedOutput": "6",
+          "id": "t1",
+          "input": "[0,1,0,2,1,0,1,3,2,1,2,1]"
+        },
+        {
+          "expectedOutput": "9",
+          "id": "t2",
+          "input": "[4,2,0,3,2,5]"
+        },
+        {
+          "expectedOutput": "7",
+          "isHidden": true,
+          "id": "t3",
+          "input": "[3,0,2,0,4]"
+        }
+      ],
+      "tags": [
+        "Two Pointers",
+        "Dynamic Programming",
+        "Monotonic Stack",
+        "Hard"
+      ],
+      "category": "Two Pointers & Monotonic Stack",
       "starterCode": {
         "javascript": "/**\n * @param {number[]} height\n * @return {number}\n */\nfunction trap(height) {\n  // Write your code here\n  return 0;\n}",
         "python": "def trap(height: list[int]) -> int:\n    # Write your code here\n    return 0",
@@ -462,62 +678,59 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int trap(vector<int>& height) {\n        // Write your code here\n        return 0;\n    }\n};",
         "go": "package main\n\nfunc trap(height []int) int {\n    // Write your code here\n    return 0\n}"
       },
-      "testCases": [
-        {
-          "id": "t1",
-          "input": "[0,1,0,2,1,0,1,3,2,1,2,1]",
-          "expectedOutput": "6"
-        },
-        {
-          "id": "t2",
-          "input": "[4,2,0,3,2,5]",
-          "expectedOutput": "9"
-        },
-        {
-          "id": "t3",
-          "input": "[3,0,2,0,4]",
-          "expectedOutput": "7",
-          "isHidden": true
-        }
-      ],
+      "acceptanceRate": 38,
+      "title": "Trapping Rain Water",
       "hints": [
         "For each element, how much water can be trapped above it? It is min(maxLeft, maxRight) - currentHeight.",
         "Can you maintain maxLeft and maxRight dynamically using two pointers moving inwards?"
       ],
-      "tags": [
-        "Two Pointers",
-        "Dynamic Programming",
-        "Monotonic Stack",
-        "Hard"
+      "examples": [
+        {
+          "input": "height = [0,1,0,2,1,0,1,3,2,1,2,1]",
+          "explanation": "The elevation map traps 6 units of rain water.",
+          "output": "6"
+        },
+        {
+          "input": "height = [4,2,0,3,2,5]",
+          "output": "9"
+        }
       ],
-      "acceptanceRate": 38
+      "description": "Given `n` non-negative integers representing an elevation map where the width of each bar is `1`, compute how much water it can trap after raining."
     },
     {
       "id": "prob_coin_change",
-      "title": "Coin Change",
-      "slug": "coin-change",
-      "difficulty": "advanced",
-      "category": "Dynamic Programming",
-      "description": "You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.\n\nReturn the **fewest number of coins** that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return `-1`.\n\nYou may assume that you have an infinite number of each kind of coin.",
-      "examples": [
-        {
-          "input": "coins = [1,2,5], amount = 11",
-          "output": "3",
-          "explanation": "11 = 5 + 5 + 1"
-        },
-        {
-          "input": "coins = [2], amount = 3",
-          "output": "-1"
-        },
-        {
-          "input": "coins = [1], amount = 0",
-          "output": "0"
-        }
-      ],
       "constraints": [
         "1 <= coins.length <= 12",
         "1 <= coins[i] <= 2^31 - 1",
         "0 <= amount <= 10^4"
+      ],
+      "tags": [
+        "Dynamic Programming",
+        "Breadth-First Search",
+        "State Optimization"
+      ],
+      "testCases": [
+        {
+          "id": "t1",
+          "expectedOutput": "3",
+          "input": "[1,2,5], 11"
+        },
+        {
+          "id": "t2",
+          "expectedOutput": "-1",
+          "input": "[2], 3"
+        },
+        {
+          "expectedOutput": "0",
+          "id": "t3",
+          "input": "[1], 0"
+        },
+        {
+          "expectedOutput": "20",
+          "isHidden": true,
+          "input": "[186,419,83,408], 6249",
+          "id": "t4"
+        }
       ],
       "starterCode": {
         "javascript": "/**\n * @param {number[]} coins\n * @param {number} amount\n * @return {number}\n */\nfunction coinChange(coins, amount) {\n  // Write your code here\n  return -1;\n}",
@@ -527,65 +740,49 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int coinChange(vector<int>& coins, int amount) {\n        // Write your code here\n        return -1;\n    }\n};",
         "go": "package main\n\nfunc coinChange(coins []int, amount int) int {\n    // Write your code here\n    return -1\n}"
       },
-      "testCases": [
-        {
-          "id": "t1",
-          "input": "[1,2,5], 11",
-          "expectedOutput": "3"
-        },
-        {
-          "id": "t2",
-          "input": "[2], 3",
-          "expectedOutput": "-1"
-        },
-        {
-          "id": "t3",
-          "input": "[1], 0",
-          "expectedOutput": "0"
-        },
-        {
-          "id": "t4",
-          "input": "[186,419,83,408], 6249",
-          "expectedOutput": "20",
-          "isHidden": true
-        }
-      ],
+      "acceptanceRate": 43,
       "hints": [
         "Think of this as finding the shortest path in a graph where nodes are amounts from 0 to amount.",
         "Define dp[i] as the minimum coins needed to make amount i. What is the transition relation?"
       ],
-      "tags": [
-        "Dynamic Programming",
-        "Breadth-First Search",
-        "State Optimization"
-      ],
-      "acceptanceRate": 43
+      "category": "Dynamic Programming",
+      "description": "You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.\n\nReturn the **fewest number of coins** that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return `-1`.\n\nYou may assume that you have an infinite number of each kind of coin.",
+      "title": "Coin Change",
+      "slug": "coin-change",
+      "difficulty": "advanced",
+      "examples": [
+        {
+          "explanation": "11 = 5 + 5 + 1",
+          "input": "coins = [1,2,5], amount = 11",
+          "output": "3"
+        },
+        {
+          "output": "-1",
+          "input": "coins = [2], amount = 3"
+        },
+        {
+          "output": "0",
+          "input": "coins = [1], amount = 0"
+        }
+      ]
     },
     {
       "id": "prob_course_schedule",
-      "title": "Course Schedule",
+      "hints": [
+        "Model the courses and prerequisites as a Directed Graph.",
+        "Kahn's algorithm for Topological Sorting uses in-degrees and a queue. If you process all nodes, no cycle exists."
+      ],
       "slug": "course-schedule",
       "difficulty": "advanced",
-      "category": "Graphs & Topological Sort",
-      "description": "There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [a_i, b_i]` indicates that you **must** take course `b_i` first if you want to take course `a_i`.\n\nReturn `true` if you can finish all courses. Otherwise, return `false` (i.e. if there is a circular dependency / cycle).",
-      "examples": [
-        {
-          "input": "numCourses = 2, prerequisites = [[1,0]]",
-          "output": "true",
-          "explanation": "To take course 1 you should have finished course 0. So it is possible."
-        },
-        {
-          "input": "numCourses = 2, prerequisites = [[1,0],[0,1]]",
-          "output": "false",
-          "explanation": "Course 1 requires course 0, but course 0 requires course 1. Cycle exists!"
-        }
-      ],
+      "title": "Course Schedule",
       "constraints": [
         "1 <= numCourses <= 2000",
         "0 <= prerequisites.length <= 5000",
         "prerequisites[i].length == 2",
         "All prerequisite pairs are unique."
       ],
+      "category": "Graphs & Topological Sort",
+      "acceptanceRate": 47,
       "starterCode": {
         "javascript": "/**\n * @param {number} numCourses\n * @param {number[][]} prerequisites\n * @return {boolean}\n */\nfunction canFinish(numCourses, prerequisites) {\n  // Write your code here\n  return false;\n}",
         "python": "def canFinish(numCourses: int, prerequisites: list[list[int]]) -> bool:\n    # Write your code here\n    return False",
@@ -594,11 +791,30 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {\n        // Write your code here\n        return false;\n    }\n};",
         "go": "package main\n\nfunc canFinish(numCourses int, prerequisites [][]int) bool {\n    // Write your code here\n    return false\n}"
       },
+      "tags": [
+        "Depth-First Search",
+        "Breadth-First Search",
+        "Graph",
+        "Topological Sort"
+      ],
+      "examples": [
+        {
+          "explanation": "To take course 1 you should have finished course 0. So it is possible.",
+          "input": "numCourses = 2, prerequisites = [[1,0]]",
+          "output": "true"
+        },
+        {
+          "explanation": "Course 1 requires course 0, but course 0 requires course 1. Cycle exists!",
+          "output": "false",
+          "input": "numCourses = 2, prerequisites = [[1,0],[0,1]]"
+        }
+      ],
+      "description": "There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [a_i, b_i]` indicates that you **must** take course `b_i` first if you want to take course `a_i`.\n\nReturn `true` if you can finish all courses. Otherwise, return `false` (i.e. if there is a circular dependency / cycle).",
       "testCases": [
         {
+          "expectedOutput": "true",
           "id": "t1",
-          "input": "2, [[1,0]]",
-          "expectedOutput": "true"
+          "input": "2, [[1,0]]"
         },
         {
           "id": "t2",
@@ -606,23 +822,12 @@
           "expectedOutput": "false"
         },
         {
-          "id": "t3",
-          "input": "4, [[1,0],[2,0],[3,1],[3,2]]",
           "expectedOutput": "true",
-          "isHidden": true
+          "isHidden": true,
+          "id": "t3",
+          "input": "4, [[1,0],[2,0],[3,1],[3,2]]"
         }
-      ],
-      "hints": [
-        "Model the courses and prerequisites as a Directed Graph.",
-        "Kahn's algorithm for Topological Sorting uses in-degrees and a queue. If you process all nodes, no cycle exists."
-      ],
-      "tags": [
-        "Depth-First Search",
-        "Breadth-First Search",
-        "Graph",
-        "Topological Sort"
-      ],
-      "acceptanceRate": 47
+      ]
     },
     {
       "title": "Valid Parentheses String with Wildcards",
@@ -698,6 +903,86 @@
       "slug": "valid-parentheses-string-with-wildcards",
       "isAiGenerated": true,
       "generatedReason": "Targeted practice to reinforce boundary handling and greedy tracking on string structures."
+    },
+    {
+      "id": "prob_admin-authored-bin_u3y72",
+      "acceptanceRate": 75,
+      "examples": [
+        {
+          "input": "nums = [-1,0,3,5,9,12], target = 9",
+          "output": "4"
+        }
+      ],
+      "createdAt": "2026-09-11T15:09:04.912Z",
+      "category": "Binary Search",
+      "slug": "admin-authored-binary-search",
+      "testCases": [
+        {
+          "input": "[-1,0,3,5,9,12], 9",
+          "expectedOutput": "4",
+          "id": "tc1",
+          "isHidden": false
+        }
+      ],
+      "starterCode": {
+        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None",
+        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}",
+        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};",
+        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}",
+        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
+        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}"
+      },
+      "constraints": [
+        "1 <= input.length <= 10^5",
+        "Target time complexity: O(N)"
+      ],
+      "difficulty": "intermediate",
+      "tags": [
+        "binary search"
+      ],
+      "hints": [],
+      "description": "Given an array of sorted integers, find target index in O(log n).",
+      "title": "Admin Authored Binary Search"
+    },
+    {
+      "id": "prob_admin-authored-bin_m4piw",
+      "category": "Binary Search",
+      "starterCode": {
+        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}",
+        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
+        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};",
+        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}",
+        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}",
+        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None"
+      },
+      "constraints": [
+        "1 <= input.length <= 10^5",
+        "Target time complexity: O(N)"
+      ],
+      "description": "Given an array of sorted integers, find target index in O(log n).",
+      "acceptanceRate": 75,
+      "examples": [
+        {
+          "input": "nums = [-1,0,3,5,9,12], target = 9",
+          "output": "4"
+        }
+      ],
+      "tags": [
+        "binary search"
+      ],
+      "hints": [],
+      "createdAt": "2026-09-11T16:35:01.329Z",
+      "slug": "admin-authored-binary-search",
+      "title": "Admin Authored Binary Search",
+      "testCases": [
+        {
+          "isHidden": false,
+          "id": "tc1",
+          "input": "[-1,0,3,5,9,12], 9",
+          "expectedOutput": "4"
+        }
+      ],
+      "difficulty": "intermediate"
     }
   ],
   "submissions": [
@@ -848,6 +1133,977 @@
         "suggestedOptimizedSnippet": "function twoSum(nums, target) { const seen = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (seen.has(complement)) { return [seen.get(complement), i]; } seen.set(nums[i], i); } throw new Error('No solution found'); }"
       },
       "createdAt": "2026-09-07T13:09:14.458Z"
+    },
+    {
+      "id": "sub_sample_student_01",
+      "userId": "usr_student_active",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "language": "javascript",
+      "status": "Passed",
+      "passedCases": 3,
+      "totalCases": 3,
+      "executionTimeMs": 14,
+      "memoryKb": 2048,
+      "category": "Arrays & Hash Maps",
+      "difficulty": "basic",
+      "createdAt": "2026-09-11T13:49:27.302Z"
+    },
+    {
+      "id": "sub_mtx0j3n7106k",
+      "userId": "usr_student_active",
+      "userEmail": "student@codeelevate.io",
+      "userName": "Demo Student",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "language": "javascript",
+      "status": "Passed",
+      "passedCases": 4,
+      "totalCases": 4,
+      "executionTimeMs": 9,
+      "memoryKb": 39927,
+      "testResults": [
+        {
+          "testId": "t1",
+          "passed": true,
+          "status": "Passed",
+          "input": "[2,7,11,15], 9",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t2",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "actual": "[1,2]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t3",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t4",
+          "passed": true,
+          "status": "Passed",
+          "input": "[1,5,8,3], 4",
+          "expected": "[0,3]",
+          "actual": "[0,3]",
+          "stdout": "",
+          "isHidden": true,
+          "executionTimeMs": 1
+        }
+      ],
+      "aiReview": {
+        "correctnessScore": 100,
+        "timeComplexity": "O(n^2)",
+        "spaceComplexity": "O(1)",
+        "summary": "Your solution correctly solves the Two Sum problem using a brute-force approach. While it works for small datasets, it is inefficient for large arrays, as the nested loops lead to quadratic time complexity.",
+        "strengths": [
+          "The code is syntactically correct and readable.",
+          "The logic strictly follows the problem constraints (not using the same element twice).",
+          "Proper use of early return pattern enhances performance slightly by exiting as soon as the target is found."
+        ],
+        "improvements": [
+          "Refactor to use a Hash Map (Object or Map in JS) to store visited values, which allows finding the complement in O(1) time.",
+          "Consider the trade-off between memory and speed: the hash map approach increases space complexity to O(n) but reduces time complexity to O(n).",
+          "Add input validation to check if the input is an array or if the array contains fewer than two elements."
+        ],
+        "edgeCasesCovered": [
+          "Target found in the middle of the array",
+          "Target found at the very start and end of the array",
+          "Arrays with exactly two elements"
+        ],
+        "edgeCasesMissed": [
+          "Negative numbers (though your current code handles them correctly)",
+          "Very large arrays (where O(n^2) will cause a Time Limit Exceeded error)",
+          "Duplicate numbers that sum to target (your current logic handles this correctly by incrementing the index)"
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }"
+      },
+      "createdAt": "2026-09-11T13:49:32.851Z"
+    },
+    {
+      "id": "sub_mtx0lzxtcni5",
+      "userId": "usr_student_active",
+      "userEmail": "student@codeelevate.io",
+      "userName": "Demo Student",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "language": "javascript",
+      "status": "Passed",
+      "passedCases": 4,
+      "totalCases": 4,
+      "executionTimeMs": 9,
+      "memoryKb": 35111,
+      "testResults": [
+        {
+          "testId": "t1",
+          "passed": true,
+          "status": "Passed",
+          "input": "[2,7,11,15], 9",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t2",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "actual": "[1,2]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t3",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t4",
+          "passed": true,
+          "status": "Passed",
+          "input": "[1,5,8,3], 4",
+          "expected": "[0,3]",
+          "actual": "[0,3]",
+          "stdout": "",
+          "isHidden": true,
+          "executionTimeMs": 1
+        }
+      ],
+      "aiReview": {
+        "correctnessScore": 100,
+        "timeComplexity": "O(n^2) where n is the length of the input array, due to the nested loops performing a brute-force search.",
+        "spaceComplexity": "O(1) because the algorithm only uses a constant amount of extra space for loop indices.",
+        "summary": "Your implementation is a correct brute-force solution that effectively solves the problem within the specified constraints. While it passes all tests, it is inefficient for large datasets. Transitioning from an O(n^2) approach to an O(n) approach using a hash map is the standard evolution for this classic problem.",
+        "strengths": [
+          "Logical clarity: The nested loop approach is easy to read and understand.",
+          "Correctness: It strictly adheres to the 'exactly one solution' constraint.",
+          "Zero external dependency: The code is pure JavaScript and works across all environments."
+        ],
+        "improvements": [
+          "Introduce a Map object to store seen values and their indices to trade space for time complexity.",
+          "Adopt functional programming patterns if applicable, though for this specific problem, an imperative approach with a hash map is most efficient.",
+          "Consider adding JSDoc comments to document parameter types and return expectations."
+        ],
+        "edgeCasesCovered": [
+          "Arrays with the minimum number of elements (size 2).",
+          "Inputs where the target sum involves negative integers.",
+          "Inputs where the numbers to sum are at the very beginning and very end of the array."
+        ],
+        "edgeCasesMissed": [
+          "Extremely large arrays (e.g., 10^5 elements) where O(n^2) will exceed reasonable execution time limits (Time Limit Exceeded error)."
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }"
+      },
+      "createdAt": "2026-09-11T13:51:48.017Z"
+    },
+    {
+      "id": "sub_mtx0nf5zmdr3",
+      "userId": "usr_student_active",
+      "userEmail": "student@codeelevate.io",
+      "userName": "Demo Student",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "language": "javascript",
+      "status": "Passed",
+      "passedCases": 4,
+      "totalCases": 4,
+      "executionTimeMs": 9,
+      "memoryKb": 34761,
+      "testResults": [
+        {
+          "testId": "t1",
+          "passed": true,
+          "status": "Passed",
+          "input": "[2,7,11,15], 9",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t2",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "actual": "[1,2]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t3",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t4",
+          "passed": true,
+          "status": "Passed",
+          "input": "[1,5,8,3], 4",
+          "expected": "[0,3]",
+          "actual": "[0,3]",
+          "stdout": "",
+          "isHidden": true,
+          "executionTimeMs": 1
+        }
+      ],
+      "aiReview": {
+        "correctnessScore": 100,
+        "timeComplexity": "O(n^2), where n is the number of elements in the array. The nested loops result in a quadratic time complexity as we compare each element with every subsequent element.",
+        "spaceComplexity": "O(1), as the algorithm only uses a constant amount of additional space regardless of the input size.",
+        "summary": "The student implemented a correct and functional brute-force solution. While it passes all tests, it is inefficient for large datasets. Transitioning from a nested loop structure to a hash map will yield a significant performance boost.",
+        "strengths": [
+          "The code is readable, concise, and logically sound.",
+          "Correct implementation of the specified problem constraints.",
+          "Efficient use of memory as it avoids unnecessary data structures."
+        ],
+        "improvements": [
+          "Refactor to use a Hash Map (JavaScript object or Map) to store visited values, allowing for O(n) time complexity.",
+          "Avoid the nested loop pattern for search problems, as it usually signals a performance bottleneck in production systems.",
+          "Consider early exit conditions if the problem constraints allowed for early termination (though here it is already optimized)."
+        ],
+        "edgeCasesCovered": [
+          "Standard arrays with positive integers",
+          "Empty or single-element cases (implicitly handled by loop constraints)",
+          "Correct return of zero-based indices"
+        ],
+        "edgeCasesMissed": [
+          "Extremely large arrays (causing TLE)",
+          "Negative integers (the current logic correctly handles this, but could be noted)"
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }"
+      },
+      "createdAt": "2026-09-11T13:52:54.407Z"
+    },
+    {
+      "id": "sub_mtx0oac11n3i",
+      "userId": "usr_student_active",
+      "userEmail": "student@codeelevate.io",
+      "userName": "Demo Student",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "language": "javascript",
+      "status": "Passed",
+      "passedCases": 4,
+      "totalCases": 4,
+      "executionTimeMs": 9,
+      "memoryKb": 37130,
+      "testResults": [
+        {
+          "testId": "t1",
+          "passed": true,
+          "status": "Passed",
+          "input": "[2,7,11,15], 9",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t2",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "actual": "[1,2]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t3",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t4",
+          "passed": true,
+          "status": "Passed",
+          "input": "[1,5,8,3], 4",
+          "expected": "[0,3]",
+          "actual": "[0,3]",
+          "stdout": "",
+          "isHidden": true,
+          "executionTimeMs": 1
+        }
+      ],
+      "aiReview": {
+        "correctnessScore": 100,
+        "timeComplexity": "O(n^2), where n is the length of the array, due to the nested loops checking every pair.",
+        "spaceComplexity": "O(1), as the function uses a constant amount of extra space regardless of the input size.",
+        "summary": "The implementation is a correct brute-force solution that effectively solves the problem within the functional requirements.",
+        "strengths": [
+          "The code is readable, concise, and easy to follow.",
+          "It correctly handles the indices as required and respects the constraint of not using the same element twice by starting the inner loop at i + 1."
+        ],
+        "improvements": [
+          "To achieve O(n) time complexity, replace the nested loops with a Map object to store the complement (target - current) while iterating.",
+          "Consider adding input validation to ensure the input array has at least two elements before execution.",
+          "While the brute force approach is functional, utilizing a hash map pattern is the expected standard for production-level interview scenarios."
+        ],
+        "edgeCasesCovered": [
+          "Array with exactly two elements",
+          "Target sum achievable by the first and last elements",
+          "Negative numbers present in the array"
+        ],
+        "edgeCasesMissed": [
+          "Array with fewer than two elements (though the problem assumes exactly one solution)",
+          "Large arrays where O(n^2) performance may lead to time limit exceeded errors"
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }"
+      },
+      "createdAt": "2026-09-11T13:53:34.801Z"
+    },
+    {
+      "id": "sub_mtx0qkmd0hj1",
+      "userId": "usr_student_active",
+      "userEmail": "student@codeelevate.io",
+      "userName": "Demo Student",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "language": "javascript",
+      "status": "Passed",
+      "passedCases": 4,
+      "totalCases": 4,
+      "executionTimeMs": 9,
+      "memoryKb": 39047,
+      "testResults": [
+        {
+          "testId": "t1",
+          "passed": true,
+          "status": "Passed",
+          "input": "[2,7,11,15], 9",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t2",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "actual": "[1,2]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t3",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t4",
+          "passed": true,
+          "status": "Passed",
+          "input": "[1,5,8,3], 4",
+          "expected": "[0,3]",
+          "actual": "[0,3]",
+          "stdout": "",
+          "isHidden": true,
+          "executionTimeMs": 1
+        }
+      ],
+      "aiReview": {
+        "correctnessScore": 100,
+        "timeComplexity": "O(n^2)",
+        "spaceComplexity": "O(1)",
+        "summary": "Your solution correctly solves the Two Sum problem using a brute-force approach. While it passes all tests, it is inefficient for large datasets. You should aim to optimize the lookup process by trading space for time.",
+        "strengths": [
+          "Clean, readable, and functional code",
+          "Correct implementation of the problem requirements",
+          "Proper use of nested loops to ensure no element is used twice"
+        ],
+        "improvements": [
+          "Transition from the O(n^2) brute-force approach to an O(n) hash map (object or Map) lookup strategy",
+          "Use 'const' for variables that do not require reassignment",
+          "Consider the memory-time tradeoff to handle larger input constraints in production environments"
+        ],
+        "edgeCasesCovered": [
+          "Array with two elements",
+          "Target requiring negative numbers",
+          "Target requiring the last two elements"
+        ],
+        "edgeCasesMissed": [
+          "Very large arrays (where O(n^2) causes timeouts)",
+          "Integer overflow (though less relevant in JavaScript due to 64-bit floats)"
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const seen = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (seen.has(complement)) return [seen.get(complement), i]; seen.set(nums[i], i); } return []; }"
+      },
+      "createdAt": "2026-09-11T13:55:21.445Z"
+    },
+    {
+      "id": "sub_mtx0rzjy7qd9",
+      "userId": "usr_student_active",
+      "userEmail": "student@codeelevate.io",
+      "userName": "Demo Student",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "language": "javascript",
+      "status": "Passed",
+      "passedCases": 4,
+      "totalCases": 4,
+      "executionTimeMs": 9,
+      "memoryKb": 37849,
+      "testResults": [
+        {
+          "testId": "t1",
+          "passed": true,
+          "status": "Passed",
+          "input": "[2,7,11,15], 9",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t2",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "actual": "[1,2]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t3",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t4",
+          "passed": true,
+          "status": "Passed",
+          "input": "[1,5,8,3], 4",
+          "expected": "[0,3]",
+          "actual": "[0,3]",
+          "stdout": "",
+          "isHidden": true,
+          "executionTimeMs": 1
+        }
+      ],
+      "aiReview": {
+        "correctnessScore": 100,
+        "timeComplexity": "O(n^2)",
+        "spaceComplexity": "O(1)",
+        "summary": "Your solution correctly solves the Two Sum problem using a brute-force approach. While it passes all functional tests, it is inefficient for large datasets due to its quadratic time complexity.",
+        "strengths": [
+          "The code is clean, readable, and highly intuitive.",
+          "The use of nested loops correctly respects the constraint of not using the same element twice by initializing the inner loop at i + 1.",
+          "The function adheres strictly to the problem requirements regarding index return values."
+        ],
+        "improvements": [
+          "Adopt a Hash Map (Object or Map) approach to trade space for time, reducing complexity from O(n^2) to O(n).",
+          "Early exit handling is already present, which is good, but optimizing the search logic will provide a massive performance boost for large input arrays.",
+          "Consider adding input validation (e.g., checking if the array contains at least two elements) to make the function more robust."
+        ],
+        "edgeCasesCovered": [
+          "Standard positive integer pairs.",
+          "Array with exactly two elements.",
+          "Cases where the target is found at the start or end of the array."
+        ],
+        "edgeCasesMissed": [
+          "Negative numbers (though your logic supports them, it is worth verifying).",
+          "Empty or single-element arrays (though the problem assumes exactly one solution exists).",
+          "Arrays with duplicate numbers where one of the duplicates is part of the solution."
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }"
+      },
+      "createdAt": "2026-09-11T13:56:27.454Z"
+    },
+    {
+      "id": "sub_mtx0t2antnsf",
+      "userId": "usr_student_active",
+      "userEmail": "student@codeelevate.io",
+      "userName": "Demo Student",
+      "problemId": "prob_two_sum",
+      "problemTitle": "Two Sum",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "language": "javascript",
+      "status": "Passed",
+      "passedCases": 4,
+      "totalCases": 4,
+      "executionTimeMs": 10,
+      "memoryKb": 37384,
+      "testResults": [
+        {
+          "testId": "t1",
+          "passed": true,
+          "status": "Passed",
+          "input": "[2,7,11,15], 9",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t2",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "actual": "[1,2]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t3",
+          "passed": true,
+          "status": "Passed",
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "executionTimeMs": 1
+        },
+        {
+          "testId": "t4",
+          "passed": true,
+          "status": "Passed",
+          "input": "[1,5,8,3], 4",
+          "expected": "[0,3]",
+          "actual": "[0,3]",
+          "stdout": "",
+          "isHidden": true,
+          "executionTimeMs": 1
+        }
+      ],
+      "aiReview": {
+        "correctnessScore": 100,
+        "timeComplexity": "O(n^2) where n is the number of elements in the array due to the nested loop structure.",
+        "spaceComplexity": "O(1) as the solution uses a constant amount of extra space regardless of the input size.",
+        "summary": "The solution correctly implements a brute-force approach to solve the Two Sum problem. It is logically sound and adheres to the problem constraints, though it is inefficient for large datasets.",
+        "strengths": [
+          "Logical clarity: The nested loop approach is easy to follow and guarantees finding the pair if it exists.",
+          "Correctness: It strictly respects the constraint of not using the same element twice by starting the inner loop at i + 1.",
+          "Conciseness: The code is compact and avoids unnecessary abstractions."
+        ],
+        "improvements": [
+          "Time Complexity Optimization: Transition from the current O(n^2) approach to an O(n) approach using a Hash Map (JavaScript object or Map) to store complements.",
+          "Early returns: While the code is functional, utilizing a Map to store indices allows for a single-pass traversal, significantly improving performance for large arrays.",
+          "Naming conventions: While simple, descriptive variable names for the target and map keys can improve readability in larger functions."
+        ],
+        "edgeCasesCovered": [
+          "Empty arrays or single element arrays (though problem constraints imply a solution exists)",
+          "Pairs at the beginning of the array",
+          "Pairs at the end of the array",
+          "Negative numbers"
+        ],
+        "edgeCasesMissed": [
+          "Large arrays (n > 10,000) where O(n^2) would lead to performance timeouts"
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }"
+      },
+      "createdAt": "2026-09-11T13:57:17.663Z"
+    },
+    {
+      "id": "sub_mtx3cx8ahc04",
+      "memoryKb": 39996,
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "aiReview": {
+        "strengths": [
+          "Clean, readable code with a straightforward logic flow.",
+          "Correct handling of the index requirements and constraints.",
+          "Efficient use of memory as it does not require additional data structures."
+        ],
+        "improvements": [
+          "Utilize a Hash Map (Object or Map) to store complement values, reducing time complexity from quadratic to linear.",
+          "Consider early exit conditions if the problem constraints are modified (e.g., sorted inputs).",
+          "Adopt modern JavaScript practices like const/let consistently."
+        ],
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }",
+        "summary": "Your implementation is functionally correct and easy to read, successfully solving the problem using a brute-force approach. While it works perfectly for smaller datasets, it can be optimized significantly for larger arrays.",
+        "spaceComplexity": "O(1) because it uses a constant amount of extra space.",
+        "edgeCasesCovered": [
+          "Array with exactly two elements.",
+          "Targets reachable by numbers at the start and end of the array.",
+          "Standard valid inputs provided in the prompt."
+        ],
+        "timeComplexity": "O(n^2) where n is the length of the array due to nested loops.",
+        "correctnessScore": 100,
+        "edgeCasesMissed": [
+          "Very large arrays where O(n^2) would lead to time limit exceeded (TLE) errors.",
+          "Negative integers (though your current code handles them correctly)."
+        ]
+      },
+      "executionTimeMs": 10,
+      "difficulty": "basic",
+      "passedCases": 4,
+      "createdAt": "2026-09-11T15:08:43.450Z",
+      "totalCases": 4,
+      "problemTitle": "Two Sum",
+      "status": "Passed",
+      "language": "javascript",
+      "userEmail": "student@codeelevate.io",
+      "userName": "Demo Student",
+      "problemId": "prob_two_sum",
+      "userId": "usr_student_active",
+      "category": "Arrays & Hash Maps",
+      "testResults": [
+        {
+          "passed": true,
+          "executionTimeMs": 1,
+          "stdout": "",
+          "actual": "[0,1]",
+          "input": "[2,7,11,15], 9",
+          "testId": "t1",
+          "status": "Passed",
+          "expected": "[0,1]"
+        },
+        {
+          "actual": "[1,2]",
+          "stdout": "",
+          "executionTimeMs": 1,
+          "passed": true,
+          "expected": "[1,2]",
+          "status": "Passed",
+          "testId": "t2",
+          "input": "[3,2,4], 6"
+        },
+        {
+          "expected": "[0,1]",
+          "executionTimeMs": 1,
+          "testId": "t3",
+          "status": "Passed",
+          "actual": "[0,1]",
+          "stdout": "",
+          "passed": true,
+          "input": "[3,3], 6"
+        },
+        {
+          "actual": "[0,3]",
+          "stdout": "",
+          "input": "[1,5,8,3], 4",
+          "executionTimeMs": 1,
+          "isHidden": true,
+          "testId": "t4",
+          "status": "Passed",
+          "passed": true,
+          "expected": "[0,3]"
+        }
+      ]
+    },
+    {
+      "id": "sub_mtx3d797zrfu",
+      "userEmail": "student@codeelevate.io",
+      "problemId": "prob_two_sum",
+      "executionTimeMs": 9,
+      "category": "Arrays & Hash Maps",
+      "passedCases": 4,
+      "difficulty": "basic",
+      "status": "Passed",
+      "totalCases": 4,
+      "userName": "Demo Student",
+      "language": "javascript",
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "createdAt": "2026-09-11T15:08:56.443Z",
+      "aiReview": {
+        "edgeCasesCovered": [
+          "Two numbers at the beginning of the array.",
+          "Two numbers at the end of the array.",
+          "Array with only two elements."
+        ],
+        "spaceComplexity": "O(1) because the approach uses a constant amount of extra space regardless of the input size.",
+        "summary": "Your solution is logically sound and functionally correct, effectively solving the problem using a brute-force approach. While it passes all basic tests, it is inefficient for large datasets. Transitioning to a hash map will allow you to reduce the time complexity significantly.",
+        "strengths": [
+          "The code is highly readable and logically clear.",
+          "The use of nested loops correctly handles the requirement to avoid using the same element twice by starting the inner loop at i + 1.",
+          "Excellent adherence to the problem requirements regarding return values."
+        ],
+        "edgeCasesMissed": [
+          "Large input arrays where O(n^2) will exceed time limits.",
+          "Arrays containing negative numbers (though your logic currently handles this correctly)."
+        ],
+        "correctnessScore": 100,
+        "timeComplexity": "O(n^2) where n is the number of elements in the array. The nested loops result in a quadratic number of operations.",
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }",
+        "improvements": [
+          "Implement a Hash Map (Object or Map) to store visited values and their indices, which will reduce the time complexity from O(n^2) to O(n).",
+          "Avoid unnecessary computations by calculating the complement (target - current) and checking for its existence in the hash map instead of iterating through the array repeatedly.",
+          "Consider early exit conditions if the dataset is guaranteed to be large."
+        ]
+      },
+      "problemTitle": "Two Sum",
+      "testResults": [
+        {
+          "status": "Passed",
+          "testId": "t1",
+          "input": "[2,7,11,15], 9",
+          "executionTimeMs": 1,
+          "passed": true,
+          "expected": "[0,1]",
+          "stdout": "",
+          "actual": "[0,1]"
+        },
+        {
+          "actual": "[1,2]",
+          "stdout": "",
+          "expected": "[1,2]",
+          "executionTimeMs": 1,
+          "passed": true,
+          "input": "[3,2,4], 6",
+          "status": "Passed",
+          "testId": "t2"
+        },
+        {
+          "passed": true,
+          "input": "[3,3], 6",
+          "expected": "[0,1]",
+          "actual": "[0,1]",
+          "stdout": "",
+          "testId": "t3",
+          "status": "Passed",
+          "executionTimeMs": 1
+        },
+        {
+          "input": "[1,5,8,3], 4",
+          "testId": "t4",
+          "status": "Passed",
+          "isHidden": true,
+          "expected": "[0,3]",
+          "passed": true,
+          "executionTimeMs": 1,
+          "actual": "[0,3]",
+          "stdout": ""
+        }
+      ],
+      "memoryKb": 37071,
+      "userId": "usr_student_active"
+    },
+    {
+      "id": "sub_mtx6fgq3r7i1",
+      "difficulty": "basic",
+      "category": "Arrays & Hash Maps",
+      "totalCases": 4,
+      "userName": "Demo Student",
+      "createdAt": "2026-09-11T16:34:40.875Z",
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "passedCases": 4,
+      "executionTimeMs": 9,
+      "userId": "usr_student_active",
+      "problemTitle": "Two Sum",
+      "userEmail": "student@codeelevate.io",
+      "problemId": "prob_two_sum",
+      "language": "javascript",
+      "status": "Passed",
+      "memoryKb": 35857,
+      "testResults": [
+        {
+          "stdout": "",
+          "actual": "[0,1]",
+          "passed": true,
+          "executionTimeMs": 1,
+          "expected": "[0,1]",
+          "testId": "t1",
+          "status": "Passed",
+          "input": "[2,7,11,15], 9"
+        },
+        {
+          "testId": "t2",
+          "status": "Passed",
+          "input": "[3,2,4], 6",
+          "passed": true,
+          "executionTimeMs": 1,
+          "expected": "[1,2]",
+          "stdout": "",
+          "actual": "[1,2]"
+        },
+        {
+          "input": "[3,3], 6",
+          "status": "Passed",
+          "testId": "t3",
+          "expected": "[0,1]",
+          "passed": true,
+          "executionTimeMs": 1,
+          "stdout": "",
+          "actual": "[0,1]"
+        },
+        {
+          "input": "[1,5,8,3], 4",
+          "actual": "[0,3]",
+          "stdout": "",
+          "status": "Passed",
+          "testId": "t4",
+          "isHidden": true,
+          "executionTimeMs": 1,
+          "passed": true,
+          "expected": "[0,3]"
+        }
+      ],
+      "aiReview": {
+        "strengths": [
+          "The code is clean, readable, and follows standard naming conventions.",
+          "Correctly handles the requirement to not use the same element twice by starting the inner loop at i + 1.",
+          "Efficient space utilization since it does not allocate auxiliary data structures."
+        ],
+        "correctnessScore": 100,
+        "edgeCasesMissed": [
+          "Large arrays where O(n^2) performance will cause a Time Limit Exceeded error.",
+          "Arrays with extremely large integer values potentially causing overflow (though JavaScript handles numbers as 64-bit floats, this is worth noting in other languages)."
+        ],
+        "spaceComplexity": "O(1) because it uses a constant amount of extra space regardless of input size.",
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }",
+        "edgeCasesCovered": [
+          "Array with exactly two elements.",
+          "Target sum achievable by the first and last elements.",
+          "Negative numbers within the array."
+        ],
+        "summary": "Your solution is logically sound and correctly solves the problem using a brute-force approach. While it passes all tests, it is inefficient for larger datasets; for production or interview contexts, transitioning from nested loops to a hash map is the standard way to achieve linear time complexity.",
+        "improvements": [
+          "Incorporate a Hash Map (Object or Map in JavaScript) to cache previously seen numbers, which reduces the time complexity from O(n^2) to O(n).",
+          "While the code is simple, adding JSDoc comments or parameter type validation could improve maintainability in larger projects."
+        ],
+        "timeComplexity": "O(n^2) where n is the length of the array, due to the nested loop approach."
+      }
+    },
+    {
+      "id": "sub_mtx6r5c5cxq2",
+      "executionTimeMs": 10,
+      "userName": "Demo Student",
+      "testResults": [
+        {
+          "stdout": "",
+          "actual": "[0,1]",
+          "executionTimeMs": 1,
+          "passed": true,
+          "expected": "[0,1]",
+          "input": "[2,7,11,15], 9",
+          "status": "Passed",
+          "testId": "t1"
+        },
+        {
+          "testId": "t2",
+          "status": "Passed",
+          "input": "[3,2,4], 6",
+          "expected": "[1,2]",
+          "executionTimeMs": 1,
+          "passed": true,
+          "actual": "[1,2]",
+          "stdout": ""
+        },
+        {
+          "executionTimeMs": 1,
+          "testId": "t3",
+          "status": "Passed",
+          "input": "[3,3], 6",
+          "passed": true,
+          "expected": "[0,1]",
+          "stdout": "",
+          "actual": "[0,1]"
+        },
+        {
+          "input": "[1,5,8,3], 4",
+          "stdout": "",
+          "actual": "[0,3]",
+          "status": "Passed",
+          "testId": "t4",
+          "isHidden": true,
+          "passed": true,
+          "executionTimeMs": 1,
+          "expected": "[0,3]"
+        }
+      ],
+      "userEmail": "student@codeelevate.io",
+      "problemId": "prob_two_sum",
+      "category": "Arrays & Hash Maps",
+      "difficulty": "basic",
+      "userId": "usr_student_active",
+      "totalCases": 4,
+      "passedCases": 4,
+      "memoryKb": 38367,
+      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
+      "aiReview": {
+        "correctnessScore": 100,
+        "summary": "Your implementation correctly solves the Two Sum problem using a brute-force approach. While it passes all tests, it is inefficient for large datasets. Transitioning from an O(n^2) approach to an O(n) approach using a hash map is the standard evolution for this problem.",
+        "edgeCasesCovered": [
+          "Array with two elements.",
+          "Solution at the beginning of the array.",
+          "Solution at the end of the array."
+        ],
+        "improvements": [
+          "Refactor to use a Map (hash table) to store seen numbers and their indices, which will reduce time complexity to O(n).",
+          "Consider adding early exit conditions or guard clauses if input validation were required.",
+          "Leverage modern JavaScript idioms for better readability, though your current structure is already quite clear."
+        ],
+        "timeComplexity": "O(n^2), where n is the length of the array, due to the nested loops performing a pair-wise comparison for all elements.",
+        "edgeCasesMissed": [
+          "Negative numbers (though your current code handles them correctly).",
+          "Array with minimal input size (2 elements)."
+        ],
+        "strengths": [
+          "The code is clean, readable, and follows basic logic correctly.",
+          "The use of nested loops correctly handles the requirement to not use the same element twice by starting the second loop at i + 1.",
+          "Early exit strategy is implemented correctly as soon as the solution is found."
+        ],
+        "spaceComplexity": "O(1), as the algorithm uses a constant amount of extra space regardless of the input size.",
+        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }"
+      },
+      "problemTitle": "Two Sum",
+      "status": "Passed",
+      "createdAt": "2026-09-11T16:43:45.989Z",
+      "language": "javascript"
     }
   ],
   "messages": [

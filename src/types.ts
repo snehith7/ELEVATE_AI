@@ -17,6 +17,9 @@ export interface User {
   targetGoal: string;
   streakDays: number;
   totalSolved: number;
+  status?: 'PendingVerification' | 'Verified';
+  isVerified?: boolean;
+  emailVerified?: boolean;
   solvedProblems?: string[];
   createdAt: string;
 }
@@ -223,7 +226,10 @@ export interface FacultyOverview {
 
 export interface DatabaseStatus {
   connected: boolean;
-  type: 'mongodb_atlas' | 'mongodb_local' | 'mongodb_embedded_engine';
+  type: 'firebase_firestore' | 'mongodb_atlas' | 'mongodb_local' | 'mongodb_embedded_engine';
+  isFirebase?: boolean;
+  projectId?: string;
+  databaseId?: string;
   uriConfigured: boolean;
   maskedUri?: string;
   collectionsCount: {

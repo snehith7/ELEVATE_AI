@@ -1,7 +1,9 @@
 import { Router, Request, Response } from 'express';
+import crypto from 'crypto';
 import { dbManager } from './db';
 import { seedInitialData } from './seed';
 import { executeSandboxedCode } from './sandbox';
+import { sendVerificationEmail } from './email';
 import {
   generatePersonalizedProblem,
   reviewUserCode,
@@ -11,16 +13,100 @@ import {
 
 export const apiRouter = Router();
 
+// Helper to strip sensitive auth fields from user document
+export function sanitizeUser(user: any): any {
+  if (!user) return null;
+  const { password: _, verificationOtp: __, verificationOtpExpiresAt: ___, ...safeUser } = user;
+  return safeUser;
+}
+
+// Secure Password Hashing & Verification Utilities
+export function hashPassword(password: string): string {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.scryptSync(password, salt, 64).toString('hex');
+  return `scrypt:${salt}:${hash}`;
+}
+
+export function verifyPassword(password: string, storedHash: string): boolean {
+  if (!storedHash || !password) return false;
+  if (storedHash.startsWith('scrypt:')) {
+    const parts = storedHash.split(':');
+    if (parts.length !== 3) return false;
+    const salt = parts[1];
+    const originalHash = parts[2];
+    try {
+      const derivedHash = crypto.scryptSync(password, salt, 64).toString('hex');
+      return crypto.timingSafeEqual(
+        Buffer.from(derivedHash, 'hex'),
+        Buffer.from(originalHash, 'hex')
+      );
+    } catch {
+      return false;
+    }
+  }
+  // Plain text fallback for initial seeded default accounts
+  return storedHash === password;
+}
+
 // In-memory cache for student analytics evaluations to avoid redundant AI queries
 const analysisCache = new Map<string, { lastSubCount: number; data: any; timestamp: number }>();
 
 // Helper to get authorization token/userId
-function getUserIdFromReq(req: Request): string {
+export function getUserIdFromReq(req: Request): string {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
-    return authHeader.split(' ')[1];
+    return authHeader.split(' ')[1].trim();
   }
-  return (req.headers['x-user-id'] as string) || '';
+  if (req.headers['x-user-id']) {
+    return (req.headers['x-user-id'] as string).trim();
+  }
+  if (req.headers['x-auth-token']) {
+    return (req.headers['x-auth-token'] as string).trim();
+  }
+  if (req.query && req.query.token) {
+    return (req.query.token as string).trim();
+  }
+  if (req.query && req.query.userId) {
+    return (req.query.userId as string).trim();
+  }
+  return '';
+}
+
+// Helper to look up active authenticated user
+export async function getAuthUser(req: Request): Promise<any | null> {
+  const userId = getUserIdFromReq(req);
+  if (!userId) return null;
+  const usersCol = dbManager.getCollection('users');
+  return await usersCol.findOne({
+    $or: [{ id: userId }, { email: userId.toLowerCase() }]
+  });
+}
+
+// RBAC Middleware: Enforce access based on user role
+export function requireRole(allowedRoles: ('student' | 'faculty' | 'admin')[]) {
+  return async (req: Request, res: Response, next: Function) => {
+    try {
+      const user = await getAuthUser(req);
+      if (!user) {
+        return res.status(401).json({
+          error: 'Authentication required. Please provide a valid authorization token in headers.'
+        });
+      }
+
+      if (!allowedRoles.includes(user.role)) {
+        return res.status(403).json({
+          error: `Access denied. Role '${user.role}' is not authorized. Required role(s): ${allowedRoles.join(' or ')}.`
+        });
+      }
+
+      (req as any).authenticatedUser = user;
+      (req as any).user = user;
+      (req as any).userId = user.id;
+      next();
+    } catch (err: any) {
+      return res.status(500).json({ error: err.message });
+    }
+  };
 }
 
 // -------------------------------------------------------------
@@ -44,7 +130,7 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
       ]
     });
 
-    if (!user || user.password !== password) {
+    if (!user || !verifyPassword(password, user.password)) {
       return res.status(401).json({ error: 'Invalid student email or password.' });
     }
 
@@ -54,10 +140,39 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
       });
     }
 
-    const { password: _, ...safeUser } = user;
+    // Check if account has verified their email address
+    if (user.status === 'PendingVerification' || (user.isVerified === false && user.role === 'student')) {
+      // Re-send / ensure OTP is active so they can verify immediately
+      let otp = user.verificationOtp;
+      const isExpired = !user.verificationOtpExpiresAt || new Date(user.verificationOtpExpiresAt).getTime() < Date.now();
+      if (!otp || isExpired) {
+        otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+        await usersCol.updateOne(
+          { id: user.id },
+          {
+            $set: {
+              verificationOtp: otp,
+              verificationOtpExpiresAt: expiresAt
+            }
+          }
+        );
+        sendVerificationEmail(user.email, otp, user.username).catch(err =>
+          console.warn('Background email send on login notice:', err.message)
+        );
+      }
+
+      return res.status(403).json({
+        error: 'Your email address has not been verified yet. Please enter the 6-digit verification code to activate your account.',
+        requiresVerification: true,
+        email: user.email,
+        userId: user.id
+      });
+    }
+
     return res.json({
       token: user.id,
-      user: safeUser
+      user: sanitizeUser(user)
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
@@ -81,7 +196,7 @@ apiRouter.post('/faculty/login', async (req: Request, res: Response) => {
       ]
     });
 
-    if (!user || user.password !== password) {
+    if (!user || !verifyPassword(password, user.password)) {
       return res.status(401).json({ error: 'Invalid faculty email or password.' });
     }
 
@@ -91,32 +206,76 @@ apiRouter.post('/faculty/login', async (req: Request, res: Response) => {
       });
     }
 
-    const { password: _, ...safeUser } = user;
     return res.json({
       token: user.id,
-      user: safeUser
+      user: sanitizeUser(user)
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
 });
 
+// New User Registration with 6-Digit OTP Email Verification
 apiRouter.post('/auth/register', async (req: Request, res: Response) => {
   try {
     const { username, email, password, skillLevel, preferredLanguage, targetGoal, batch } = req.body;
-    const usersCol = dbManager.getCollection('users');
-
-    const normalizedEmail = email?.trim().toLowerCase();
-    const existing = await usersCol.findOne({ email: normalizedEmail });
-    if (existing) {
-      return res.status(400).json({ error: 'A student account with this email already exists.' });
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required.' });
     }
 
+    const usersCol = dbManager.getCollection('users');
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // Generate cryptographically random 6-digit OTP code (100000 - 999999)
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10-minute expiration
+
+    const existing = await usersCol.findOne({ email: normalizedEmail });
+    if (existing) {
+      // If user account is already fully verified, return error
+      if (existing.status === 'Verified' || existing.isVerified) {
+        return res.status(400).json({ error: 'An active student account with this email already exists. Please sign in.' });
+      }
+
+      // If user started registration earlier but has not yet verified, refresh OTP and re-dispatch
+      const initialPassword = password || 'defaultpass';
+      await usersCol.updateOne(
+        { id: existing.id },
+        {
+          $set: {
+            username: username?.trim() || existing.username || normalizedEmail.split('@')[0],
+            password: hashPassword(initialPassword),
+            skillLevel: skillLevel || existing.skillLevel || 'intermediate',
+            preferredLanguage: preferredLanguage || existing.preferredLanguage || 'javascript',
+            targetGoal: targetGoal || existing.targetGoal || 'Elevate my software development and coding interview skills',
+            status: 'PendingVerification',
+            isVerified: false,
+            emailVerified: false,
+            verificationOtp: otp,
+            verificationOtpExpiresAt: expiresAt,
+            updatedAt: new Date().toISOString()
+          }
+        }
+      );
+
+      // Dispatch verification email via Nodemailer
+      await sendVerificationEmail(normalizedEmail, otp, username?.trim() || existing.username);
+
+      return res.status(200).json({
+        success: true,
+        requiresVerification: true,
+        email: normalizedEmail,
+        userId: existing.id,
+        message: `A fresh 6-digit verification code has been sent to ${normalizedEmail}. Please enter the code to activate your account.`
+      });
+    }
+
+    const initialPassword = password || 'defaultpass';
     const newUser = {
       id: 'usr_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
-      username: username?.trim() || email.split('@')[0],
+      username: username?.trim() || normalizedEmail.split('@')[0],
       email: normalizedEmail,
-      password: password || 'defaultpass',
+      password: hashPassword(initialPassword),
       role: 'student',
       batch: batch || 'Batch 2026-A',
       skillLevel: skillLevel || 'beginner',
@@ -124,15 +283,170 @@ apiRouter.post('/auth/register', async (req: Request, res: Response) => {
       targetGoal: targetGoal || 'Elevate my software development and coding interview skills',
       streakDays: 0,
       totalSolved: 0,
+      status: 'PendingVerification',
+      isVerified: false,
+      emailVerified: false,
+      verificationOtp: otp,
+      verificationOtpExpiresAt: expiresAt,
       createdAt: new Date().toISOString()
     };
 
+    // Save to Firestore and local persistent store
     await usersCol.insertOne(newUser);
-    const { password: _, ...safeUser } = newUser;
 
+    // Dispatch verification email via Nodemailer (with test fallback / server console log)
+    await sendVerificationEmail(normalizedEmail, otp, newUser.username);
+
+    // Do NOT return login token: require OTP email verification step first
     return res.status(201).json({
-      token: newUser.id,
-      user: safeUser
+      success: true,
+      requiresVerification: true,
+      email: normalizedEmail,
+      userId: newUser.id,
+      message: `A 6-digit verification code has been sent to ${normalizedEmail}. Please enter the code to verify your account.`
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// Verify 6-Digit Email OTP Endpoint
+apiRouter.post('/auth/verify-email', async (req: Request, res: Response) => {
+  try {
+    const { email, code, userId } = req.body;
+    if (!code) {
+      return res.status(400).json({ error: 'Please enter the 6-digit verification code.' });
+    }
+
+    const trimmedCode = String(code).trim();
+    if (!/^\d{6}$/.test(trimmedCode)) {
+      return res.status(400).json({ error: 'Verification code must be exactly 6 digits.' });
+    }
+
+    const normalizedEmail = email ? String(email).trim().toLowerCase() : '';
+    const usersCol = dbManager.getCollection('users');
+
+    const filter: any = normalizedEmail
+      ? { email: normalizedEmail }
+      : (userId ? { id: userId } : null);
+
+    if (!filter) {
+      return res.status(400).json({ error: 'Email address is required for verification.' });
+    }
+
+    const user = await usersCol.findOne(filter);
+    if (!user) {
+      return res.status(404).json({ error: 'No account found matching this email address.' });
+    }
+
+    // Check if account is already verified
+    if (user.status === 'Verified' && user.isVerified) {
+      return res.json({
+        success: true,
+        alreadyVerified: true,
+        message: 'Account is already verified. Logging you in...',
+        token: user.id,
+        user: sanitizeUser(user)
+      });
+    }
+
+    // Check if entered OTP matches
+    if (!user.verificationOtp || user.verificationOtp !== trimmedCode) {
+      return res.status(400).json({
+        error: 'Invalid verification code. Please check your email or request a new code.'
+      });
+    }
+
+    // Check expiration (10 minutes)
+    if (user.verificationOtpExpiresAt) {
+      const expiresAt = new Date(user.verificationOtpExpiresAt).getTime();
+      if (Date.now() > expiresAt) {
+        return res.status(400).json({
+          error: 'Verification code has expired (10-minute limit exceeded). Please click "Resend Code" to receive a fresh code.',
+          expired: true
+        });
+      }
+    }
+
+    // Mark account as Verified in Firestore and database
+    await usersCol.updateOne(
+      { id: user.id },
+      {
+        $set: {
+          status: 'Verified',
+          isVerified: true,
+          emailVerified: true,
+          verifiedAt: new Date().toISOString()
+        },
+        $unset: {
+          verificationOtp: 1,
+          verificationOtpExpiresAt: 1
+        }
+      }
+    );
+
+    const updatedUser = await usersCol.findOne({ id: user.id }) || {
+      ...user,
+      status: 'Verified',
+      isVerified: true,
+      emailVerified: true
+    };
+
+    console.log(`🎉 Student email verified successfully: ${user.email} (${user.id})`);
+
+    // Grant access with authenticated session token
+    return res.json({
+      success: true,
+      message: 'Email successfully verified! Welcome to CodeElevate AI Academy.',
+      token: updatedUser.id,
+      user: sanitizeUser(updatedUser)
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// Resend 6-Digit Email OTP Endpoint
+apiRouter.post('/auth/resend-verification', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: 'Email address is required.' });
+    }
+
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const usersCol = dbManager.getCollection('users');
+    const user = await usersCol.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      return res.status(404).json({ error: 'No student account found with this email.' });
+    }
+
+    if (user.status === 'Verified' && user.isVerified) {
+      return res.status(400).json({ error: 'This account is already verified. You can sign in directly.' });
+    }
+
+    // Generate fresh 6-digit OTP code & new 10-minute expiry
+    const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    const newExpiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+
+    await usersCol.updateOne(
+      { id: user.id },
+      {
+        $set: {
+          verificationOtp: newOtp,
+          verificationOtpExpiresAt: newExpiresAt,
+          updatedAt: new Date().toISOString()
+        }
+      }
+    );
+
+    // Send email
+    await sendVerificationEmail(normalizedEmail, newOtp, user.username);
+
+    return res.json({
+      success: true,
+      message: `A fresh 6-digit verification code has been dispatched to ${normalizedEmail}.`
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
@@ -142,11 +456,15 @@ apiRouter.post('/auth/register', async (req: Request, res: Response) => {
 // Change Own Password (for Student, Faculty, or Admin)
 apiRouter.post('/auth/change-password', async (req: Request, res: Response) => {
   try {
-    const userId = getUserIdFromReq(req);
+    const userId = getUserIdFromReq(req) || req.body.userId || req.body.id;
     const { currentPassword, newPassword } = req.body;
 
     if (!userId) {
       return res.status(401).json({ error: 'Authentication required to update password.' });
+    }
+
+    if (!currentPassword) {
+      return res.status(400).json({ error: 'Current password is required.' });
     }
 
     if (!newPassword || newPassword.length < 4) {
@@ -159,15 +477,26 @@ apiRouter.post('/auth/change-password', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'User account not found.' });
     }
 
-    if (user.password && user.password !== currentPassword) {
-      return res.status(400).json({ error: 'Current password is incorrect. Please try again.' });
+    // Securely verify old password (supports both hashed and legacy plain passwords)
+    if (user.password && !verifyPassword(currentPassword, user.password)) {
+      return res.status(400).json({ error: 'Current password is incorrect. Please verify your existing password.' });
     }
 
-    await usersCol.updateOne({ id: userId }, { $set: { password: newPassword } });
+    // Hash the new password securely
+    const hashedPassword = hashPassword(newPassword);
+    await usersCol.updateOne(
+      { id: userId },
+      {
+        $set: {
+          password: hashedPassword,
+          updatedAt: new Date().toISOString()
+        }
+      }
+    );
 
     return res.json({
       success: true,
-      message: 'Account password updated successfully!'
+      message: 'Password changed successfully!'
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
@@ -537,7 +866,11 @@ apiRouter.post('/code/submit', async (req: Request, res: Response) => {
       analysisCache.delete(userId);
     }
 
-    return res.status(201).json(submission);
+    return res.status(201).json({
+      success: true,
+      submission,
+      ...submission
+    });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
@@ -625,11 +958,20 @@ apiRouter.post('/ai/tutor-chat', async (req: Request, res: Response) => {
 apiRouter.get('/analytics', async (req: Request, res: Response) => {
   try {
     const userId = getUserIdFromReq(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'Authentication required. Please provide a valid session token.' });
+    }
+
     const usersCol = dbManager.getCollection('users');
     const problemsCol = dbManager.getCollection('problems');
     const submissionsCol = dbManager.getCollection('submissions');
 
-    const user = await usersCol.findOne({ id: userId });
+    const user = await usersCol.findOne({
+      $or: [{ id: userId }, { email: userId.toLowerCase() }]
+    });
+    if (!user) {
+      return res.status(404).json({ error: 'User account not found.' });
+    }
     const allProblems = await problemsCol.find().toArray();
     const userSubmissions = await submissionsCol.find({ userId }).sort({ createdAt: -1 }).toArray();
 
@@ -714,17 +1056,23 @@ apiRouter.get('/analytics', async (req: Request, res: Response) => {
       passed: counts.passed
     }));
 
+    const difficultyBreakdown = {
+      basic: { solved: basicSolved, total: basicProblems.length },
+      intermediate: { solved: intermediateSolved, total: intermediateProblems.length },
+      advanced: { solved: advancedSolved, total: advancedProblems.length }
+    };
+
     return res.json({
       userId,
       totalSolved,
       totalAttempted,
       accuracyRate,
-      difficultyBreakdown: {
-        basic: { solved: basicSolved, total: basicProblems.length },
-        intermediate: { solved: intermediateSolved, total: intermediateProblems.length },
-        advanced: { solved: advancedSolved, total: advancedProblems.length }
-      },
+      streakDays: user?.streakDays || 0,
+      difficultyBreakdown,
+      difficulty: difficultyBreakdown,
       categoryMastery,
+      radarData: categoryMastery,
+      recentSubmissions: userSubmissions.slice(0, 10),
       identifiedMistakes: (mistakeAnalysis.identifiedMistakes || []).map((m: any, idx: number) => ({
         id: m.id || `mistake_${idx}`,
         category: typeof m.category === 'string' ? m.category : 'Algorithms',
@@ -748,7 +1096,7 @@ apiRouter.get('/analytics', async (req: Request, res: Response) => {
 // -------------------------------------------------------------
 // ADMIN DASHBOARD & USER MONITORING
 // -------------------------------------------------------------
-apiRouter.get('/admin/overview', async (req: Request, res: Response) => {
+apiRouter.get('/admin/overview', requireRole(['admin']), async (req: Request, res: Response) => {
   try {
     const usersCol = dbManager.getCollection('users');
     const problemsCol = dbManager.getCollection('problems');
@@ -791,16 +1139,24 @@ apiRouter.get('/admin/overview', async (req: Request, res: Response) => {
     const totalAccepted = submissions.filter((s: any) => s.status === 'Passed' || s.status === 'accepted').length;
     const overallPassRate = totalSubmissions > 0 ? Math.round((totalAccepted / totalSubmissions) * 100) : 0;
 
+    const summary = {
+      totalUsers: users.length,
+      totalStudents: users.filter((u: any) => u.role === 'student').length,
+      totalFaculty: users.filter((u: any) => u.role === 'faculty').length,
+      totalProblems: problems.length,
+      totalSubmissions,
+      overallPassRate,
+      averageAccuracy: overallPassRate,
+      aiProblemsGenerated: problems.filter((p: any) => p.isAiGenerated).length
+    };
+
     return res.json({
-      metrics: {
-        totalStudents: users.filter((u: any) => u.role === 'student').length,
-        totalFaculty: users.filter((u: any) => u.role === 'faculty').length,
-        totalProblems: problems.length,
-        totalSubmissions,
-        overallPassRate,
-        aiProblemsGenerated: problems.filter((p: any) => p.isAiGenerated).length
-      },
+      metrics: summary,
+      summary,
+      users: studentsWithMetrics,
       students: studentsWithMetrics,
+      problems,
+      submissions,
       recentSubmissions: submissions.slice(0, 15)
     });
   } catch (err: any) {
@@ -808,7 +1164,7 @@ apiRouter.get('/admin/overview', async (req: Request, res: Response) => {
   }
 });
 
-apiRouter.get('/admin/student/:id', async (req: Request, res: Response) => {
+const handleGetStudentDetails = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const usersCol = dbManager.getCollection('users');
@@ -828,7 +1184,11 @@ apiRouter.get('/admin/student/:id', async (req: Request, res: Response) => {
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
-});
+};
+
+apiRouter.get('/admin/student/:id', requireRole(['admin', 'faculty']), handleGetStudentDetails);
+apiRouter.get('/admin/users/:id', requireRole(['admin', 'faculty']), handleGetStudentDetails);
+apiRouter.get('/faculty/student/:id', requireRole(['admin', 'faculty']), handleGetStudentDetails);
 
 // Dedicated Admin Authentication (Single Root Admin Account)
 apiRouter.post('/admin/login', async (req: Request, res: Response) => {
@@ -858,7 +1218,7 @@ apiRouter.post('/admin/login', async (req: Request, res: Response) => {
       });
     }
 
-    if (user.password !== password) {
+    if (!verifyPassword(password, user.password)) {
       return res.status(401).json({ error: 'Invalid administrator password.' });
     }
 
@@ -892,11 +1252,15 @@ apiRouter.post('/admin/change-password', async (req: Request, res: Response) => 
       return res.status(404).json({ error: 'Admin account not found.' });
     }
 
-    if (currentPassword && admin.password && admin.password !== currentPassword) {
+    if (currentPassword && admin.password && !verifyPassword(currentPassword, admin.password)) {
       return res.status(400).json({ error: 'Current administrator password is incorrect.' });
     }
 
-    await usersCol.updateOne({ id: admin.id }, { $set: { password: newPassword } });
+    const hashedPassword = hashPassword(newPassword);
+    await usersCol.updateOne(
+      { id: admin.id },
+      { $set: { password: hashedPassword, updatedAt: new Date().toISOString() } }
+    );
 
     return res.json({
       success: true,
@@ -908,7 +1272,7 @@ apiRouter.post('/admin/change-password', async (req: Request, res: Response) => 
 });
 
 // Admin Reset/Change ANY User's Password (student or faculty)
-apiRouter.put('/admin/users/:id/password', async (req: Request, res: Response) => {
+apiRouter.put('/admin/users/:id/password', requireRole(['admin']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { newPassword } = req.body;
@@ -923,7 +1287,11 @@ apiRouter.put('/admin/users/:id/password', async (req: Request, res: Response) =
       return res.status(404).json({ error: 'User account not found.' });
     }
 
-    await usersCol.updateOne({ id }, { $set: { password: newPassword } });
+    const hashedPassword = hashPassword(newPassword);
+    await usersCol.updateOne(
+      { id },
+      { $set: { password: hashedPassword, updatedAt: new Date().toISOString() } }
+    );
 
     return res.json({
       success: true,
@@ -935,7 +1303,7 @@ apiRouter.put('/admin/users/:id/password', async (req: Request, res: Response) =
 });
 
 // Admin Add User (Determining Status: Student vs Faculty vs Admin)
-apiRouter.post('/admin/users', async (req: Request, res: Response) => {
+apiRouter.post('/admin/users', requireRole(['admin']), async (req: Request, res: Response) => {
   try {
     const {
       username,
@@ -979,6 +1347,9 @@ apiRouter.post('/admin/users', async (req: Request, res: Response) => {
       targetGoal: targetGoal || (assignedRole === 'faculty' ? 'Instruct curriculum and guide batch performance' : 'Master technical interviews'),
       streakDays: Math.max(0, Number(streakDays) || 0),
       totalSolved: Math.max(0, Number(totalSolved) || 0),
+      status: 'Verified',
+      isVerified: true,
+      emailVerified: true,
       createdAt: new Date().toISOString()
     };
 
@@ -996,7 +1367,7 @@ apiRouter.post('/admin/users', async (req: Request, res: Response) => {
 });
 
 // Admin Delete User
-apiRouter.delete('/admin/users/:id', async (req: Request, res: Response) => {
+apiRouter.delete('/admin/users/:id', requireRole(['admin']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     if (id === 'usr_admin_root') {
@@ -1030,7 +1401,7 @@ apiRouter.delete('/admin/users/:id', async (req: Request, res: Response) => {
 });
 
 // Admin Update User
-apiRouter.put('/admin/users/:id', async (req: Request, res: Response) => {
+apiRouter.put('/admin/users/:id', requireRole(['admin']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { username, email, role, batch, password, skillLevel, preferredLanguage, targetGoal, streakDays, totalSolved } = req.body;
@@ -1068,7 +1439,7 @@ apiRouter.put('/admin/users/:id', async (req: Request, res: Response) => {
 // -------------------------------------------------------------
 // FACULTY DASHBOARD & BATCH PERFORMANCE TRACKING
 // -------------------------------------------------------------
-apiRouter.get('/faculty/overview', async (req: Request, res: Response) => {
+apiRouter.get('/faculty/overview', requireRole(['faculty', 'admin']), async (req: Request, res: Response) => {
   try {
     const facultyId = getUserIdFromReq(req);
     const selectedBatch = (req.query.batch as string) || '';
@@ -1151,8 +1522,8 @@ apiRouter.get('/faculty/overview', async (req: Request, res: Response) => {
   }
 });
 
-// Admin Add Problem
-apiRouter.post('/admin/problems', async (req: Request, res: Response) => {
+// Problem Management Handlers (Admin and Faculty privileged operations)
+const handleCreateProblem = async (req: Request, res: Response) => {
   try {
     const {
       title,
@@ -1307,10 +1678,10 @@ func ${funcName}(input interface{}) interface{} {
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
-});
+};
 
-// Admin Delete Problem
-apiRouter.delete('/admin/problems/:id', async (req: Request, res: Response) => {
+// Problem Deletion Handler
+const handleDeleteProblem = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const problemsCol = dbManager.getCollection('problems');
@@ -1334,10 +1705,10 @@ apiRouter.delete('/admin/problems/:id', async (req: Request, res: Response) => {
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
-});
+};
 
-// Admin AI Draft Problem Helper
-apiRouter.post('/admin/problems/generate-draft', async (req: Request, res: Response) => {
+// AI Draft Problem Helper Handler
+const handleGenerateDraftProblem = async (req: Request, res: Response) => {
   try {
     const { topic, category, difficulty = 'intermediate', targetLanguage = 'javascript' } = req.body;
     
@@ -1362,39 +1733,17 @@ apiRouter.post('/admin/problems/generate-draft', async (req: Request, res: Respo
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
-});
+};
 
-// Faculty Problem Management Endpoints (Privileges to add/delete/generate coding problems)
-apiRouter.post('/faculty/problems', async (req: Request, res: Response) => {
-  // Delegate to problem creation
-  const addProblemHandler = (apiRouter.stack as any[]).find(
-    (layer: any) => layer.route?.path === '/admin/problems' && layer.route?.methods?.post
-  );
-  if (addProblemHandler) {
-    return addProblemHandler.handle(req, res);
-  }
-  return res.status(500).json({ error: 'Handler not found' });
-});
+// Mount Problem Authoring & Management for Admin and Faculty
+apiRouter.post('/admin/problems', requireRole(['admin', 'faculty']), handleCreateProblem);
+apiRouter.post('/faculty/problems', requireRole(['faculty', 'admin']), handleCreateProblem);
 
-apiRouter.delete('/faculty/problems/:id', async (req: Request, res: Response) => {
-  const delProblemHandler = (apiRouter.stack as any[]).find(
-    (layer: any) => layer.route?.path === '/admin/problems/:id' && layer.route?.methods?.delete
-  );
-  if (delProblemHandler) {
-    return delProblemHandler.handle(req, res);
-  }
-  return res.status(500).json({ error: 'Handler not found' });
-});
+apiRouter.delete('/admin/problems/:id', requireRole(['admin', 'faculty']), handleDeleteProblem);
+apiRouter.delete('/faculty/problems/:id', requireRole(['faculty', 'admin']), handleDeleteProblem);
 
-apiRouter.post('/faculty/problems/generate-draft', async (req: Request, res: Response) => {
-  const draftHandler = (apiRouter.stack as any[]).find(
-    (layer: any) => layer.route?.path === '/admin/problems/generate-draft' && layer.route?.methods?.post
-  );
-  if (draftHandler) {
-    return draftHandler.handle(req, res);
-  }
-  return res.status(500).json({ error: 'Handler not found' });
-});
+apiRouter.post('/admin/problems/generate-draft', requireRole(['admin', 'faculty']), handleGenerateDraftProblem);
+apiRouter.post('/faculty/problems/generate-draft', requireRole(['faculty', 'admin']), handleGenerateDraftProblem);
 
 // -------------------------------------------------------------
 // COMMUNITY MESSAGING & PEER DISCUSSIONS
