@@ -9,6 +9,7 @@ import { AdminLoginPage } from './components/AdminLoginPage';
 import { FacultyLoginPage } from './components/FacultyLoginPage';
 import { FacultyView } from './components/FacultyView';
 import { StudentLoginPage } from './components/StudentLoginPage';
+import { ArcadeLandingPage } from './components/ArcadeLandingPage';
 import { AiProblemModal } from './components/AiProblemModal';
 import { DatabaseModal } from './components/DatabaseModal';
 import { Problem, User, AnalyticsReport, DatabaseStatus, Submission } from './types';
@@ -382,10 +383,10 @@ export default function App() {
   // -------------------------------------------------------------
   const activeSession = studentSession || facultySession;
 
-  // If no active session, show clean StudentLoginPage
+  // If no active session, show the gamified Arcade Academy student landing page
   if (!activeSession) {
     return (
-      <StudentLoginPage
+      <ArcadeLandingPage
         onLoginSuccess={handleStudentLoginSuccess}
         onGoToFacultyLogin={navigateToFaculty}
         onGoToAdminLogin={navigateToAdmin}

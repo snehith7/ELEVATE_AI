@@ -10,10 +10,13 @@ import {
   Sparkles,
   LogOut,
   ChevronRight,
-  X
+  X,
+  Trophy,
+  Award
 } from 'lucide-react';
 import { User, DatabaseStatus } from '../types';
 import { CodeElevateLogo } from './CodeElevateLogo';
+import { playTickSound } from '../utils/audioEffects';
 
 interface SidebarProps {
   currentTab: 'roadmap' | 'playground' | 'analytics' | 'community';
@@ -41,7 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navItems = [
     {
       id: 'roadmap' as const,
-      label: 'Roadmap',
+      label: 'Roadmap & Quests',
       icon: Compass,
       description: 'Skill learning path'
     },
@@ -66,6 +69,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   const handleNavClick = (tab: 'roadmap' | 'playground' | 'analytics' | 'community') => {
+    playTickSound(780);
     setCurrentTab(tab);
     if (onCloseMobile) onCloseMobile();
   };
