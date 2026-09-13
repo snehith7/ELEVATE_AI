@@ -13,6 +13,7 @@ import {
 import { SupportedLanguage, SkillLevel } from '../types';
 import { CodeElevateLogo, CodeElevateIcon } from './CodeElevateLogo';
 import { VerificationModal } from './VerificationModal';
+import { safeFetchJson } from '../utils/apiAuth';
 
 interface StudentLoginPageProps {
   onLoginSuccess: (user: any, token: string) => void;
@@ -63,21 +64,21 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
           }
         : { email: email.trim().toLowerCase(), password };
 
-      const res = await fetch(endpoint, {
+      const result = await safeFetchJson(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
 
-      const data = await res.json();
-      if (!res.ok) {
+      const data = result.data || {};
+      if (!result.ok) {
         // Handle unverified account attempting to login
         if (data.requiresVerification) {
           setVerificationEmail(data.email || email.trim().toLowerCase());
           setIsVerificationModalOpen(true);
           return;
         }
-        throw new Error(data.error || 'Authentication failed.');
+        throw new Error(result.error || data.error || 'Authentication failed.');
       }
 
       // If backend registration requires email OTP verification

@@ -25,6 +25,7 @@ import {
 import { CodeElevateLogo, CodeElevateIcon } from './CodeElevateLogo';
 import { VerificationModal } from './VerificationModal';
 import { SupportedLanguage, SkillLevel } from '../types';
+import { safeFetchJson } from '../utils/apiAuth';
 
 interface ArcadeLandingPageProps {
   onLoginSuccess: (user: any, token: string) => void;
@@ -82,7 +83,7 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
     setFeedbackSuccessMsg(null);
 
     try {
-      const res = await fetch('/api/feedback', {
+      const result = await safeFetchJson('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -94,9 +95,8 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
         })
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to submit feedback.');
+      if (!result.ok) {
+        throw new Error(result.error || 'Failed to submit feedback.');
       }
 
       setFeedbackSuccessMsg(
@@ -118,16 +118,16 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
     setAuthLoading(true);
     setAuthError(null);
     try {
-      const res = await fetch('/api/auth/demo-student', {
+      const result = await safeFetchJson('/api/auth/demo-student', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
-      const data = await res.json();
-      if (res.ok && data.token && data.user) {
+      const data = result.data;
+      if (result.ok && data?.token && data?.user) {
         onLoginSuccess(data.user, data.token);
         setIsAuthModalOpen(false);
       } else {
-        throw new Error(data.error || 'Demo access failed');
+        throw new Error(result.error || data?.error || 'Demo access failed');
       }
     } catch (err: any) {
       setAuthError(err.message || 'Demo login failed');
@@ -144,7 +144,7 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
 
     try {
       if (authMode === 'login') {
-        const res = await fetch('/api/auth/login', {
+        const result = await safeFetchJson('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -152,23 +152,23 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
             password: authPassword
           })
         });
-        const data = await res.json();
+        const data = result.data || {};
 
-        if (!res.ok) {
+        if (!result.ok) {
           if (data.requiresVerification) {
             setPendingVerificationEmail(authEmail.trim().toLowerCase());
             setIsAuthModalOpen(false);
             setIsVerificationModalOpen(true);
             return;
           }
-          throw new Error(data.error || 'Login failed. Check your credentials.');
+          throw new Error(result.error || data.error || 'Login failed. Check your credentials.');
         }
 
         onLoginSuccess(data.user, data.token);
         setIsAuthModalOpen(false);
       } else {
         // Register Mode
-        const res = await fetch('/api/auth/register', {
+        const result = await safeFetchJson('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -180,10 +180,10 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
             targetGoal: 'Master Algorithmic Interviews & Problem Solving'
           })
         });
-        const data = await res.json();
+        const data = result.data || {};
 
-        if (!res.ok) {
-          throw new Error(data.error || 'Registration failed.');
+        if (!result.ok) {
+          throw new Error(result.error || data.error || 'Registration failed.');
         }
 
         if (data.requiresVerification) {

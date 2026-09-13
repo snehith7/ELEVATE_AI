@@ -10,6 +10,7 @@ import {
   Lock,
   Clock
 } from 'lucide-react';
+import { safeFetchJson } from '../utils/apiAuth';
 
 interface VerificationModalProps {
   isOpen: boolean;
@@ -164,7 +165,7 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
     setSuccessMsg(null);
 
     try {
-      const res = await fetch('/api/auth/verify-email', {
+      const result = await safeFetchJson('/api/auth/verify-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -173,9 +174,9 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
         })
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Verification failed. Please check your code.');
+      const data = result.data || {};
+      if (!result.ok) {
+        throw new Error(result.error || data.error || 'Verification failed. Please check your code.');
       }
 
       setSuccessMsg('Account verified successfully! Directing you to your academy dashboard...');
@@ -203,15 +204,15 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
     setSuccessMsg(null);
 
     try {
-      const res = await fetch('/api/auth/resend-verification', {
+      const result = await safeFetchJson('/api/auth/resend-verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim().toLowerCase() })
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to resend verification code.');
+      const data = result.data || {};
+      if (!result.ok) {
+        throw new Error(result.error || data.error || 'Failed to resend verification code.');
       }
 
       setDigits(['', '', '', '', '', '']);

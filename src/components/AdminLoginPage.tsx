@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Lock, Mail, KeyRound, ArrowLeft, AlertCircle, ArrowRight } from 'lucide-react';
 import { CodeElevateLogo, CodeElevateIcon } from './CodeElevateLogo';
+import { safeFetchJson } from '../utils/apiAuth';
 
 interface AdminLoginPageProps {
   onLoginSuccess: (user: any, token: string) => void;
@@ -29,15 +30,15 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
     setErrorMsg(null);
 
     try {
-      const res = await fetch('/api/admin/login', {
+      const result = await safeFetchJson('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim().toLowerCase(), password })
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Authentication failed.');
+      const data = result.data || {};
+      if (!result.ok) {
+        throw new Error(result.error || data.error || 'Authentication failed.');
       }
 
       onLoginSuccess(data.user, data.token);

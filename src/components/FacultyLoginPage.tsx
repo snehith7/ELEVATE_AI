@@ -11,6 +11,7 @@ import {
   Users
 } from 'lucide-react';
 import { CodeElevateLogo, CodeElevateIcon } from './CodeElevateLogo';
+import { safeFetchJson } from '../utils/apiAuth';
 
 interface FacultyLoginPageProps {
   onLoginSuccess: (user: any, token: string) => void;
@@ -39,15 +40,15 @@ export const FacultyLoginPage: React.FC<FacultyLoginPageProps> = ({
     setErrorMsg(null);
 
     try {
-      const res = await fetch('/api/faculty/login', {
+      const result = await safeFetchJson('/api/faculty/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim().toLowerCase(), password })
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Faculty authentication failed.');
+      const data = result.data || {};
+      if (!result.ok) {
+        throw new Error(result.error || data.error || 'Faculty authentication failed.');
       }
 
       onLoginSuccess(data.user, data.token);

@@ -18,6 +18,7 @@ import { Problem, User, AnalyticsReport, DatabaseStatus, Submission, Badge } fro
 import { ArrowLeft, GraduationCap, Menu, Flame, Sparkles, Code2, Trophy } from 'lucide-react';
 import { testFirestoreConnection } from './firebase';
 import { CodeElevateLogo } from './components/CodeElevateLogo';
+import { safeFetchJson } from './utils/apiAuth';
 
 export default function App() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -184,13 +185,13 @@ export default function App() {
     const token = studentSession?.token || facultySession?.token || currentUser?.id;
     if (!token) return;
     try {
-      const res = await fetch('/api/auth/me', {
+      const result = await safeFetchJson('/api/auth/me', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      if (res.ok) {
-        const user = await res.json();
+      if (result.ok && result.data) {
+        const user = result.data;
         setCurrentUser(user);
         if (studentSession) {
           const updated = { ...studentSession, user };
@@ -207,13 +208,13 @@ export default function App() {
   const fetchProblems = async () => {
     try {
       const token = studentSession?.token || facultySession?.token || currentUser?.id;
-      const res = await fetch('/api/problems', {
+      const result = await safeFetchJson('/api/problems', {
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {})
         }
       });
-      if (res.ok) {
-        const json = await res.json();
+      if (result.ok && result.data) {
+        const json = result.data;
         const list: Problem[] = json.problems || json;
         setProblems(list);
       }
@@ -227,13 +228,13 @@ export default function App() {
     const uid = userId || currentUser?.id || studentSession?.user?.id;
     if (!uid) return;
     try {
-      const res = await fetch('/api/analytics', {
+      const result = await safeFetchJson('/api/analytics', {
         headers: {
           'x-user-id': uid
         }
       });
-      if (res.ok) {
-        const report: AnalyticsReport = await res.json();
+      if (result.ok && result.data) {
+        const report: AnalyticsReport = result.data;
         setAnalytics(report);
       }
     } catch (err) {
@@ -244,9 +245,9 @@ export default function App() {
   // Fetch database status
   const fetchDbStatus = async () => {
     try {
-      const res = await fetch('/api/database/status');
-      if (res.ok) {
-        const stat: DatabaseStatus = await res.json();
+      const result = await safeFetchJson('/api/database/status');
+      if (result.ok && result.data) {
+        const stat: DatabaseStatus = result.data;
         setDbStatus(stat);
       }
     } catch (err) {
@@ -258,13 +259,13 @@ export default function App() {
   const fetchBadges = async () => {
     try {
       const token = studentSession?.token || facultySession?.token || currentUser?.id;
-      const res = await fetch('/api/badges', {
+      const result = await safeFetchJson('/api/badges', {
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {})
         }
       });
-      if (res.ok) {
-        const data = await res.json();
+      if (result.ok && result.data) {
+        const data = result.data;
         const badgeList: Badge[] = Array.isArray(data)
           ? data
           : Array.isArray(data?.badges)
@@ -281,15 +282,15 @@ export default function App() {
   const handleClaimStreak = async () => {
     try {
       const token = studentSession?.token || facultySession?.token || currentUser?.id;
-      const res = await fetch('/api/badges/claim-streak', {
+      const result = await safeFetchJson('/api/badges/claim-streak', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {})
         }
       });
-      if (res.ok) {
-        const data = await res.json();
+      if (result.ok && result.data) {
+        const data = result.data;
         if (data.newlyUnlockedBadges && data.newlyUnlockedBadges.length > 0) {
           setCelebratingBadges(data.newlyUnlockedBadges);
         }
