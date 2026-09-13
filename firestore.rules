@@ -41,5 +41,11 @@ service cloud.firestore {
       allow get, create, update, delete: if isValidId(userId);
       allow list: if true;
     }
+
+    // Bug Reports, Suggestions, and Feedback
+    match /feedback/{feedbackId} {
+      allow get, create, update, delete: if isValidId(feedbackId);
+      allow list: if true;
+    }
   }
 }

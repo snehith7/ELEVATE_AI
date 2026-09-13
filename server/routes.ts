@@ -1975,3 +1975,68 @@ apiRouter.post('/badges/claim-streak', async (req: Request, res: Response) => {
   }
 });
 
+// -------------------------------------------------------------
+// FEEDBACK & BUG REPORT ENDPOINTS
+// -------------------------------------------------------------
+
+// Submit bug report, feature suggestion, or platform feedback
+apiRouter.post('/feedback', async (req: Request, res: Response) => {
+  try {
+    const {
+      type = 'suggestion', // 'bug' | 'suggestion' | 'general'
+      email = '',
+      name = '',
+      subject = '',
+      message = '',
+      metadata = {}
+    } = req.body;
+
+    if (!message || !message.trim()) {
+      return res.status(400).json({ error: 'Please provide details or a description for your feedback.' });
+    }
+
+    const feedbackCol = dbManager.getCollection('feedback');
+    const feedbackRecord = {
+      id: `fb_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      type: ['bug', 'suggestion', 'general'].includes(type) ? type : 'general',
+      email: email ? String(email).trim().toLowerCase() : 'anonymous@codeelevate.io',
+      name: name ? String(name).trim() : 'Community Member',
+      subject: subject ? String(subject).trim() : `${type.toUpperCase()} Report`,
+      message: message.trim(),
+      metadata: typeof metadata === 'object' && metadata !== null ? metadata : {},
+      status: 'received',
+      createdAt: new Date().toISOString()
+    };
+
+    await feedbackCol.insertOne(feedbackRecord);
+
+    console.log('\n' + '='.repeat(70));
+    console.log(`📬 [CodeElevate Feedback & Bug Report] RECEIVED: [${feedbackRecord.type.toUpperCase()}]`);
+    console.log(`👤 From     : ${feedbackRecord.name} <${feedbackRecord.email}>`);
+    console.log(`📌 Subject  : ${feedbackRecord.subject}`);
+    console.log(`💬 Message  : ${feedbackRecord.message}`);
+    console.log(`🆔 ID       : ${feedbackRecord.id}`);
+    console.log('='.repeat(70) + '\n');
+
+    return res.status(201).json({
+      success: true,
+      message: 'Thank you! Your feedback has been recorded. Our team reviews all suggestions and bug reports.',
+      feedback: feedbackRecord
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// Admin list feedback
+apiRouter.get('/feedback', requireRole(['admin']), async (req: Request, res: Response) => {
+  try {
+    const feedbackCol = dbManager.getCollection('feedback');
+    const list = await feedbackCol.find({}).sort({ createdAt: -1 }).toArray();
+    return res.json({ feedback: list });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+

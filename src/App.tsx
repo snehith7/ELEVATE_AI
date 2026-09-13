@@ -588,6 +588,13 @@ export default function App() {
               </div>
 
               <div className="flex items-center space-x-4 text-slate-500 text-[11px]">
+                <a
+                  href="mailto:storynestteams@gmail.com?subject=[CodeElevate%20Feedback]"
+                  className="text-slate-400 hover:text-[#FF8570] transition-colors"
+                >
+                  Feedback & Bug Reports: storynestteams@gmail.com
+                </a>
+                <span>•</span>
                 <span>Active Session: <strong className="text-slate-300">{currentUser?.username}</strong> ({currentUser?.role || 'student'})</span>
               </div>
             </div>

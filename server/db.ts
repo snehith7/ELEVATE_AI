@@ -18,6 +18,7 @@ interface StorageData {
   submissions: any[];
   messages: any[];
   analytics: any[];
+  feedback: any[];
 }
 
 const DATA_FILE = path.join(process.cwd(), 'data-store.json');
@@ -67,7 +68,8 @@ class FirebaseStorageEngine {
     problems: [],
     submissions: [],
     messages: [],
-    analytics: []
+    analytics: [],
+    feedback: []
   };
 
   private firestore: Firestore | null = null;
@@ -109,7 +111,7 @@ class FirebaseStorageEngine {
     if (!this.firestore || this.isSyncing) return;
     this.isSyncing = true;
     try {
-      const collections: (keyof StorageData)[] = ['users', 'problems', 'submissions', 'messages', 'analytics'];
+      const collections: (keyof StorageData)[] = ['users', 'problems', 'submissions', 'messages', 'analytics', 'feedback'];
       for (const colName of collections) {
         try {
           const colRef = collection(this.firestore, colName);
@@ -319,7 +321,7 @@ class DatabaseManager {
     }
   }
 
-  public getCollection(name: 'users' | 'problems' | 'submissions' | 'messages' | 'analytics') {
+  public getCollection(name: 'users' | 'problems' | 'submissions' | 'messages' | 'analytics' | 'feedback') {
     return this.engine.collection(name);
   }
 
