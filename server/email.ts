@@ -1,64 +1,83 @@
-import nodemailer, { type Transporter } from 'nodemailer';
+import { Resend } from 'resend';
 
-interface SendEmailResult {
+export interface SendEmailResult {
   success: boolean;
-  previewUrl?: string;
   messageId?: string;
   error?: string;
 }
 
-let cachedTransporter: Transporter | null = null;
+const DEFAULT_RESEND_SENDER = 'CodeElevate Academy <onboarding@resend.dev>';
+
+// Public webmail domains cannot be verified on Resend (DNS records cannot be added to gmail.com, yahoo.com, etc.)
+const UNVERIFIABLE_PUBLIC_DOMAINS = new Set([
+  'gmail.com',
+  'googlemail.com',
+  'yahoo.com',
+  'ymail.com',
+  'hotmail.com',
+  'outlook.com',
+  'live.com',
+  'msn.com',
+  'icloud.com',
+  'me.com',
+  'mac.com',
+  'aol.com',
+  'proton.me',
+  'protonmail.com',
+  'zoho.com',
+  'mail.com',
+  'gmx.com'
+]);
 
 /**
- * Get or initialize the Nodemailer transporter.
- * Uses custom SMTP credentials if provided in process.env, or creates an Ethereal test account for dev.
+ * Determine a safe, valid sender address for Resend.
+ * Public webmail domains (like @gmail.com) are automatically routed through
+ * Resend's verified 'onboarding@resend.dev' test domain.
  */
-async function getTransporter(): Promise<Transporter> {
-  if (cachedTransporter) {
-    return cachedTransporter;
+function resolveSenderAddress(): { address: string; wasOverridden: boolean; original?: string } {
+  const raw = process.env.EMAIL_FROM?.trim();
+  if (!raw) {
+    return { address: DEFAULT_RESEND_SENDER, wasOverridden: false };
   }
 
-  // 1. Check for real SMTP credentials in environment
-  if (process.env.SMTP_HOST && process.env.SMTP_USER) {
-    cachedTransporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
-    });
-    console.log(`📧 Configured Nodemailer with custom SMTP host: ${process.env.SMTP_HOST}`);
-    return cachedTransporter;
+  // Extract email address portion (handling "Display Name <email@domain.com>" or "email@domain.com")
+  const emailMatch = raw.match(/<([^>]+)>/) || [null, raw];
+  const emailPart = (emailMatch[1] || raw).trim().toLowerCase();
+  const domainPart = emailPart.split('@')[1];
+
+  if (domainPart && UNVERIFIABLE_PUBLIC_DOMAINS.has(domainPart)) {
+    const nameMatch = raw.match(/^([^<]+)</);
+    const displayName = nameMatch ? nameMatch[1].trim() : 'CodeElevate Academy';
+    return {
+      address: `${displayName} <onboarding@resend.dev>`,
+      wasOverridden: true,
+      original: raw
+    };
   }
 
-  // 2. Development mode: Initialize test Ethereal transporter
-  try {
-    const testAccount = await nodemailer.createTestAccount();
-    cachedTransporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass
-      }
-    });
-    console.log(`📧 Nodemailer development Ethereal test account created: ${testAccount.user}`);
-    return cachedTransporter;
-  } catch (err: any) {
-    console.warn(`⚠️ Could not create Ethereal test account (${err.message}). Using JSON fallback transport.`);
-    // Fallback transport that logs output safely
-    cachedTransporter = nodemailer.createTransport({
-      jsonTransport: true
-    });
-    return cachedTransporter;
+  return { address: raw, wasOverridden: false };
+}
+
+let resendClient: Resend | null = null;
+
+/**
+ * Lazy initialization of the Resend client.
+ * Returns null if RESEND_API_KEY is not configured in process.env.
+ */
+function getResendClient(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  if (!apiKey) {
+    return null;
   }
+  if (!resendClient) {
+    resendClient = new Resend(apiKey);
+    console.log('📧 Configured Resend email client with provided API key.');
+  }
+  return resendClient;
 }
 
 /**
- * Send 6-digit OTP verification email to user
+ * Send 6-digit OTP verification email to user via Resend
  */
 export async function sendVerificationEmail(
   recipientEmail: string,
@@ -170,46 +189,100 @@ Security notice: Do not share this code with anyone. If you didn't create an acc
 © ${new Date().getFullYear()} CodeElevate AI Academy
   `.trim();
 
-  // Print prominent visual banner to server terminal for instant development access
+  // Print prominent visual banner to server terminal for instant development & debugging access
   console.log('\n' + '='.repeat(70));
-  console.log('✉️  [CodeElevate Email Service] EMAIL VERIFICATION CODE DISPATCHED');
+  console.log('✉️  [CodeElevate Resend Email Service] EMAIL VERIFICATION CODE DISPATCHED');
   console.log('='.repeat(70));
   console.log(`👤 Recipient Email : ${recipientEmail}`);
   console.log(`🔑 6-Digit OTP Code : \x1b[1m\x1b[33m${otp}\x1b[0m`);
   console.log(`⏱️  Valid Until     : 10 Minutes (Expires at ${expiryTime})`);
 
+  // Skip external Resend network call during unit/integration tests or synthetic test domains
+  if (
+    process.env.NODE_ENV === 'test' ||
+    recipientEmail.endsWith('@example.com') ||
+    recipientEmail.endsWith('@test.com') ||
+    recipientEmail.endsWith('.invalid')
+  ) {
+    console.log(`ℹ️ Test environment detected (${recipientEmail}). Verification code logged above; skipping live Resend network call.`);
+    console.log('='.repeat(70) + '\n');
+    return {
+      success: true,
+      messageId: `test_mock_${Date.now()}`
+    };
+  }
+
+  const resend = getResendClient();
+  const { address: fromAddress, wasOverridden, original } = resolveSenderAddress();
+
+  if (wasOverridden) {
+    console.warn(
+      `ℹ️ Notice: EMAIL_FROM is configured as "${original}". Public webmail providers cannot be verified in Resend. Automatically dispatching via "${fromAddress}".`
+    );
+  }
+
+  if (!resend) {
+    console.log('ℹ️  RESEND_API_KEY is not set in environment. Using development terminal log fallback.');
+    console.log(`👉 Enter OTP code ${otp} in the verification dialog to proceed.`);
+    console.log('='.repeat(70) + '\n');
+    return {
+      success: true,
+      messageId: `dev_fallback_${Date.now()}`
+    };
+  }
+
   try {
-    const transporter = await getTransporter();
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_FROM || '"CodeElevate Academy" <noreply@codeelevate.io>',
-      to: recipientEmail,
+    let dispatchResult = await resend.emails.send({
+      from: fromAddress,
+      to: [recipientEmail],
       subject: `${otp} is your CodeElevate verification code`,
       text: textContent,
       html: htmlContent
     });
 
-    let previewUrl: string | undefined;
-    try {
-      const url = nodemailer.getTestMessageUrl(info);
-      if (url) {
-        previewUrl = url.toString();
-        console.log(`🔗 Ethereal Web Preview: ${previewUrl}`);
-      }
-    } catch {
-      // ignore
+    // If an unverified domain error occurred and we weren't already using the default test domain,
+    // automatically fallback to the verified test domain and retry dispatch.
+    if (
+      dispatchResult.error &&
+      fromAddress !== DEFAULT_RESEND_SENDER &&
+      (dispatchResult.error.message?.toLowerCase().includes('not verified') ||
+        dispatchResult.error.name === 'validation_error')
+    ) {
+      console.warn(
+        `⚠️ Sender domain in "${fromAddress}" is unverified (${dispatchResult.error.message}). Retrying via verified "${DEFAULT_RESEND_SENDER}"...`
+      );
+      dispatchResult = await resend.emails.send({
+        from: DEFAULT_RESEND_SENDER,
+        to: [recipientEmail],
+        subject: `${otp} is your CodeElevate verification code`,
+        text: textContent,
+        html: htmlContent
+      });
     }
 
-    console.log(`✅ Verification email successfully sent! MessageId: ${info.messageId}`);
+    if (dispatchResult.error) {
+      console.warn(`⚠️ Resend dispatch notice: ${dispatchResult.error.name} - ${dispatchResult.error.message}`);
+      if (dispatchResult.error.message?.includes('only send testing emails to your own email address')) {
+        console.log(`💡 Note: Resend's test domain is restricted to sending to the registered account email. To send to any recipient, add a verified custom domain at https://resend.com/domains.`);
+      }
+      console.log(`👉 In-flight OTP code for verification: ${otp}`);
+      console.log('='.repeat(70) + '\n');
+      return {
+        success: false,
+        error: dispatchResult.error.message
+      };
+    }
+
+    console.log(`✅ Verification email successfully sent via Resend! Message ID: ${dispatchResult.data?.id}`);
     console.log('='.repeat(70) + '\n');
 
     return {
       success: true,
-      messageId: info.messageId,
-      previewUrl
+      messageId: dispatchResult.data?.id
     };
   } catch (err: any) {
-    console.error(`⚠️ Email dispatch notice: ${err.message}.`);
-    console.log(`👉 In development, the OTP code is logged above for testing.`);
+    console.warn(`⚠️ Resend dispatch exception: ${err.message}`);
+    console.log(`👉 In-flight OTP code for verification: ${otp}`);
     console.log('='.repeat(70) + '\n');
     return {
       success: false,

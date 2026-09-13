@@ -380,7 +380,7 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
         <div className="mt-5 p-3 rounded-xl bg-[#14141e] border border-[#222230] text-[11px] text-slate-400 flex items-start space-x-2">
           <Lock className="w-3.5 h-3.5 text-[#FF5A43] shrink-0 mt-0.5" />
           <div className="leading-relaxed">
-            <span className="text-slate-300 font-medium">Testing locally?</span> The 6-digit OTP code is dispatched via Nodemailer and prominently logged to your server terminal output.Check your Spam-Folder.
+            <span className="text-slate-300 font-medium">Testing locally?</span> The 6-digit OTP code is dispatched via Resend and prominently logged to your server terminal output. Check your Inbox or Spam folder.
           </div>
         </div>
       </div>

@@ -11,9 +11,13 @@ import {
   Award,
   Zap,
   Activity,
-  Code2
+  Code2,
+  Trophy,
+  ChevronRight,
+  Lock,
+  CheckCircle2
 } from 'lucide-react';
-import { AnalyticsReport, Problem, User } from '../types';
+import { AnalyticsReport, Problem, User, Badge } from '../types';
 
 interface AnalyticsViewProps {
   analytics: AnalyticsReport | null;
@@ -21,13 +25,21 @@ interface AnalyticsViewProps {
   onOpenAiGenerator: () => void;
   onSelectProblemById: (problemId: string) => void;
   allProblems: Problem[];
+  badges?: Badge[];
+  onOpenTrophyCabinet?: () => void;
 }
 
 export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
   analytics,
   currentUser,
-  onOpenAiGenerator
+  onOpenAiGenerator,
+  badges = [],
+  onOpenTrophyCabinet
 }) => {
+  const safeBadges = Array.isArray(badges) ? badges : Array.isArray((badges as any)?.badges) ? (badges as any).badges : [];
+  const unlockedCount = safeBadges.filter(b => b && b.isUnlocked).length;
+  const totalBadgesCount = safeBadges.length || 11;
+
   if (!analytics) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center text-slate-400">
@@ -233,6 +245,70 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
         {/* RIGHT: Roadmap Progression & Category Mastery (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
+          {/* Trophy Cabinet Accolades Showcase */}
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-[#17111b] via-[#0e0e16] to-[#0b0b12] border border-[#2c2236] space-y-4 shadow-xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2.5">
+                <div className="p-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400">
+                  <Trophy className="w-5 h-5 text-amber-400" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Student Accolades</h3>
+                  <p className="text-[11px] text-slate-400">
+                    {unlockedCount} of {totalBadgesCount} Badges Earned
+                  </p>
+                </div>
+              </div>
+
+              {onOpenTrophyCabinet && (
+                <button
+                  onClick={onOpenTrophyCabinet}
+                  className="flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs font-bold text-[#FF8570] hover:text-white bg-[#FF5A43]/15 hover:bg-[#FF5A43]/30 border border-[#FF5A43]/30 transition-all cursor-pointer"
+                >
+                  <span>Cabinet</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Quick Badges Preview */}
+            <div className="grid grid-cols-1 gap-2.5 pt-1">
+              {safeBadges.slice(0, 3).map(badge => (
+                <div
+                  key={badge.id}
+                  onClick={onOpenTrophyCabinet}
+                  className="p-3 rounded-2xl bg-[#141420] border border-[#242436] hover:border-[#FF5A43]/40 transition-colors cursor-pointer space-y-2"
+                >
+                  <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center space-x-2">
+                      <span className="font-bold text-white truncate">{badge.name}</span>
+                      <span className="text-[10px] text-amber-400 font-semibold">+{badge.xpReward} XP</span>
+                    </div>
+                    {badge.isUnlocked ? (
+                      <span className="flex items-center space-x-1 text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/25">
+                        <CheckCircle2 className="w-3 h-3" />
+                        <span>Earned</span>
+                      </span>
+                    ) : (
+                      <span className="flex items-center space-x-1 text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/25">
+                        <Lock className="w-3 h-3" />
+                        <span>{badge.progress}%</span>
+                      </span>
+                    )}
+                  </div>
+                  <div className="w-full bg-[#0a0a10] h-1.5 rounded-full overflow-hidden border border-[#202030]">
+                    <div
+                      className={`h-full rounded-full transition-all ${
+                        badge.isUnlocked ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-500 to-[#FF5A43]'
+                      }`}
+                      style={{ width: `${badge.progress}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Difficulty Tier Progress */}
           <div className="p-6 rounded-3xl bg-[#0e0e15] border border-[#1c1c28] space-y-4 shadow-xl">
             <h3 className="text-base font-bold text-white flex items-center space-x-2">

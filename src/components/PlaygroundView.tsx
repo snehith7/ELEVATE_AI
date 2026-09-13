@@ -27,7 +27,8 @@ import {
   FileText,
   Terminal,
   Code2,
-  RefreshCw
+  RefreshCw,
+  Trophy
 } from 'lucide-react';
 import { Problem, SupportedLanguage, Submission, AiCodeReview, User } from '../types';
 import { PracticeSheetView } from './PracticeSheetView';
@@ -85,7 +86,8 @@ interface PlaygroundIdeProps {
   currentUser: User | null;
   onBackToSheet: () => void;
   onBackToRoadmap: () => void;
-  onSubmissionSuccess?: (sub: Submission) => void;
+  onSubmissionSuccess?: (sub: Submission, newlyUnlockedBadges?: any[]) => void;
+  onOpenTrophyCabinet?: () => void;
 }
 
 const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
@@ -93,7 +95,8 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
   currentUser,
   onBackToSheet,
   onBackToRoadmap,
-  onSubmissionSuccess
+  onSubmissionSuccess,
+  onOpenTrophyCabinet
 }) => {
   // Mobile active tab: 'problem' | 'code' | 'tests'
   const [mobilePane, setMobilePane] = useState<'problem' | 'code' | 'tests'>('problem');
@@ -334,8 +337,10 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
         })
       });
 
-      const submission: Submission = await res.json();
+      const submissionData = await res.json();
+      const submission: Submission = submissionData.submission || submissionData;
       const isPassed = submission.status === 'Passed' || submission.status === 'accepted';
+      const newlyUnlockedBadges = submissionData.newlyUnlockedBadges || [];
 
       setTestResults({
         passed: isPassed,
@@ -371,7 +376,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
           origin: { y: 0.6 }
         });
         if (onSubmissionSuccess) {
-          onSubmissionSuccess(submission);
+          onSubmissionSuccess(submission, newlyUnlockedBadges);
         }
       }
     } catch (err) {
@@ -460,6 +465,17 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
         {/* Action Buttons */}
         <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
           {/* Language Selector */}
+          {onOpenTrophyCabinet && (
+            <button
+              onClick={onOpenTrophyCabinet}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#141420] hover:bg-[#1e1e2d] border border-[#262638] hover:border-amber-500/40 text-amber-400 text-xs font-bold transition-all cursor-pointer"
+              title="Inspect earned badges and trophy cabinet"
+            >
+              <Trophy className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Trophies</span>
+            </button>
+          )}
+
           <div className="relative">
             <select
               value={selectedLanguage}
@@ -1429,8 +1445,9 @@ export interface PlaygroundViewProps {
   currentUser: User | null;
   onBackToRoadmap: () => void;
   onSelectProblem?: (problem: Problem | null) => void;
-  onSubmissionSuccess?: (sub: Submission) => void;
+  onSubmissionSuccess?: (sub: Submission, newlyUnlockedBadges?: any[]) => void;
   onOpenAiGenerator?: () => void;
+  onOpenTrophyCabinet?: () => void;
 }
 
 export const PlaygroundView: React.FC<PlaygroundViewProps> = ({
@@ -1440,7 +1457,8 @@ export const PlaygroundView: React.FC<PlaygroundViewProps> = ({
   onBackToRoadmap,
   onSelectProblem,
   onSubmissionSuccess,
-  onOpenAiGenerator
+  onOpenAiGenerator,
+  onOpenTrophyCabinet
 }) => {
   const [activeProblem, setActiveProblem] = useState<Problem | null>(initialProblem);
 
@@ -1480,6 +1498,7 @@ export const PlaygroundView: React.FC<PlaygroundViewProps> = ({
       onBackToSheet={handleBackToSheet}
       onBackToRoadmap={onBackToRoadmap}
       onSubmissionSuccess={onSubmissionSuccess}
+      onOpenTrophyCabinet={onOpenTrophyCabinet}
     />
   );
 };

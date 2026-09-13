@@ -12,8 +12,10 @@ import { StudentLoginPage } from './components/StudentLoginPage';
 import { ArcadeLandingPage } from './components/ArcadeLandingPage';
 import { AiProblemModal } from './components/AiProblemModal';
 import { DatabaseModal } from './components/DatabaseModal';
-import { Problem, User, AnalyticsReport, DatabaseStatus, Submission } from './types';
-import { ArrowLeft, GraduationCap, Menu, Flame, Sparkles, Code2 } from 'lucide-react';
+import { TrophyCabinetModal } from './components/TrophyCabinetModal';
+import { BadgeUnlockCelebration } from './components/BadgeUnlockCelebration';
+import { Problem, User, AnalyticsReport, DatabaseStatus, Submission, Badge } from './types';
+import { ArrowLeft, GraduationCap, Menu, Flame, Sparkles, Code2, Trophy } from 'lucide-react';
 import { testFirestoreConnection } from './firebase';
 import { CodeElevateLogo } from './components/CodeElevateLogo';
 
@@ -74,10 +76,13 @@ export default function App() {
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
   const [analytics, setAnalytics] = useState<AnalyticsReport | null>(null);
   const [dbStatus, setDbStatus] = useState<DatabaseStatus | null>(null);
+  const [badges, setBadges] = useState<Badge[]>([]);
 
   // Modals
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [isDbModalOpen, setIsDbModalOpen] = useState(false);
+  const [isTrophyCabinetOpen, setIsTrophyCabinetOpen] = useState(false);
+  const [celebratingBadges, setCelebratingBadges] = useState<Badge[]>([]);
 
   // Synchronize URL hash with page state
   useEffect(() => {
@@ -249,6 +254,52 @@ export default function App() {
     }
   };
 
+  // Fetch badges and achievement progression
+  const fetchBadges = async () => {
+    try {
+      const token = studentSession?.token || facultySession?.token || currentUser?.id;
+      const res = await fetch('/api/badges', {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const badgeList: Badge[] = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.badges)
+            ? data.badges
+            : [];
+        setBadges(badgeList);
+      }
+    } catch (err) {
+      console.error('Failed to fetch badges:', err);
+    }
+  };
+
+  // Claim daily streak reward and check for streak achievements
+  const handleClaimStreak = async () => {
+    try {
+      const token = studentSession?.token || facultySession?.token || currentUser?.id;
+      const res = await fetch('/api/badges/claim-streak', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.newlyUnlockedBadges && data.newlyUnlockedBadges.length > 0) {
+          setCelebratingBadges(data.newlyUnlockedBadges);
+        }
+        await Promise.all([fetchUserProfile(), fetchBadges(), fetchAnalytics()]);
+      }
+    } catch (err) {
+      console.error('Failed to claim streak:', err);
+    }
+  };
+
   useEffect(() => {
     testFirestoreConnection().catch(console.warn);
     if (studentSession) {
@@ -260,6 +311,7 @@ export default function App() {
     }
     fetchProblems();
     fetchDbStatus();
+    fetchBadges();
   }, [studentSession?.token, facultySession?.token]);
 
   // When a problem is selected to practice
@@ -276,7 +328,7 @@ export default function App() {
   };
 
   // When a submission succeeds
-  const handleSubmissionSuccess = (submission: Submission) => {
+  const handleSubmissionSuccess = (submission: Submission, newlyUnlockedBadges?: Badge[]) => {
     // 1. Immediately update problem state so PracticeSheetView and lists reflect 'solved'
     setProblems(prev =>
       prev.map(p =>
@@ -293,7 +345,12 @@ export default function App() {
         : prev
     );
 
-    // 3. Immediately update user stats optimistically so counters and progress immediately update
+    // 3. Trigger badge unlock celebration modal if new achievements were earned!
+    if (newlyUnlockedBadges && newlyUnlockedBadges.length > 0) {
+      setCelebratingBadges(newlyUnlockedBadges);
+    }
+
+    // 4. Immediately update user stats optimistically so counters and progress immediately update
     setCurrentUser(prev => {
       if (!prev) return prev;
       const existing = prev.solvedProblems || [];
@@ -306,10 +363,11 @@ export default function App() {
       };
     });
 
-    // 4. Trigger background refetches to guarantee backend persistence & accurate analytics
+    // 5. Trigger background refetches to guarantee backend persistence & accurate analytics & badges
     fetchProblems();
     fetchUserProfile();
     fetchAnalytics();
+    fetchBadges();
   };
 
   // When user switches navigation tab via sidebar
@@ -405,6 +463,8 @@ export default function App() {
         dbStatus={dbStatus}
         onOpenDbModal={() => setIsDbModalOpen(true)}
         onOpenAiGenerate={() => setIsAiModalOpen(true)}
+        onOpenTrophyCabinet={() => setIsTrophyCabinetOpen(true)}
+        badges={badges}
         onLogout={studentSession ? handleStudentLogout : handleFacultyLogout}
         isMobileOpen={isMobileNavOpen}
         onCloseMobile={() => setIsMobileNavOpen(false)}
@@ -427,6 +487,14 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsTrophyCabinetOpen(true)}
+              className="p-1.5 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 hover:text-white transition-colors cursor-pointer"
+              title="View Trophy Cabinet"
+              aria-label="Trophy Cabinet"
+            >
+              <Trophy className="w-4 h-4" />
+            </button>
             {currentUser && (
               <div
                 className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#FF5A43]/10 border border-[#FF5A43]/25 text-[#FF8570] text-xs font-semibold"
@@ -485,6 +553,7 @@ export default function App() {
               onSelectProblem={setSelectedProblem}
               onSubmissionSuccess={handleSubmissionSuccess}
               onOpenAiGenerator={() => setIsAiModalOpen(true)}
+              onOpenTrophyCabinet={() => setIsTrophyCabinetOpen(true)}
             />
           )}
 
@@ -498,6 +567,8 @@ export default function App() {
                 if (p) handleSelectProblem(p);
               }}
               allProblems={problems}
+              badges={badges}
+              onOpenTrophyCabinet={() => setIsTrophyCabinetOpen(true)}
             />
           )}
 
@@ -540,6 +611,27 @@ export default function App() {
         status={dbStatus}
         onRefresh={fetchDbStatus}
       />
+
+      {/* Interactive Trophy Cabinet Modal */}
+      <TrophyCabinetModal
+        isOpen={isTrophyCabinetOpen}
+        onClose={() => setIsTrophyCabinetOpen(false)}
+        currentUser={currentUser}
+        badges={badges}
+        onClaimDailyStreak={handleClaimStreak}
+      />
+
+      {/* Badge Unlock Celebration Dialog & Sound/Particle Triggers */}
+      {celebratingBadges.length > 0 && (
+        <BadgeUnlockCelebration
+          unlockedBadges={celebratingBadges}
+          onClose={() => setCelebratingBadges([])}
+          onOpenTrophyCabinet={() => {
+            setCelebratingBadges([]);
+            setIsTrophyCabinetOpen(true);
+          }}
+        />
+      )}
     </div>
   );
 }

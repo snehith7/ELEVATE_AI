@@ -6,6 +6,37 @@ export type SkillLevel = 'beginner' | 'intermediate' | 'advanced';
 
 export type SupportedLanguage = 'javascript' | 'python' | 'typescript' | 'java' | 'cpp' | 'go';
 
+export type BadgeRarity = 'Common' | 'Rare' | 'Epic' | 'Legendary' | 'Mythic';
+
+export type BadgeCategory = 'streak' | 'solved_count' | 'difficulty' | 'mastery' | 'speed';
+
+export interface EarnedBadgeRecord {
+  badgeId: string;
+  unlockedAt: string;
+}
+
+export interface Badge {
+  id: string;
+  name: string;
+  title: string;
+  description: string;
+  category: BadgeCategory;
+  rarity: BadgeRarity;
+  tier: string;
+  iconName: string;
+  color: string;
+  borderColor: string;
+  glowColor: string;
+  xpReward: number;
+  metricType: 'streakDays' | 'totalSolved' | 'basicSolved' | 'intermediateSolved' | 'advancedSolved' | 'firstSolve' | 'cleanExecution';
+  targetValue: number;
+  currentValue: number;
+  progress: number; // 0 to 100 percentage
+  isUnlocked: boolean;
+  unlockedAt?: string;
+  lore?: string;
+}
+
 export interface User {
   id: string;
   username: string;
@@ -21,6 +52,7 @@ export interface User {
   isVerified?: boolean;
   emailVerified?: boolean;
   solvedProblems?: string[];
+  earnedBadges?: (string | EarnedBadgeRecord)[];
   createdAt: string;
 }
 

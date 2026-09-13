@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Code2,
   Compass,
@@ -25,6 +25,8 @@ interface SidebarProps {
   dbStatus: DatabaseStatus | null;
   onOpenDbModal: () => void;
   onOpenAiGenerate: () => void;
+  onOpenTrophyCabinet?: () => void;
+  badges?: any[];
   onLogout: () => void;
   isMobileOpen?: boolean;
   onCloseMobile?: () => void;
@@ -37,10 +39,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
   dbStatus,
   onOpenDbModal,
   onOpenAiGenerate,
+  onOpenTrophyCabinet,
+  badges = [],
   onLogout,
   isMobileOpen = false,
   onCloseMobile
 }) => {
+  const safeBadgeList = Array.isArray(badges) ? badges : Array.isArray((badges as any)?.badges) ? (badges as any).badges : [];
+
+  const unlockedBadgesCount = useMemo(() => {
+    if (safeBadgeList.length > 0) {
+      return safeBadgeList.filter((b: any) => Boolean(b && b.isUnlocked)).length;
+    }
+    if (currentUser?.earnedBadges && Array.isArray(currentUser.earnedBadges)) {
+      return currentUser.earnedBadges.length;
+    }
+    return 0;
+  }, [safeBadgeList, currentUser]);
   const navItems = [
     {
       id: 'roadmap' as const,
@@ -113,6 +128,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <ChevronRight className="w-3.5 h-3.5 text-[#FF8570] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
         </button>
+
+        {/* Interactive Trophy Cabinet Button */}
+        {onOpenTrophyCabinet && (
+          <button
+            onClick={() => {
+              onOpenTrophyCabinet();
+              if (onCloseMobile) onCloseMobile();
+            }}
+            className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[#13131e] hover:bg-[#1a1a28] text-slate-200 hover:text-white border border-[#222232] hover:border-[#FF5A43]/40 transition-all cursor-pointer group"
+            title="Inspect student accolades, achievements, and milestone progress"
+          >
+            <div className="flex items-center gap-2">
+              <Trophy className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+              <span>Trophy Cabinet</span>
+            </div>
+            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25">
+              {unlockedBadgesCount}/{safeBadgeList.length || 11}
+            </span>
+          </button>
+        )}
 
         {/* Main Navigation Links */}
         <nav className="flex flex-col space-y-1.5" aria-label="Main Navigation">
@@ -202,32 +237,52 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </button>
 
-        {/* User Profile Card */}
+        {/* User Profile Card with Earned Badges Showcase */}
         {currentUser && (
           <div
             id="sidebar-user-profile"
-            className="flex items-center gap-3 p-2.5 rounded-xl bg-[#101018] border border-[#20202e] text-xs"
+            onClick={() => {
+              if (onOpenTrophyCabinet) {
+                onOpenTrophyCabinet();
+                if (onCloseMobile) onCloseMobile();
+              }
+            }}
+            className="flex flex-col gap-2 p-2.5 rounded-xl bg-[#101018] hover:bg-[#151520] border border-[#20202e] hover:border-[#FF5A43]/30 text-xs transition-colors cursor-pointer group"
+            title="View Student Profile & Accolades"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#FF5A43] to-[#FF8570] text-white font-black text-sm flex items-center justify-center shadow-md shadow-[#FF5A43]/25 shrink-0">
-              {currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U'}
-            </div>
-            <div className="flex flex-col min-w-0 flex-1">
-              <span className="text-white font-bold text-xs truncate">
-                {currentUser.username}
-              </span>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="text-[10px] text-[#FF8570] capitalize font-semibold">
-                  {currentUser.role || 'Student'}
-                </span>
-                {currentUser.batch && (
-                  <>
-                    <span className="text-[9px] text-slate-500">•</span>
-                    <span className="text-[10px] text-slate-400 truncate">
-                      {currentUser.batch}
-                    </span>
-                  </>
-                )}
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#FF5A43] to-[#FF8570] text-white font-black text-sm flex items-center justify-center shadow-md shadow-[#FF5A43]/25 shrink-0">
+                {currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U'}
               </div>
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="text-white font-bold text-xs truncate group-hover:text-[#FF8570] transition-colors">
+                  {currentUser.username}
+                </span>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="text-[10px] text-[#FF8570] capitalize font-semibold">
+                    {currentUser.role || 'Student'}
+                  </span>
+                  {currentUser.batch && (
+                    <>
+                      <span className="text-[9px] text-slate-500">•</span>
+                      <span className="text-[10px] text-slate-400 truncate">
+                        {currentUser.batch}
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Profile Card Accolade Showcase Ribbon */}
+            <div className="flex items-center justify-between pt-1.5 border-t border-[#1a1a26] text-[11px]">
+              <div className="flex items-center space-x-1.5 text-slate-400">
+                <Trophy className="w-3.5 h-3.5 text-amber-400" />
+                <span>Accolades</span>
+              </div>
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#181826] text-amber-300 border border-[#29293d]">
+                {unlockedBadgesCount} Earned
+              </span>
             </div>
           </div>
         )}

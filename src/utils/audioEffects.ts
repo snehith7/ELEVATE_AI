@@ -164,3 +164,75 @@ export function playSuccessChime(): void {
     // Ignore error
   }
 }
+
+/**
+ * Celebratory multi-note brass/synth fanfare when an accolade or badge is unlocked
+ */
+export function playBadgeFanfareSound(): void {
+  if (!isSoundEnabled()) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  try {
+    const now = ctx.currentTime;
+    // Ascending celebratory fanfare arpeggio: C5 -> E5 -> G5 -> C6 -> E6 -> G6 with shimmer
+    const notes = [
+      { f: 523.25, time: 0.0, dur: 0.18, type: 'triangle' as OscillatorType, vol: 0.08 },
+      { f: 659.25, time: 0.12, dur: 0.18, type: 'triangle' as OscillatorType, vol: 0.09 },
+      { f: 783.99, time: 0.24, dur: 0.22, type: 'triangle' as OscillatorType, vol: 0.1 },
+      { f: 1046.5, time: 0.38, dur: 0.55, type: 'sine' as OscillatorType, vol: 0.12 },
+      { f: 1318.51, time: 0.46, dur: 0.6, type: 'sine' as OscillatorType, vol: 0.11 },
+      { f: 1567.98, time: 0.54, dur: 0.8, type: 'sine' as OscillatorType, vol: 0.13 }
+    ];
+
+    notes.forEach(n => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = n.type;
+      osc.frequency.setValueAtTime(n.f, now + n.time);
+
+      gain.gain.setValueAtTime(0.001, now + n.time);
+      gain.gain.linearRampToValueAtTime(n.vol, now + n.time + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + n.time + n.dur);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + n.time);
+      osc.stop(now + n.time + n.dur);
+    });
+  } catch {
+    // Ignore error
+  }
+}
+
+/**
+ * Cheerful pop sound effect for particle explosions
+ */
+export function playConfettiPopSound(): void {
+  if (!isSoundEnabled()) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  try {
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(400, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.12);
+
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.13);
+  } catch {
+    // Ignore error
+  }
+}

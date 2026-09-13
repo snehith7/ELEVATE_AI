@@ -21,6 +21,7 @@
         "emailVerified": { "type": "boolean", "description": "Flag indicating verified email address" },
         "verificationOtp": { "type": "string", "description": "6-digit OTP verification code" },
         "verificationOtpExpiresAt": { "type": "string", "description": "ISO timestamp when the 6-digit OTP expires" },
+        "earnedBadges": { "type": "array", "description": "Unlocked badges and accolades earned by the user" },
         "createdAt": { "type": "string", "description": "ISO timestamp of account creation" }
       },
       "required": ["id", "username", "email", "role"]

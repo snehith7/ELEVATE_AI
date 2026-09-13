@@ -10,6 +10,11 @@ import {
   chatWithCodingTutor,
   analyzeMistakesAndRecommend
 } from './gemini';
+import {
+  computeUserBadges,
+  evaluateNewlyUnlockedBadges,
+  computeStudentMetrics
+} from './badges';
 
 export const apiRouter = Router();
 
@@ -258,7 +263,7 @@ apiRouter.post('/auth/register', async (req: Request, res: Response) => {
         }
       );
 
-      // Dispatch verification email via Nodemailer
+      // Dispatch verification email via Resend
       await sendVerificationEmail(normalizedEmail, otp, username?.trim() || existing.username);
 
       return res.status(200).json({
@@ -294,7 +299,7 @@ apiRouter.post('/auth/register', async (req: Request, res: Response) => {
     // Save to Firestore and local persistent store
     await usersCol.insertOne(newUser);
 
-    // Dispatch verification email via Nodemailer (with test fallback / server console log)
+    // Dispatch verification email via Resend (with test fallback / server console log)
     await sendVerificationEmail(normalizedEmail, otp, newUser.username);
 
     // Do NOT return login token: require OTP email verification step first
@@ -532,18 +537,33 @@ apiRouter.get('/auth/me', async (req: Request, res: Response) => {
     const synchronizedSolved = Array.from(passedProblemIds);
     const calculatedTotalSolved = Math.max(user.totalSolved || 0, synchronizedSolved.length);
 
-    if (synchronizedSolved.length !== (user.solvedProblems?.length || 0) || calculatedTotalSolved !== (user.totalSolved || 0)) {
+    // Synchronize earned badges
+    const problemsCol = dbManager.getCollection('problems');
+    const allProblems = await problemsCol.find({}).toArray();
+    const { allBadges, updatedEarnedBadges } = evaluateNewlyUnlockedBadges(
+      { ...user, solvedProblems: synchronizedSolved, totalSolved: calculatedTotalSolved },
+      passedSubs,
+      allProblems
+    );
+
+    if (
+      synchronizedSolved.length !== (user.solvedProblems?.length || 0) ||
+      calculatedTotalSolved !== (user.totalSolved || 0) ||
+      (updatedEarnedBadges.length !== (user.earnedBadges?.length || 0))
+    ) {
       await usersCol.updateOne(
         { id: user.id },
         {
           $set: {
             solvedProblems: synchronizedSolved,
-            totalSolved: calculatedTotalSolved
+            totalSolved: calculatedTotalSolved,
+            earnedBadges: updatedEarnedBadges
           }
         }
       );
       user.solvedProblems = synchronizedSolved;
       user.totalSolved = calculatedTotalSolved;
+      user.earnedBadges = updatedEarnedBadges;
     }
 
     const { password: _, ...safeUser } = user;
@@ -848,17 +868,58 @@ apiRouter.post('/code/submit', async (req: Request, res: Response) => {
       }
 
       const uniqueCount = new Set(currentSolvedList).size;
+      const updatedTotalSolved = priorAccepted ? (user.totalSolved || uniqueCount) : Math.max((user.totalSolved || 0) + 1, uniqueCount);
+      const updatedStreakDays = (user.streakDays || 1) + (priorAccepted ? 0 : 1);
+
+      // Evaluate newly unlocked accolades & badges
+      const userAllSubs = await submissionsCol.find({
+        $or: [{ userId: user.id }, { userId }]
+      }).toArray();
+      const allProblems = await problemsCol.find({}).toArray();
+
+      const userStateForBadges = {
+        ...user,
+        solvedProblems: currentSolvedList,
+        totalSolved: updatedTotalSolved,
+        streakDays: updatedStreakDays,
+        earnedBadges: user.earnedBadges || []
+      };
+
+      const { newlyUnlocked, updatedEarnedBadges } = evaluateNewlyUnlockedBadges(
+        userStateForBadges,
+        userAllSubs,
+        allProblems
+      );
 
       await usersCol.updateOne(
         { id: user.id },
         {
           $set: {
             solvedProblems: currentSolvedList,
-            totalSolved: priorAccepted ? (user.totalSolved || uniqueCount) : Math.max((user.totalSolved || 0) + 1, uniqueCount),
-            streakDays: (user.streakDays || 1) + (priorAccepted ? 0 : 1)
+            totalSolved: updatedTotalSolved,
+            streakDays: updatedStreakDays,
+            earnedBadges: updatedEarnedBadges
           }
         }
       );
+
+      user.solvedProblems = currentSolvedList;
+      user.totalSolved = updatedTotalSolved;
+      user.streakDays = updatedStreakDays;
+      user.earnedBadges = updatedEarnedBadges;
+
+      // Invalidate user analytics evaluation cache upon new submission
+      if (userId) {
+        analysisCache.delete(userId);
+      }
+
+      return res.status(201).json({
+        success: true,
+        submission,
+        newlyUnlockedBadges: newlyUnlocked || [],
+        earnedBadges: updatedEarnedBadges,
+        ...submission
+      });
     }
 
     // Invalidate user analytics evaluation cache upon new submission
@@ -869,6 +930,8 @@ apiRouter.post('/code/submit', async (req: Request, res: Response) => {
     return res.status(201).json({
       success: true,
       submission,
+      newlyUnlockedBadges: [],
+      earnedBadges: user?.earnedBadges || [],
       ...submission
     });
   } catch (err: any) {
@@ -1809,6 +1872,103 @@ apiRouter.post('/database/configure', async (req: Request, res: Response) => {
     return res.json({
       success,
       ...status
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// -------------------------------------------------------------
+// INTERACTIVE BADGES & TROPHY CABINET API ENDPOINTS
+// -------------------------------------------------------------
+apiRouter.get('/badges', async (req: Request, res: Response) => {
+  try {
+    const userId = getUserIdFromReq(req);
+    const usersCol = dbManager.getCollection('users');
+    const problemsCol = dbManager.getCollection('problems');
+    const submissionsCol = dbManager.getCollection('submissions');
+
+    let user = null;
+    if (userId) {
+      user = await usersCol.findOne({ $or: [{ id: userId }, { email: userId }] });
+    }
+    if (!user) {
+      user = await usersCol.findOne({ role: 'student' });
+    }
+
+    const userSubs = user
+      ? await submissionsCol.find({ $or: [{ userId: user.id }, { userId: user.email }] }).toArray()
+      : [];
+    const allProblems = await problemsCol.find({}).toArray();
+
+    const { badges, totalEarnedXp, unlockedCount } = computeUserBadges(user, userSubs, allProblems);
+    const metrics = computeStudentMetrics(user, userSubs, allProblems);
+
+    // If any newly satisfied badges aren't stored, sync them
+    if (user && unlockedCount > (user.earnedBadges?.length || 0)) {
+      const { updatedEarnedBadges } = evaluateNewlyUnlockedBadges(user, userSubs, allProblems);
+      await usersCol.updateOne(
+        { id: user.id },
+        { $set: { earnedBadges: updatedEarnedBadges } }
+      );
+      user.earnedBadges = updatedEarnedBadges;
+    }
+
+    return res.json({
+      success: true,
+      badges,
+      totalEarnedXp,
+      unlockedCount,
+      totalBadges: badges.length,
+      metrics,
+      earnedBadges: user?.earnedBadges || []
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+apiRouter.post('/badges/claim-streak', async (req: Request, res: Response) => {
+  try {
+    const userId = getUserIdFromReq(req);
+    const usersCol = dbManager.getCollection('users');
+    const problemsCol = dbManager.getCollection('problems');
+    const submissionsCol = dbManager.getCollection('submissions');
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized: Session required' });
+    }
+
+    const user = await usersCol.findOne({ $or: [{ id: userId }, { email: userId }] });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const updatedStreak = (user.streakDays || 1) + 1;
+    const userSubs = await submissionsCol.find({ $or: [{ userId: user.id }, { userId: user.email }] }).toArray();
+    const allProblems = await problemsCol.find({}).toArray();
+
+    const { newlyUnlocked, updatedEarnedBadges } = evaluateNewlyUnlockedBadges(
+      { ...user, streakDays: updatedStreak },
+      userSubs,
+      allProblems
+    );
+
+    await usersCol.updateOne(
+      { id: user.id },
+      {
+        $set: {
+          streakDays: updatedStreak,
+          earnedBadges: updatedEarnedBadges
+        }
+      }
+    );
+
+    return res.json({
+      success: true,
+      streakDays: updatedStreak,
+      newlyUnlockedBadges: newlyUnlocked,
+      earnedBadges: updatedEarnedBadges
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });

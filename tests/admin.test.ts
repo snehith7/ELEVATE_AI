@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import { Express } from 'express';
 import { getTestApp } from './helpers/testApp';
+import { dbManager } from '../server/db';
 
 describe('Admin Role Workflows & RBAC Tests', () => {
   let app: Express;
@@ -13,6 +14,9 @@ describe('Admin Role Workflows & RBAC Tests', () => {
 
   beforeAll(async () => {
     app = await getTestApp();
+    const usersCol = dbManager.getCollection('users');
+    await usersCol.deleteOne({ email: 'test.student@codeelevate.io' });
+    await usersCol.deleteOne({ email: 'test.faculty@codeelevate.io' });
   });
 
   describe('1. Global Dashboard & Platform Metrics Access', () => {
