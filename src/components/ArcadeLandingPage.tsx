@@ -203,15 +203,15 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
   };
 
   const bugMailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-    '[CodeElevate Bug Report]'
+    '[LrnKod Bug Report]'
   )}&body=${encodeURIComponent(
     'Issue Description:\n\nSteps to Reproduce:\n1.\n2.\n3.\n\nExpected Behavior:\n\nActual Behavior:\n\nDevice / Browser:'
   )}`;
 
   const suggestionMailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-    '[CodeElevate Suggestion]'
+    '[LrnKod Suggestion]'
   )}&body=${encodeURIComponent(
-    'My suggestion to make CodeElevate better:\n\nWhy this would be valuable:\n\nAdditional Ideas:'
+    'My suggestion to make LrnKod better:\n\nWhy this would be valuable:\n\nAdditional Ideas:'
   )}`;
 
   return (
@@ -332,7 +332,7 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
         {/* Minimal Platform Features (3 Clean Cards) */}
         <section id="features" className="py-14 px-4 sm:px-6 max-w-6xl mx-auto border-b border-[#1c1c28]/70">
           <div className="mb-8">
-            <h2 className="text-xl sm:text-2xl font-bold text-white">How CodeElevate Works</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">How LrnKod Works</h2>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
               A clean, focused environment designed for deliberate practice.
             </p>
@@ -436,7 +436,7 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
               </h2>
 
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                We are actively building and improving CodeElevate. If you encounter any bugs or platform issues,
+                We are actively building and improving LrnKod. If you encounter any bugs or platform issues,
                 or have suggestions for new features and problem sets that would make the website better, please
                 reach out directly.
               </p>
@@ -734,7 +734,7 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
                   <CodeElevateIcon size={40} />
                 </div>
                 <h2 className="text-xl font-black text-white">
-                  {authMode === 'login' ? 'Sign In to CodeElevate' : 'Create Student Account'}
+                  {authMode === 'login' ? 'Sign In to LrnKod' : 'Create Student Account'}
                 </h2>
                 <p className="text-xs text-slate-400">
                   {authMode === 'login'

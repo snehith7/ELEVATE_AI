@@ -154,7 +154,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
   const [tutorMessages, setTutorMessages] = useState<{ role: 'user' | 'assistant'; text: string }[]>([
     {
       role: 'assistant',
-      text: `Hello! I'm your CodeElevate AI Assistant. I'm actively observing your code for **"${problem.title}"**. Feel free to ask for conceptual hints, time-complexity analysis, or help with failing edge cases!`
+      text: `Hello! I'm your LrnKod AI Assistant. I'm actively observing your code for **"${problem.title}"**. Feel free to ask for conceptual hints, time-complexity analysis, or help with failing edge cases!`
     }
   ]);
   const [tutorInput, setTutorInput] = useState('');
@@ -237,7 +237,7 @@ const PlaygroundIde: React.FC<PlaygroundIdeProps> = ({
     setTutorMessages([
       {
         role: 'assistant',
-        text: `Hello! I'm your CodeElevate AI Assistant. I'm actively observing your code for **"${problem.title}"**. Feel free to ask for conceptual hints, time-complexity analysis, or help with failing edge cases!`
+        text: `Hello! I'm your LrnKod AI Assistant. I'm actively observing your code for **"${problem.title}"**. Feel free to ask for conceptual hints, time-complexity analysis, or help with failing edge cases!`
       }
     ]);
     fetchSubmissions();

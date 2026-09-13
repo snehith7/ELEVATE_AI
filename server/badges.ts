@@ -34,7 +34,7 @@ export const MASTER_BADGES: BadgeDefinition[] = [
     id: 'badge_first_spark',
     name: 'Genesis Spark',
     title: 'First Code Conquered',
-    description: 'Solve your first algorithmic challenge on CodeElevate.',
+    description: 'Solve your first algorithmic challenge on LrnKod.',
     category: 'solved_count',
     rarity: 'Common',
     tier: 'Tier I',

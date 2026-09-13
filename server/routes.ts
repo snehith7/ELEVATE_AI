@@ -402,7 +402,7 @@ apiRouter.post('/auth/verify-email', async (req: Request, res: Response) => {
     // Grant access with authenticated session token
     return res.json({
       success: true,
-      message: 'Email successfully verified! Welcome to CodeElevate AI Academy.',
+      message: 'Email successfully verified! Welcome to LrnKod.',
       token: updatedUser.id,
       user: sanitizeUser(updatedUser)
     });

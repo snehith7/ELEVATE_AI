@@ -157,7 +157,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
 
       {/* Footer */}
       <footer className="px-6 py-4 border-t border-[#1c1c28] text-center text-xs text-slate-500">
-        <p>CodeElevate Administrative Console • Protected with PBKDF2 cryptography & Role-Based Access Control</p>
+        <p>LrnKod Administrative Console • Protected with PBKDF2 cryptography & Role-Based Access Control</p>
       </footer>
     </div>
   );

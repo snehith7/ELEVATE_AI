@@ -583,14 +583,14 @@ export default function App() {
           <footer className="border-t border-[#1c1c28] bg-[#08080c]/90 py-6 text-xs text-slate-500 mt-auto shrink-0">
             <div className="px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-slate-300">CodeElevate Academy</span>
+                <span className="font-bold text-slate-300">LrnKod</span>
                 <span className="text-[#FF5A43]">•</span>
                 <span>Adaptive Coding, Instant Diagnostics & Automated Evaluations</span>
               </div>
 
               <div className="flex items-center space-x-4 text-slate-500 text-[11px]">
                 <a
-                  href="mailto:storynestteams@gmail.com?subject=[CodeElevate%20Feedback]"
+                  href="mailto:storynestteams@gmail.com?subject=[LrnKod%20Feedback]"
                   className="text-slate-400 hover:text-[#FF8570] transition-colors"
                 >
                   Feedback & Bug Reports: storynestteams@gmail.com

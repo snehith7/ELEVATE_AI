@@ -41,7 +41,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={() => setCurrentTab('roadmap')}
               className="flex items-center text-left group cursor-pointer focus:outline-none transition-transform hover:scale-[1.02]"
-              title="CodeElevate Academy"
+              title="LrnKod"
             >
               <CodeElevateLogo size="md" showText={true} showSubtitle={true} />
             </button>

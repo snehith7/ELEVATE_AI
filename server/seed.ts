@@ -865,7 +865,7 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
         senderId: 'usr_admin_root',
         senderName: 'System Administrator',
         senderRole: 'admin',
-        text: 'Welcome to CodeElevate Academy! The interactive coding platform is active. Work through curriculum modules, test your algorithms, and submit code for instant AI diagnostics.',
+        text: 'Welcome to LrnKod! The interactive coding platform is active. Work through curriculum modules, test your algorithms, and submit code for instant AI diagnostics.',
         createdAt: new Date().toISOString()
       }
     ];

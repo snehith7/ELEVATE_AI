@@ -134,12 +134,12 @@ export const CodeElevateLogo: React.FC<CodeElevateLogoProps> = ({
       <CodeElevateIcon size={pixelSizes[size]} className="shadow-lg shadow-coral-500/10" />
       {showText && (
         <div className="flex flex-col">
-          <div className="flex items-center gap-1.5 leading-none">
+          <div className="flex items-center gap-1 leading-none">
             <span className={`font-black tracking-tight text-white ${textSizes[size]}`}>
-              CODE
+              Lrn
             </span>
             <span className={`font-black tracking-tight text-[#FF5A43] ${textSizes[size]}`}>
-              ELEVATE
+              Kod
             </span>
           </div>
           {showSubtitle && (
