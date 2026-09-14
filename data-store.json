@@ -1,201 +1,63 @@
 {
   "users": [
     {
-      "id": "usr_admin_root",
-      "username": "admin",
-      "email": "admin@codeelevate.io",
-      "password": "AdminPass123!",
+      "id": "usr_mu136iqeam75",
+      "preferredLanguage": "python",
+      "email": "23me1a4656@rcee.ac.in",
+      "emailVerified": false,
+      "username": "jhxvbhdb",
+      "targetGoal": "Master Algorithmic Interviews & Problem Solving",
+      "skillLevel": "intermediate",
+      "isVerified": false,
+      "totalSolved": 0,
+      "batch": "Batch 2026-A",
+      "role": "student",
+      "createdAt": "2026-09-14T10:14:49.761Z",
+      "streakDays": 0,
+      "status": "PendingVerification",
+      "verificationOtp": "661739",
+      "password": "scrypt:1d4c162e4319e6d57f5e3713948a06f4:f31c6dd77fe2160fbbfe87a6c274bbdc8bd1ed4e3e5651f940c0a0a26fe5e88aa1f2fa165a0f46af7fa76f1002ae920059a6efc3d2e5f238550c647b70b29b33",
+      "verificationOtpExpiresAt": "2026-09-14T10:24:49.429Z"
+    },
+    {
+      "id": "usr_admin_snehith",
+      "username": "Snehith",
+      "email": "snehithsudulaguntla2108@gmail.com",
+      "password": "scrypt:1f26e09eaf4d9f5cd95033655611aa0a:ec46634e4d974d7adbbec6f87d006947f107924786cba18e587987e9513c7f7a394cde4e57ec334f50840193fc1f4949d0792ad84a6ac0c8fb5fc5314c23e670",
       "role": "admin",
       "skillLevel": "advanced",
-      "preferredLanguage": "typescript",
-      "targetGoal": "System and Curriculum Administration",
+      "preferredLanguage": "python",
+      "targetGoal": "Platform & Academy Administration",
       "batch": "Administration",
       "streakDays": 0,
       "totalSolved": 0,
-      "createdAt": "2026-09-07T11:57:43.048Z"
-    },
-    {
-      "id": "usr_faculty_mentor",
-      "role": "faculty",
-      "password": "scrypt:4982d7d1699402087cf95dac62e88390:2ef49897b6f2bcab5573855329b87008dad40d35436ea26cc8db328c4cda055b4eda5456351ed28dad57f2f05e32a4f06b2259868803f44c4c2b50f8393b3f22",
-      "skillLevel": "advanced",
       "status": "Verified",
       "isVerified": true,
-      "totalSolved": 45,
-      "preferredLanguage": "python",
-      "updatedAt": "2026-09-13T05:48:22.470Z",
-      "email": "faculty@codeelevate.io",
-      "createdAt": "2026-09-13T05:48:13.078Z",
-      "targetGoal": "Instruct curriculum and guide batch performance",
       "emailVerified": true,
-      "batch": "Batch 2026-A",
-      "username": "Prof. Alan Turing",
-      "streakDays": 14
-    },
-    {
-      "id": "usr_student_active",
-      "streakDays": 5,
-      "status": "Verified",
-      "role": "student",
-      "solvedProblems": [
-        "prob_two_sum",
-        "two-sum"
-      ],
-      "targetGoal": "Master algorithms and technical interviews",
-      "earnedBadges": [
-        {
-          "unlockedAt": "2026-09-13T05:48:15.555Z",
-          "badgeId": "badge_first_spark"
-        },
-        {
-          "badgeId": "badge_algorithm_apprentice",
-          "unlockedAt": "2026-09-13T05:48:15.555Z"
-        },
-        {
-          "badgeId": "badge_tenacious_coder",
-          "unlockedAt": "2026-09-13T05:48:15.555Z"
-        },
-        {
-          "badgeId": "badge_double_digit",
-          "unlockedAt": "2026-09-13T05:48:15.555Z"
-        },
-        {
-          "unlockedAt": "2026-09-13T05:48:15.555Z",
-          "badgeId": "badge_streak_3"
-        },
-        {
-          "unlockedAt": "2026-09-13T05:48:15.555Z",
-          "badgeId": "badge_flawless_execution"
-        }
-      ],
-      "username": "Demo Student",
-      "totalSolved": 12,
-      "password": "StudentPass123!",
-      "isVerified": true,
-      "createdAt": "2026-09-13T05:48:13.078Z",
-      "preferredLanguage": "javascript",
-      "email": "student@codeelevate.io",
-      "batch": "Batch 2026-A",
-      "emailVerified": true,
-      "skillLevel": "intermediate"
-    },
-    {
-      "id": "usr_mtze81itce05",
-      "targetGoal": "Master algorithms",
-      "preferredLanguage": "typescript",
-      "totalSolved": 0,
-      "password": "scrypt:8af5ac4bb391669286bfceeb585929f0:d975962d9944ac5c6f31c7b50605de5581edc33d2b9d8d4d8ccbf42f1b4745fdb1c5df7f86520bfdd55cb5aa504e774d72c64bbf1c3401d8728ec8ca0fa2213c",
-      "createdAt": "2026-09-13T05:48:23.921Z",
-      "streakDays": 0,
-      "batch": "Batch 2026-A",
-      "verifiedAt": "2026-09-13T05:48:24.022Z",
-      "role": "student",
-      "emailVerified": true,
-      "username": "OTP Test Student",
-      "skillLevel": "intermediate",
-      "status": "Verified",
-      "isVerified": true,
-      "email": "new_student_1789278503282@example.com"
-    },
-    {
-      "id": "usr_mtze81p1k9a7",
-      "createdAt": "2026-09-13T05:48:24.133Z",
-      "batch": "Batch 2026-A",
-      "totalSolved": 0,
-      "role": "student",
-      "targetGoal": "Elevate my software development and coding interview skills",
-      "username": "Pending Student",
-      "emailVerified": false,
-      "email": "pending_1789278504083@example.com",
-      "streakDays": 0,
-      "skillLevel": "beginner",
-      "password": "scrypt:5f278854f36d173e4409a1a60d3cb2ed:1245cb79e10b87c2a975ddfebe86a7a4c551df1e6980997457f19ad3e72b80389ed4ceea4e83f3dd2e0f6d50c57b2167e171d1fae385db6f9c1572af49746e19",
-      "status": "PendingVerification",
-      "verificationOtpExpiresAt": "2026-09-13T05:58:24.144Z",
-      "updatedAt": "2026-09-13T05:48:24.144Z",
-      "isVerified": false,
-      "preferredLanguage": "javascript",
-      "verificationOtp": "994159"
-    },
-    {
-      "id": "usr_mtze82nweo55",
-      "streakDays": 0,
-      "preferredLanguage": "javascript",
-      "targetGoal": "Master modern algorithms and technical interviews",
-      "status": "Verified",
-      "username": "Test Enrolled Student",
-      "createdAt": "2026-09-13T05:48:25.340Z",
-      "email": "test.student@codeelevate.io",
-      "isVerified": true,
-      "password": "StudentSecurePass1!",
-      "emailVerified": true,
-      "batch": "Batch 2026-A",
-      "totalSolved": 0,
-      "skillLevel": "beginner",
-      "role": "student"
-    },
-    {
-      "id": "usr_mtze82o2ddpa",
-      "role": "faculty",
-      "emailVerified": true,
-      "isVerified": true,
-      "preferredLanguage": "javascript",
-      "status": "Verified",
-      "createdAt": "2026-09-13T05:48:25.346Z",
-      "skillLevel": "intermediate",
-      "totalSolved": 0,
-      "username": "Test Faculty Instructor",
-      "streakDays": 0,
-      "password": "FacultySecurePass1!",
-      "email": "test.faculty@codeelevate.io",
-      "targetGoal": "Master modern algorithms and technical interviews",
-      "batch": "Faculty Department"
+      "createdAt": "2026-09-14T10:58:12.086Z",
+      "updatedAt": "2026-09-14T10:58:17.208Z"
     }
   ],
   "problems": [
     {
       "id": "prob_two_sum",
+      "title": "Two Sum",
       "tags": [
         "Array",
         "Hash Table",
         "Beginner Friendly"
       ],
+      "hints": [
+        "A brute-force solution checks every pair with two nested loops in O(N^2). Can you do better?",
+        "Can you use a Hash Map to store numbers you have already visited and check for the complement in O(1) time?"
+      ],
+      "difficulty": "basic",
       "category": "Arrays & Hash Maps",
-      "constraints": [
-        "2 <= nums.length <= 10^4",
-        "-10^9 <= nums[i] <= 10^9",
-        "-10^9 <= target <= 10^9",
-        "Only one valid answer exists.",
-        "Target time complexity: O(N)"
-      ],
-      "title": "Two Sum",
-      "testCases": [
-        {
-          "id": "t1",
-          "input": "[2,7,11,15], 9",
-          "expectedOutput": "[0,1]"
-        },
-        {
-          "input": "[3,2,4], 6",
-          "id": "t2",
-          "expectedOutput": "[1,2]"
-        },
-        {
-          "id": "t3",
-          "input": "[3,3], 6",
-          "expectedOutput": "[0,1]"
-        },
-        {
-          "id": "t4",
-          "isHidden": true,
-          "expectedOutput": "[0,3]",
-          "input": "[1,5,8,3], 4"
-        }
-      ],
+      "description": "Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have **exactly one solution**, and you may not use the same element twice.\n\nYou can return the answer in any order.",
       "examples": [
         {
-          "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1].",
           "input": "nums = [2,7,11,15], target = 9",
+          "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1].",
           "output": "[0, 1]"
         },
         {
@@ -204,16 +66,10 @@
           "explanation": "Because nums[1] + nums[2] == 6, we return [1, 2]."
         },
         {
-          "input": "nums = [3,3], target = 6",
-          "output": "[0, 1]"
+          "output": "[0, 1]",
+          "input": "nums = [3,3], target = 6"
         }
       ],
-      "acceptanceRate": 88,
-      "hints": [
-        "A brute-force solution checks every pair with two nested loops in O(N^2). Can you do better?",
-        "Can you use a Hash Map to store numbers you have already visited and check for the complement in O(1) time?"
-      ],
-      "description": "Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.\n\nYou may assume that each input would have **exactly one solution**, and you may not use the same element twice.\n\nYou can return the answer in any order.",
       "starterCode": {
         "javascript": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nfunction twoSum(nums, target) {\n  // Write your code here\n  return [];\n}",
         "python": "def twoSum(nums: list[int], target: int) -> list[int]:\n    # Write your code here\n    return []",
@@ -222,65 +78,79 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Write your code here\n        return {};\n    }\n};",
         "go": "package main\n\nfunc twoSum(nums []int, target int) []int {\n    // Write your code here\n    return []int{}\n}"
       },
+      "acceptanceRate": 88,
       "slug": "two-sum",
-      "difficulty": "basic"
+      "constraints": [
+        "2 <= nums.length <= 10^4",
+        "-10^9 <= nums[i] <= 10^9",
+        "-10^9 <= target <= 10^9",
+        "Only one valid answer exists.",
+        "Target time complexity: O(N)"
+      ],
+      "testCases": [
+        {
+          "input": "[2,7,11,15], 9",
+          "id": "t1",
+          "expectedOutput": "[0,1]"
+        },
+        {
+          "id": "t2",
+          "expectedOutput": "[1,2]",
+          "input": "[3,2,4], 6"
+        },
+        {
+          "input": "[3,3], 6",
+          "id": "t3",
+          "expectedOutput": "[0,1]"
+        },
+        {
+          "expectedOutput": "[0,3]",
+          "isHidden": true,
+          "input": "[1,5,8,3], 4",
+          "id": "t4"
+        }
+      ]
     },
     {
       "id": "prob_valid_palindrome",
+      "title": "Valid Palindrome",
+      "hints": [
+        "Consider two pointers starting at the beginning and the end of the string.",
+        "Increment the left pointer and decrement the right pointer until both point to alphanumeric characters."
+      ],
       "tags": [
         "Two Pointers",
         "String",
         "Easy"
       ],
-      "category": "Two Pointers & Strings",
       "constraints": [
         "1 <= s.length <= 2 * 10^5",
         "`s` consists only of printable ASCII characters.",
         "Optimal space complexity: O(1) using two pointers"
       ],
-      "examples": [
-        {
-          "explanation": "\"amanaplanacanalpanama\" is a palindrome.",
-          "input": "s = \"A man, a plan, a canal: Panama\"",
-          "output": "true"
-        },
-        {
-          "input": "s = \"race a car\"",
-          "output": "false",
-          "explanation": "\"raceacar\" is not a palindrome."
-        },
-        {
-          "explanation": "An empty string reads the same forward and backward.",
-          "output": "true",
-          "input": "s = \" \""
-        }
-      ],
-      "acceptanceRate": 79,
       "testCases": [
         {
+          "id": "t1",
           "input": "\"A man, a plan, a canal: Panama\"",
-          "expectedOutput": "true",
-          "id": "t1"
+          "expectedOutput": "true"
         },
         {
-          "input": "\"race a car\"",
+          "expectedOutput": "false",
           "id": "t2",
-          "expectedOutput": "false"
+          "input": "\"race a car\""
         },
         {
-          "input": "\" \"",
           "expectedOutput": "true",
+          "input": "\" \"",
           "id": "t3"
         },
         {
-          "isHidden": true,
-          "id": "t4",
           "expectedOutput": "false",
+          "id": "t4",
+          "isHidden": true,
           "input": "\"0P\""
         }
       ],
-      "difficulty": "basic",
-      "description": "A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\n\nGiven a string `s`, return `true` if it is a palindrome, or `false` otherwise.",
       "starterCode": {
         "javascript": "/**\n * @param {string} s\n * @return {boolean}\n */\nfunction isPalindrome(s) {\n  // Write your code here\n  return false;\n}",
         "python": "def isPalindrome(s: str) -> bool:\n    # Write your code here\n    return False",
@@ -290,30 +160,47 @@
         "go": "package main\n\nfunc isPalindrome(s string) bool {\n    // Write your code here\n    return false\n}"
       },
       "slug": "valid-palindrome",
-      "hints": [
-        "Consider two pointers starting at the beginning and the end of the string.",
-        "Increment the left pointer and decrement the right pointer until both point to alphanumeric characters."
+      "description": "A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\n\nGiven a string `s`, return `true` if it is a palindrome, or `false` otherwise.",
+      "examples": [
+        {
+          "input": "s = \"A man, a plan, a canal: Panama\"",
+          "output": "true",
+          "explanation": "\"amanaplanacanalpanama\" is a palindrome."
+        },
+        {
+          "input": "s = \"race a car\"",
+          "output": "false",
+          "explanation": "\"raceacar\" is not a palindrome."
+        },
+        {
+          "input": "s = \" \"",
+          "explanation": "An empty string reads the same forward and backward.",
+          "output": "true"
+        }
       ],
-      "title": "Valid Palindrome"
+      "acceptanceRate": 79,
+      "category": "Two Pointers & Strings",
+      "difficulty": "basic"
     },
     {
       "id": "prob_contains_duplicate",
-      "title": "Contains Duplicate",
-      "slug": "contains-duplicate",
-      "constraints": [
-        "1 <= nums.length <= 10^5",
-        "-10^9 <= nums[i] <= 10^9"
+      "tags": [
+        "Array",
+        "Hash Table",
+        "Set"
       ],
+      "description": "Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.",
+      "difficulty": "basic",
       "testCases": [
         {
-          "expectedOutput": "true",
           "input": "[1,2,3,1]",
+          "expectedOutput": "true",
           "id": "t1"
         },
         {
-          "id": "t2",
+          "expectedOutput": "false",
           "input": "[1,2,3,4]",
-          "expectedOutput": "false"
+          "id": "t2"
         },
         {
           "expectedOutput": "true",
@@ -321,28 +208,12 @@
           "id": "t3"
         }
       ],
+      "title": "Contains Duplicate",
       "hints": [
         "A Set only contains unique elements. What happens when you compare the size of a Set to the length of the array?"
       ],
-      "tags": [
-        "Array",
-        "Hash Table",
-        "Set"
-      ],
-      "examples": [
-        {
-          "output": "true",
-          "input": "nums = [1,2,3,1]"
-        },
-        {
-          "input": "nums = [1,2,3,4]",
-          "output": "false"
-        },
-        {
-          "input": "nums = [1,1,1,3,3,4,3,2,4,2]",
-          "output": "true"
-        }
-      ],
+      "slug": "contains-duplicate",
+      "acceptanceRate": 85,
       "starterCode": {
         "javascript": "/**\n * @param {number[]} nums\n * @return {boolean}\n */\nfunction containsDuplicate(nums) {\n  // Write your code here\n  return false;\n}",
         "python": "def containsDuplicate(nums: list[int]) -> bool:\n    # Write your code here\n    return False",
@@ -351,24 +222,59 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool containsDuplicate(vector<int>& nums) {\n        // Write your code here\n        return false;\n    }\n};",
         "go": "package main\n\nfunc containsDuplicate(nums []int) bool {\n    // Write your code here\n    return false\n}"
       },
-      "difficulty": "basic",
-      "description": "Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.",
       "category": "Arrays & Hash Maps",
-      "acceptanceRate": 85
+      "constraints": [
+        "1 <= nums.length <= 10^5",
+        "-10^9 <= nums[i] <= 10^9"
+      ],
+      "examples": [
+        {
+          "input": "nums = [1,2,3,1]",
+          "output": "true"
+        },
+        {
+          "output": "false",
+          "input": "nums = [1,2,3,4]"
+        },
+        {
+          "input": "nums = [1,1,1,3,3,4,3,2,4,2]",
+          "output": "true"
+        }
+      ]
     },
     {
       "id": "prob_3sum",
-      "difficulty": "intermediate",
-      "tags": [
-        "Array",
-        "Two Pointers",
-        "Sorting",
-        "Interview Classic"
-      ],
       "constraints": [
         "3 <= nums.length <= 3000",
         "-10^5 <= nums[i] <= 10^5",
         "Time complexity: O(N^2)"
+      ],
+      "starterCode": {
+        "javascript": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nfunction threeSum(nums) {\n  // Write your code here\n  return [];\n}",
+        "python": "def threeSum(nums: list[int]) -> list[list[int]]:\n    # Write your code here\n    return []",
+        "typescript": "function threeSum(nums: number[]): number[][] {\n  // Write your code here\n  return [];\n}",
+        "java": "import java.util.List;\nimport java.util.ArrayList;\n\nclass Solution {\n    public List<List<Integer>> threeSum(int[] nums) {\n        // Write your code here\n        return new ArrayList<>();\n    }\n}",
+        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        // Write your code here\n        return {};\n    }\n};",
+        "go": "package main\n\nfunc threeSum(nums []int) [][]int {\n    // Write your code here\n    return [][]int{}\n}"
+      },
+      "slug": "3sum",
+      "difficulty": "intermediate",
+      "testCases": [
+        {
+          "id": "t1",
+          "expectedOutput": "[[-1,-1,2],[-1,0,1]]",
+          "input": "[-1,0,1,2,-1,-4]"
+        },
+        {
+          "expectedOutput": "[]",
+          "id": "t2",
+          "input": "[0,1,1]"
+        },
+        {
+          "id": "t3",
+          "expectedOutput": "[[0,0,0]]",
+          "input": "[0,0,0]"
+        }
       ],
       "examples": [
         {
@@ -381,56 +287,35 @@
           "input": "nums = [0,1,1]"
         },
         {
-          "input": "nums = [0,0,0]",
-          "output": "[[0,0,0]]"
+          "output": "[[0,0,0]]",
+          "input": "nums = [0,0,0]"
         }
       ],
-      "slug": "3sum",
+      "acceptanceRate": 46,
       "hints": [
         "Sorting the array first makes it easy to avoid duplicate triplets and enables the two-pointer technique.",
         "Fix the first element nums[i] and use two pointers (left and right) to find pairs that sum to -nums[i]."
       ],
-      "description": "Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.\n\nNotice that the solution set must not contain duplicate triplets.",
-      "acceptanceRate": 46,
-      "starterCode": {
-        "javascript": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nfunction threeSum(nums) {\n  // Write your code here\n  return [];\n}",
-        "python": "def threeSum(nums: list[int]) -> list[list[int]]:\n    # Write your code here\n    return []",
-        "typescript": "function threeSum(nums: number[]): number[][] {\n  // Write your code here\n  return [];\n}",
-        "java": "import java.util.List;\nimport java.util.ArrayList;\n\nclass Solution {\n    public List<List<Integer>> threeSum(int[] nums) {\n        // Write your code here\n        return new ArrayList<>();\n    }\n}",
-        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        // Write your code here\n        return {};\n    }\n};",
-        "go": "package main\n\nfunc threeSum(nums []int) [][]int {\n    // Write your code here\n    return [][]int{}\n}"
-      },
-      "testCases": [
-        {
-          "id": "t1",
-          "expectedOutput": "[[-1,-1,2],[-1,0,1]]",
-          "input": "[-1,0,1,2,-1,-4]"
-        },
-        {
-          "expectedOutput": "[]",
-          "input": "[0,1,1]",
-          "id": "t2"
-        },
-        {
-          "expectedOutput": "[[0,0,0]]",
-          "input": "[0,0,0]",
-          "id": "t3"
-        }
-      ],
+      "category": "Two Pointers",
       "title": "3Sum",
-      "category": "Two Pointers"
+      "description": "Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.\n\nNotice that the solution set must not contain duplicate triplets.",
+      "tags": [
+        "Array",
+        "Two Pointers",
+        "Sorting",
+        "Interview Classic"
+      ]
     },
     {
       "id": "prob_longest_substring",
-      "hints": [
-        "Use the sliding window technique with two pointers [left, right].",
-        "Store the last seen index of each character to quickly advance the left boundary."
-      ],
+      "slug": "longest-substring-without-repeating-characters",
+      "description": "Given a string `s`, find the length of the **longest substring** without duplicate characters.",
+      "acceptanceRate": 54,
       "testCases": [
         {
           "input": "\"abcabcbb\"",
-          "id": "t1",
-          "expectedOutput": "3"
+          "expectedOutput": "3",
+          "id": "t1"
         },
         {
           "input": "\"bbbbb\"",
@@ -438,33 +323,21 @@
           "expectedOutput": "1"
         },
         {
-          "input": "\"pwwkew\"",
           "expectedOutput": "3",
-          "id": "t3"
+          "id": "t3",
+          "input": "\"pwwkew\""
         },
         {
+          "id": "t4",
           "input": "\"\"",
           "expectedOutput": "0",
-          "id": "t4",
           "isHidden": true
         }
       ],
-      "examples": [
-        {
-          "output": "3",
-          "explanation": "The answer is \"abc\", with the length of 3.",
-          "input": "s = \"abcabcbb\""
-        },
-        {
-          "explanation": "The answer is \"b\", with the length of 1.",
-          "output": "1",
-          "input": "s = \"bbbbb\""
-        },
-        {
-          "input": "s = \"pwwkew\"",
-          "explanation": "The answer is \"wke\", with the length of 3. Notice that \"pwke\" is a subsequence and not a substring.",
-          "output": "3"
-        }
+      "tags": [
+        "Hash Table",
+        "String",
+        "Sliding Window"
       ],
       "category": "Sliding Window",
       "constraints": [
@@ -473,15 +346,23 @@
         "Target time complexity: O(N)"
       ],
       "title": "Longest Substring Without Repeating Characters",
-      "difficulty": "intermediate",
-      "slug": "longest-substring-without-repeating-characters",
-      "acceptanceRate": 54,
-      "tags": [
-        "Hash Table",
-        "String",
-        "Sliding Window"
+      "examples": [
+        {
+          "output": "3",
+          "explanation": "The answer is \"abc\", with the length of 3.",
+          "input": "s = \"abcabcbb\""
+        },
+        {
+          "explanation": "The answer is \"b\", with the length of 1.",
+          "input": "s = \"bbbbb\"",
+          "output": "1"
+        },
+        {
+          "explanation": "The answer is \"wke\", with the length of 3. Notice that \"pwke\" is a subsequence and not a substring.",
+          "input": "s = \"pwwkew\"",
+          "output": "3"
+        }
       ],
-      "description": "Given a string `s`, find the length of the **longest substring** without duplicate characters.",
       "starterCode": {
         "javascript": "/**\n * @param {string} s\n * @return {number}\n */\nfunction lengthOfLongestSubstring(s) {\n  // Write your code here\n  return 0;\n}",
         "python": "def lengthOfLongestSubstring(s: str) -> int:\n    # Write your code here\n    return 0",
@@ -489,59 +370,55 @@
         "java": "class Solution {\n    public int lengthOfLongestSubstring(String s) {\n        // Write your code here\n        return 0;\n    }\n}",
         "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        // Write your code here\n        return 0;\n    }\n};",
         "go": "package main\n\nfunc lengthOfLongestSubstring(s string) int {\n    // Write your code here\n    return 0\n}"
-      }
+      },
+      "hints": [
+        "Use the sliding window technique with two pointers [left, right].",
+        "Store the last seen index of each character to quickly advance the left boundary."
+      ],
+      "difficulty": "intermediate"
     },
     {
       "id": "prob_group_anagrams",
-      "constraints": [
-        "1 <= strs.length <= 10^4",
-        "0 <= strs[i].length <= 100",
-        "`strs[i]` consists of lowercase English letters."
-      ],
-      "title": "Group Anagrams",
-      "difficulty": "intermediate",
       "testCases": [
         {
-          "id": "t1",
           "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+          "id": "t1",
           "expectedOutput": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
         },
         {
-          "id": "t2",
           "input": "[\"\"]",
+          "id": "t2",
           "expectedOutput": "[[\"\"]]"
         },
         {
           "id": "t3",
-          "input": "[\"a\"]",
-          "expectedOutput": "[[\"a\"]]"
+          "expectedOutput": "[[\"a\"]]",
+          "input": "[\"a\"]"
         }
       ],
+      "description": "Given an array of strings `strs`, group the **anagrams** together. You can return the answer in **any order**.\n\nAn Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+      "slug": "group-anagrams",
+      "hints": [
+        "Two words are anagrams if and only if their sorted character representations are identical."
+      ],
+      "difficulty": "intermediate",
+      "acceptanceRate": 67,
+      "title": "Group Anagrams",
+      "category": "Hash Maps & Strings",
       "examples": [
         {
-          "output": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]",
-          "input": "strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]"
+          "input": "strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+          "output": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
         },
         {
           "input": "strs = [\"\"]",
           "output": "[[\"\"]]"
         },
         {
-          "output": "[[\"a\"]]",
-          "input": "strs = [\"a\"]"
+          "input": "strs = [\"a\"]",
+          "output": "[[\"a\"]]"
         }
       ],
-      "category": "Hash Maps & Strings",
-      "tags": [
-        "Array",
-        "Hash Table",
-        "String",
-        "Sorting"
-      ],
-      "hints": [
-        "Two words are anagrams if and only if their sorted character representations are identical."
-      ],
-      "acceptanceRate": 67,
       "starterCode": {
         "javascript": "/**\n * @param {string[]} strs\n * @return {string[][]}\n */\nfunction groupAnagrams(strs) {\n  // Write your code here\n  return [];\n}",
         "python": "def groupAnagrams(strs: list[str]) -> list[list[str]]:\n    # Write your code here\n    return []",
@@ -550,33 +427,46 @@
         "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        // Write your code here\n        return {};\n    }\n};",
         "go": "package main\n\nfunc groupAnagrams(strs []string) [][]string {\n    // Write your code here\n    return [][]string{}\n}"
       },
-      "description": "Given an array of strings `strs`, group the **anagrams** together. You can return the answer in **any order**.\n\nAn Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
-      "slug": "group-anagrams"
+      "tags": [
+        "Array",
+        "Hash Table",
+        "String",
+        "Sorting"
+      ],
+      "constraints": [
+        "1 <= strs.length <= 10^4",
+        "0 <= strs[i].length <= 100",
+        "`strs[i]` consists of lowercase English letters."
+      ]
     },
     {
       "id": "prob_trapping_rain_water",
+      "description": "Given `n` non-negative integers representing an elevation map where the width of each bar is `1`, compute how much water it can trap after raining.",
+      "examples": [
+        {
+          "explanation": "The elevation map traps 6 units of rain water.",
+          "output": "6",
+          "input": "height = [0,1,0,2,1,0,1,3,2,1,2,1]"
+        },
+        {
+          "output": "9",
+          "input": "height = [4,2,0,3,2,5]"
+        }
+      ],
+      "category": "Two Pointers & Monotonic Stack",
       "tags": [
         "Two Pointers",
         "Dynamic Programming",
         "Monotonic Stack",
         "Hard"
       ],
-      "title": "Trapping Rain Water",
-      "description": "Given `n` non-negative integers representing an elevation map where the width of each bar is `1`, compute how much water it can trap after raining.",
-      "starterCode": {
-        "javascript": "/**\n * @param {number[]} height\n * @return {number}\n */\nfunction trap(height) {\n  // Write your code here\n  return 0;\n}",
-        "python": "def trap(height: list[int]) -> int:\n    # Write your code here\n    return 0",
-        "typescript": "function trap(height: number[]): number {\n  // Write your code here\n  return 0;\n}",
-        "java": "class Solution {\n    public int trap(int[] height) {\n        // Write your code here\n        return 0;\n    }\n}",
-        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int trap(vector<int>& height) {\n        // Write your code here\n        return 0;\n    }\n};",
-        "go": "package main\n\nfunc trap(height []int) int {\n    // Write your code here\n    return 0\n}"
-      },
       "difficulty": "advanced",
+      "slug": "trapping-rain-water",
+      "title": "Trapping Rain Water",
       "hints": [
         "For each element, how much water can be trapped above it? It is min(maxLeft, maxRight) - currentHeight.",
         "Can you maintain maxLeft and maxRight dynamically using two pointers moving inwards?"
       ],
-      "acceptanceRate": 38,
       "testCases": [
         {
           "input": "[0,1,0,2,1,0,1,3,2,1,2,1]",
@@ -584,51 +474,70 @@
           "id": "t1"
         },
         {
-          "id": "t2",
           "expectedOutput": "9",
-          "input": "[4,2,0,3,2,5]"
+          "input": "[4,2,0,3,2,5]",
+          "id": "t2"
         },
         {
+          "isHidden": true,
           "input": "[3,0,2,0,4]",
           "expectedOutput": "7",
-          "id": "t3",
-          "isHidden": true
+          "id": "t3"
         }
       ],
-      "category": "Two Pointers & Monotonic Stack",
+      "acceptanceRate": 38,
       "constraints": [
         "n == height.length",
         "1 <= n <= 2 * 10^4",
         "0 <= height[i] <= 10^5",
         "Optimal time: O(N), Optimal space: O(1)"
       ],
-      "slug": "trapping-rain-water",
-      "examples": [
-        {
-          "output": "6",
-          "explanation": "The elevation map traps 6 units of rain water.",
-          "input": "height = [0,1,0,2,1,0,1,3,2,1,2,1]"
-        },
-        {
-          "input": "height = [4,2,0,3,2,5]",
-          "output": "9"
-        }
-      ]
+      "starterCode": {
+        "javascript": "/**\n * @param {number[]} height\n * @return {number}\n */\nfunction trap(height) {\n  // Write your code here\n  return 0;\n}",
+        "python": "def trap(height: list[int]) -> int:\n    # Write your code here\n    return 0",
+        "typescript": "function trap(height: number[]): number {\n  // Write your code here\n  return 0;\n}",
+        "java": "class Solution {\n    public int trap(int[] height) {\n        // Write your code here\n        return 0;\n    }\n}",
+        "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int trap(vector<int>& height) {\n        // Write your code here\n        return 0;\n    }\n};",
+        "go": "package main\n\nfunc trap(height []int) int {\n    // Write your code here\n    return 0\n}"
+      }
     },
     {
       "id": "prob_coin_change",
-      "title": "Coin Change",
-      "difficulty": "advanced",
       "hints": [
         "Think of this as finding the shortest path in a graph where nodes are amounts from 0 to amount.",
         "Define dp[i] as the minimum coins needed to make amount i. What is the transition relation?"
       ],
-      "acceptanceRate": 43,
-      "tags": [
-        "Dynamic Programming",
-        "Breadth-First Search",
-        "State Optimization"
+      "testCases": [
+        {
+          "input": "[1,2,5], 11",
+          "expectedOutput": "3",
+          "id": "t1"
+        },
+        {
+          "input": "[2], 3",
+          "expectedOutput": "-1",
+          "id": "t2"
+        },
+        {
+          "expectedOutput": "0",
+          "input": "[1], 0",
+          "id": "t3"
+        },
+        {
+          "expectedOutput": "20",
+          "id": "t4",
+          "input": "[186,419,83,408], 6249",
+          "isHidden": true
+        }
       ],
+      "title": "Coin Change",
+      "category": "Dynamic Programming",
+      "constraints": [
+        "1 <= coins.length <= 12",
+        "1 <= coins[i] <= 2^31 - 1",
+        "0 <= amount <= 10^4"
+      ],
+      "slug": "coin-change",
       "starterCode": {
         "javascript": "/**\n * @param {number[]} coins\n * @param {number} amount\n * @return {number}\n */\nfunction coinChange(coins, amount) {\n  // Write your code here\n  return -1;\n}",
         "python": "def coinChange(coins: list[int], amount: int) -> int:\n    # Write your code here\n    return -1",
@@ -637,35 +546,11 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int coinChange(vector<int>& coins, int amount) {\n        // Write your code here\n        return -1;\n    }\n};",
         "go": "package main\n\nfunc coinChange(coins []int, amount int) int {\n    // Write your code here\n    return -1\n}"
       },
-      "testCases": [
-        {
-          "expectedOutput": "3",
-          "input": "[1,2,5], 11",
-          "id": "t1"
-        },
-        {
-          "expectedOutput": "-1",
-          "id": "t2",
-          "input": "[2], 3"
-        },
-        {
-          "input": "[1], 0",
-          "expectedOutput": "0",
-          "id": "t3"
-        },
-        {
-          "input": "[186,419,83,408], 6249",
-          "id": "t4",
-          "expectedOutput": "20",
-          "isHidden": true
-        }
-      ],
-      "description": "You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.\n\nReturn the **fewest number of coins** that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return `-1`.\n\nYou may assume that you have an infinite number of each kind of coin.",
       "examples": [
         {
           "output": "3",
-          "explanation": "11 = 5 + 5 + 1",
-          "input": "coins = [1,2,5], amount = 11"
+          "input": "coins = [1,2,5], amount = 11",
+          "explanation": "11 = 5 + 5 + 1"
         },
         {
           "input": "coins = [2], amount = 3",
@@ -676,47 +561,52 @@
           "output": "0"
         }
       ],
-      "slug": "coin-change",
-      "constraints": [
-        "1 <= coins.length <= 12",
-        "1 <= coins[i] <= 2^31 - 1",
-        "0 <= amount <= 10^4"
-      ],
-      "category": "Dynamic Programming"
+      "difficulty": "advanced",
+      "description": "You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.\n\nReturn the **fewest number of coins** that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return `-1`.\n\nYou may assume that you have an infinite number of each kind of coin.",
+      "acceptanceRate": 43,
+      "tags": [
+        "Dynamic Programming",
+        "Breadth-First Search",
+        "State Optimization"
+      ]
     },
     {
       "id": "prob_course_schedule",
-      "tags": [
-        "Depth-First Search",
-        "Breadth-First Search",
-        "Graph",
-        "Topological Sort"
-      ],
-      "hints": [
-        "Model the courses and prerequisites as a Directed Graph.",
-        "Kahn's algorithm for Topological Sorting uses in-degrees and a queue. If you process all nodes, no cycle exists."
-      ],
-      "acceptanceRate": 47,
-      "testCases": [
+      "description": "There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [a_i, b_i]` indicates that you **must** take course `b_i` first if you want to take course `a_i`.\n\nReturn `true` if you can finish all courses. Otherwise, return `false` (i.e. if there is a circular dependency / cycle).",
+      "examples": [
         {
-          "input": "2, [[1,0]]",
-          "id": "t1",
-          "expectedOutput": "true"
+          "output": "true",
+          "explanation": "To take course 1 you should have finished course 0. So it is possible.",
+          "input": "numCourses = 2, prerequisites = [[1,0]]"
         },
         {
-          "expectedOutput": "false",
-          "input": "2, [[1,0],[0,1]]",
-          "id": "t2"
-        },
-        {
-          "input": "4, [[1,0],[2,0],[3,1],[3,2]]",
-          "expectedOutput": "true",
-          "id": "t3",
-          "isHidden": true
+          "input": "numCourses = 2, prerequisites = [[1,0],[0,1]]",
+          "output": "false",
+          "explanation": "Course 1 requires course 0, but course 0 requires course 1. Cycle exists!"
         }
       ],
-      "description": "There are a total of `numCourses` courses you have to take, labeled from `0` to `numCourses - 1`. You are given an array `prerequisites` where `prerequisites[i] = [a_i, b_i]` indicates that you **must** take course `b_i` first if you want to take course `a_i`.\n\nReturn `true` if you can finish all courses. Otherwise, return `false` (i.e. if there is a circular dependency / cycle).",
-      "title": "Course Schedule",
+      "slug": "course-schedule",
+      "testCases": [
+        {
+          "expectedOutput": "true",
+          "input": "2, [[1,0]]",
+          "id": "t1"
+        },
+        {
+          "input": "2, [[1,0],[0,1]]",
+          "id": "t2",
+          "expectedOutput": "false"
+        },
+        {
+          "isHidden": true,
+          "expectedOutput": "true",
+          "id": "t3",
+          "input": "4, [[1,0],[2,0],[3,1],[3,2]]"
+        }
+      ],
+      "category": "Graphs & Topological Sort",
+      "difficulty": "advanced",
+      "acceptanceRate": 47,
       "starterCode": {
         "javascript": "/**\n * @param {number} numCourses\n * @param {number[][]} prerequisites\n * @return {boolean}\n */\nfunction canFinish(numCourses, prerequisites) {\n  // Write your code here\n  return false;\n}",
         "python": "def canFinish(numCourses: int, prerequisites: list[list[int]]) -> bool:\n    # Write your code here\n    return False",
@@ -725,21 +615,17 @@
         "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {\n        // Write your code here\n        return false;\n    }\n};",
         "go": "package main\n\nfunc canFinish(numCourses int, prerequisites [][]int) bool {\n    // Write your code here\n    return false\n}"
       },
-      "category": "Graphs & Topological Sort",
-      "slug": "course-schedule",
-      "examples": [
-        {
-          "explanation": "To take course 1 you should have finished course 0. So it is possible.",
-          "output": "true",
-          "input": "numCourses = 2, prerequisites = [[1,0]]"
-        },
-        {
-          "explanation": "Course 1 requires course 0, but course 0 requires course 1. Cycle exists!",
-          "output": "false",
-          "input": "numCourses = 2, prerequisites = [[1,0],[0,1]]"
-        }
+      "hints": [
+        "Model the courses and prerequisites as a Directed Graph.",
+        "Kahn's algorithm for Topological Sorting uses in-degrees and a queue. If you process all nodes, no cycle exists."
       ],
-      "difficulty": "advanced",
+      "tags": [
+        "Depth-First Search",
+        "Breadth-First Search",
+        "Graph",
+        "Topological Sort"
+      ],
+      "title": "Course Schedule",
       "constraints": [
         "1 <= numCourses <= 2000",
         "0 <= prerequisites.length <= 5000",
@@ -824,55 +710,57 @@
     },
     {
       "id": "prob_admin-authored-bin_u3y72",
-      "slug": "admin-authored-binary-search",
       "createdAt": "2026-09-11T15:09:04.912Z",
+      "title": "Admin Authored Binary Search",
       "category": "Binary Search",
+      "slug": "admin-authored-binary-search",
+      "constraints": [
+        "1 <= input.length <= 10^5",
+        "Target time complexity: O(N)"
+      ],
+      "starterCode": {
+        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};",
+        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
+        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}",
+        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}",
+        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None",
+        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}"
+      },
       "difficulty": "intermediate",
+      "tags": [
+        "binary search"
+      ],
+      "testCases": [
+        {
+          "isHidden": false,
+          "input": "[-1,0,3,5,9,12], 9",
+          "expectedOutput": "4",
+          "id": "tc1"
+        }
+      ],
+      "acceptanceRate": 75,
+      "description": "Given an array of sorted integers, find target index in O(log n).",
+      "hints": [],
       "examples": [
         {
           "input": "nums = [-1,0,3,5,9,12], target = 9",
           "output": "4"
         }
-      ],
-      "tags": [
-        "binary search"
-      ],
-      "description": "Given an array of sorted integers, find target index in O(log n).",
-      "starterCode": {
-        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None",
-        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
-        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}",
-        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}",
-        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}",
-        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};"
-      },
-      "title": "Admin Authored Binary Search",
-      "constraints": [
-        "1 <= input.length <= 10^5",
-        "Target time complexity: O(N)"
-      ],
-      "hints": [],
-      "acceptanceRate": 75,
-      "testCases": [
-        {
-          "isHidden": false,
-          "expectedOutput": "4",
-          "id": "tc1",
-          "input": "[-1,0,3,5,9,12], 9"
-        }
       ]
     },
     {
       "id": "prob_admin-authored-bin_m4piw",
-      "title": "Admin Authored Binary Search",
-      "hints": [],
       "testCases": [
         {
           "id": "tc1",
-          "isHidden": false,
+          "input": "[-1,0,3,5,9,12], 9",
           "expectedOutput": "4",
-          "input": "[-1,0,3,5,9,12], 9"
+          "isHidden": false
         }
+      ],
+      "title": "Admin Authored Binary Search",
+      "tags": [
+        "binary search"
       ],
       "examples": [
         {
@@ -880,133 +768,28 @@
           "input": "nums = [-1,0,3,5,9,12], target = 9"
         }
       ],
+      "description": "Given an array of sorted integers, find target index in O(log n).",
+      "slug": "admin-authored-binary-search",
+      "createdAt": "2026-09-11T16:35:01.329Z",
       "acceptanceRate": 75,
+      "category": "Binary Search",
       "constraints": [
         "1 <= input.length <= 10^5",
         "Target time complexity: O(N)"
       ],
-      "starterCode": {
-        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}",
-        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}",
-        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
-        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};",
-        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None",
-        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}"
-      },
-      "category": "Binary Search",
       "difficulty": "intermediate",
-      "slug": "admin-authored-binary-search",
-      "description": "Given an array of sorted integers, find target index in O(log n).",
-      "tags": [
-        "binary search"
-      ],
-      "createdAt": "2026-09-11T16:35:01.329Z"
+      "hints": [],
+      "starterCode": {
+        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None",
+        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
+        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}",
+        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}",
+        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};",
+        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}"
+      }
     }
   ],
-  "submissions": [
-    {
-      "id": "sub_sample_student_01",
-      "userId": "usr_student_active",
-      "status": "Passed",
-      "memoryKb": 2048,
-      "difficulty": "basic",
-      "category": "Arrays & Hash Maps",
-      "executionTimeMs": 14,
-      "problemTitle": "Two Sum",
-      "totalCases": 3,
-      "language": "javascript",
-      "passedCases": 3,
-      "createdAt": "2026-09-13T05:48:13.079Z",
-      "problemId": "prob_two_sum"
-    },
-    {
-      "id": "sub_mtze7v420w9l",
-      "createdAt": "2026-09-13T05:48:15.554Z",
-      "userName": "Demo Student",
-      "problemId": "prob_two_sum",
-      "totalCases": 4,
-      "testResults": [
-        {
-          "testId": "t1",
-          "status": "Passed",
-          "stdout": "",
-          "input": "[2,7,11,15], 9",
-          "actual": "[0,1]",
-          "executionTimeMs": 1,
-          "passed": true,
-          "expected": "[0,1]"
-        },
-        {
-          "testId": "t2",
-          "expected": "[1,2]",
-          "executionTimeMs": 1,
-          "status": "Passed",
-          "stdout": "",
-          "input": "[3,2,4], 6",
-          "actual": "[1,2]",
-          "passed": true
-        },
-        {
-          "passed": true,
-          "actual": "[0,1]",
-          "input": "[3,3], 6",
-          "stdout": "",
-          "expected": "[0,1]",
-          "status": "Passed",
-          "executionTimeMs": 1,
-          "testId": "t3"
-        },
-        {
-          "executionTimeMs": 1,
-          "actual": "[0,3]",
-          "input": "[1,5,8,3], 4",
-          "status": "Passed",
-          "isHidden": true,
-          "testId": "t4",
-          "passed": true,
-          "stdout": "",
-          "expected": "[0,3]"
-        }
-      ],
-      "memoryKb": 38654,
-      "difficulty": "basic",
-      "language": "javascript",
-      "executionTimeMs": 7,
-      "problemTitle": "Two Sum",
-      "category": "Arrays & Hash Maps",
-      "aiReview": {
-        "correctnessScore": 100,
-        "improvements": [
-          "Transition from an O(n^2) brute-force approach to an O(n) approach using a Hash Map to store visited values.",
-          "Consider early input validation to ensure the input array has at least two elements.",
-          "Adopt modern JavaScript best practices like using 'const' for variables that do not require re-assignment."
-        ],
-        "timeComplexity": "O(n^2) where n is the number of elements in the array, due to the nested loops comparing each pair of elements.",
-        "suggestedOptimizedSnippet": "function twoSum(nums, target) { const map = new Map(); for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (map.has(complement)) return [map.get(complement), i]; map.set(nums[i], i); } return []; }",
-        "spaceComplexity": "O(1) because the solution only uses a fixed amount of extra space for loop variables regardless of the input size.",
-        "edgeCasesCovered": [
-          "Arrays with exactly two elements.",
-          "Target values reachable by the first and last elements.",
-          "Negative integers in the array."
-        ],
-        "summary": "Your solution is logically sound and correctly solves the problem by checking every possible pair. While it satisfies the requirements, it is computationally inefficient for large datasets. In professional environments, we prioritize O(n) solutions using Hash Maps to avoid redundant iterations.",
-        "edgeCasesMissed": [
-          "Large input arrays where O(n^2) complexity will lead to performance bottlenecks.",
-          "Empty or single-element arrays (though the problem guarantees a solution, defensive programming is recommended)."
-        ],
-        "strengths": [
-          "Clean, readable implementation following standard iteration patterns.",
-          "Correctly handles the requirement to return indices without reusing the same element.",
-          "Effective use of early return to terminate as soon as the solution is found."
-        ]
-      },
-      "userId": "usr_student_active",
-      "status": "Passed",
-      "code": "\nfunction twoSum(nums, target) {\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}\n      ",
-      "userEmail": "student@codeelevate.io",
-      "passedCases": 4
-    }
-  ],
+  "submissions": [],
   "messages": [
     {
       "id": "msg_1",
@@ -1093,13 +876,24 @@
     {
       "id": "fb_1789278522020_6kob9",
       "type": "suggestion",
-      "email": "alex@example.com",
-      "name": "Alex Test",
-      "subject": "Python 3.12 support",
       "message": "It would be great to have Python 3.12 standard library typing support.",
+      "subject": "Python 3.12 support",
       "metadata": {},
       "status": "received",
+      "name": "Alex Test",
+      "email": "alex@example.com",
       "createdAt": "2026-09-13T05:48:42.020Z"
+    },
+    {
+      "id": "fb_1789278616159_944nd",
+      "name": "bnnnnnn",
+      "type": "bug",
+      "email": "snehithsudulaguntla2108@gmail.com",
+      "subject": "bbug",
+      "message": "iiiiiiiiiiiiiiiiiiii",
+      "status": "received",
+      "metadata": {},
+      "createdAt": "2026-09-13T05:50:16.159Z"
     }
   ]
 }

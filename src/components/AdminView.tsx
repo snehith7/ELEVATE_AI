@@ -700,7 +700,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
                     </tr>
                   ) : (
                     filteredStudents.map(student => {
-                      const isRoot = student.id === 'usr_admin_root' || (student.role === 'admin' && student.username === 'root_admin');
+                      const isRoot = student.id === 'usr_admin_root' || student.email === 'snehithsudulaguntla2108@gmail.com' || (student.role === 'admin' && student.username === 'root_admin');
                       return (
                         <tr key={student.id} className="hover:bg-slate-800/40 transition-colors">
                           <td className="py-3.5 px-4 font-semibold text-white">

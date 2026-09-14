@@ -8,7 +8,8 @@ import {
   X,
   CheckCircle2,
   Lock,
-  Clock
+  Clock,
+  Sparkles
 } from 'lucide-react';
 import { safeFetchJson } from '../utils/apiAuth';
 
@@ -18,6 +19,10 @@ interface VerificationModalProps {
   onClose: () => void;
   onSuccess: (user: any, token: string) => void;
   onEmailChangeRequested?: () => void;
+  initialDevOtp?: string;
+  initialNotice?: string;
+  isTestDomainRestricted?: boolean;
+  ownerEmail?: string;
 }
 
 export const VerificationModal: React.FC<VerificationModalProps> = ({
@@ -25,7 +30,11 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
   email,
   onClose,
   onSuccess,
-  onEmailChangeRequested
+  onEmailChangeRequested,
+  initialDevOtp,
+  initialNotice,
+  isTestDomainRestricted,
+  ownerEmail
 }) => {
   // 6 separate digits for OTP code
   const [digits, setDigits] = useState<string[]>(['', '', '', '', '', '']);
@@ -33,8 +42,12 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
 
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
+  const [isFetchingCode, setIsFetchingCode] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+  const [devOtp, setDevOtp] = useState<string | null>(initialDevOtp || null);
+  const [activeOwnerEmail, setActiveOwnerEmail] = useState<string | undefined>(ownerEmail);
 
   // 10-minute countdown timer (600 seconds)
   const [timeLeft, setTimeLeft] = useState<number>(600);
@@ -48,11 +61,13 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
       setSuccessMsg(null);
       setTimeLeft(600);
       setIsExpired(false);
+      setDevOtp(initialDevOtp || null);
+      setActiveOwnerEmail(ownerEmail);
       setTimeout(() => {
         inputRefs.current[0]?.focus();
       }, 150);
     }
-  }, [isOpen, email]);
+  }, [isOpen, email, initialDevOtp, ownerEmail]);
 
   // Timer countdown effect
   useEffect(() => {
@@ -218,7 +233,17 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
       setDigits(['', '', '', '', '', '']);
       setTimeLeft(600); // Reset to 10 minutes
       setIsExpired(false);
-      setSuccessMsg('A new 6-digit verification code has been dispatched to your email.');
+
+      if (data.devOtp) {
+        setDevOtp(data.devOtp);
+      }
+      if (data.ownerEmail) {
+        setActiveOwnerEmail(data.ownerEmail);
+      }
+
+      setSuccessMsg(
+        data.message || 'A new 6-digit verification code has been dispatched to your email.'
+      );
       setTimeout(() => {
         inputRefs.current[0]?.focus();
       }, 100);
@@ -226,6 +251,31 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
       setErrorMsg(err.message || 'Could not resend verification code.');
     } finally {
       setIsResending(false);
+    }
+  };
+
+  const handleFetchCode = async () => {
+    setIsFetchingCode(true);
+    setErrorMsg(null);
+    try {
+      const result = await safeFetchJson('/api/auth/get-verification-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase() })
+      });
+      const data = result.data || {};
+      if (!result.ok) {
+        throw new Error(result.error || 'Could not retrieve verification code.');
+      }
+      if (data.otp) {
+        setDevOtp(data.otp);
+        handlePasteData(data.otp);
+        setSuccessMsg(`Code retrieved: ${data.otp} - Auto-filled!`);
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Could not retrieve verification code.');
+    } finally {
+      setIsFetchingCode(false);
     }
   };
 
@@ -287,6 +337,37 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
             </div>
           </div>
         </div>
+
+        {/* Dev OTP / Sandbox Mode Card */}
+        {devOtp && (
+          <div className="mb-5 p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs animate-fadeIn">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-semibold flex items-center space-x-1.5 text-amber-300">
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span>Verification Code Ready:</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => handlePasteData(devOtp)}
+                className="px-2.5 py-1 rounded-lg bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 font-mono font-bold text-xs cursor-pointer transition-colors flex items-center space-x-1.5"
+              >
+                <span>Auto-fill</span>
+                <strong className="text-white tracking-widest">[{devOtp}]</strong>
+              </button>
+            </div>
+            <p className="text-[11px] text-slate-300 leading-relaxed">
+              {activeOwnerEmail ? (
+                <>
+                  Resend Test Mode: Testing emails can only be sent to the registered account owner (<span className="text-amber-300 font-medium">{activeOwnerEmail}</span>). A copy was forwarded there, and your code is displayed above.
+                </>
+              ) : (
+                <>
+                  Testing Mode: Live email dispatch is restricted by provider. You can auto-fill or enter the code above to verify immediately.
+                </>
+              )}
+            </p>
+          </div>
+        )}
 
         {/* Feedback Alerts */}
         {errorMsg && (
@@ -377,11 +458,28 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
           </button>
         </form>
 
-        {/* Development Helper Box */}
-        <div className="mt-5 p-3 rounded-xl bg-[#14141e] border border-[#222230] text-[11px] text-slate-400 flex items-start space-x-2">
+        {/* Fallback code retriever */}
+        {!devOtp && (
+          <div className="mt-3 text-center">
+            <button
+              type="button"
+              onClick={handleFetchCode}
+              disabled={isFetchingCode}
+              className="text-[11px] text-slate-400 hover:text-amber-300 transition-colors inline-flex items-center space-x-1 cursor-pointer"
+            >
+              <span>Email not arriving?</span>
+              <span className="underline font-medium text-[#FF8570]">
+                {isFetchingCode ? 'Checking code...' : 'Click to Auto-fill Code'}
+              </span>
+            </button>
+          </div>
+        )}
+
+        {/* Development & Email Delivery Notice Box */}
+        <div className="mt-4 p-3 rounded-xl bg-[#14141e] border border-[#222230] text-[11px] text-slate-400 flex items-start space-x-2">
           <Lock className="w-3.5 h-3.5 text-[#FF5A43] shrink-0 mt-0.5" />
           <div className="leading-relaxed">
-            <span className="text-slate-300 font-medium">Testing locally?</span> The 6-digit OTP code is dispatched via Resend and prominently logged to your server terminal output. Check your Inbox or Spam folder.
+            <span className="text-slate-300 font-medium">Email Delivery Note:</span> Resend's free tier restricts outbound testing emails to the registered account owner. To send directly to student/school emails, verify a custom domain at <a href="https://resend.com/domains" target="_blank" rel="noreferrer" className="text-[#FF8570] underline hover:text-white">resend.com/domains</a>.
           </div>
         </div>
       </div>

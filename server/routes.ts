@@ -162,16 +162,23 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
             }
           }
         );
-        sendVerificationEmail(user.email, otp, user.username).catch(err =>
-          console.warn('Background email send on login notice:', err.message)
-        );
       }
+
+      const emailResult = await sendVerificationEmail(user.email, otp, user.username).catch(err => {
+        console.warn('Background email send on login notice:', err.message);
+        return { success: false, error: err.message } as any;
+      });
 
       return res.status(403).json({
         error: 'Your email address has not been verified yet. Please enter the 6-digit verification code to activate your account.',
         requiresVerification: true,
         email: user.email,
-        userId: user.id
+        userId: user.id,
+        emailDelivered: emailResult?.success ?? false,
+        isTestDomainRestricted: emailResult?.isTestDomainRestricted ?? false,
+        ownerEmail: emailResult?.ownerEmail,
+        deliveredToOwner: emailResult?.deliveredToOwner ?? false,
+        devOtp: (!emailResult?.success) ? otp : undefined
       });
     }
 
@@ -205,9 +212,9 @@ apiRouter.post('/faculty/login', async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Invalid faculty email or password.' });
     }
 
-    if (user.role !== 'faculty') {
+    if (user.role !== 'faculty' && user.role !== 'admin') {
       return res.status(403).json({
-        error: `Access denied. This account is registered as '${user.role.toUpperCase()}'. Please sign in through the ${user.role === 'admin' ? 'Admin Portal' : 'Student Portal'}.`
+        error: `Access denied. This account is registered as '${user.role.toUpperCase()}'. Please sign in through the Student Portal.`
       });
     }
 
@@ -264,14 +271,23 @@ apiRouter.post('/auth/register', async (req: Request, res: Response) => {
       );
 
       // Dispatch verification email via Resend
-      await sendVerificationEmail(normalizedEmail, otp, username?.trim() || existing.username);
+      const emailResult = await sendVerificationEmail(normalizedEmail, otp, username?.trim() || existing.username);
 
       return res.status(200).json({
         success: true,
         requiresVerification: true,
         email: normalizedEmail,
         userId: existing.id,
-        message: `A fresh 6-digit verification code has been sent to ${normalizedEmail}. Please enter the code to activate your account.`
+        emailDelivered: emailResult.success,
+        isTestDomainRestricted: emailResult.isTestDomainRestricted ?? false,
+        ownerEmail: emailResult.ownerEmail,
+        deliveredToOwner: emailResult.deliveredToOwner ?? false,
+        devOtp: !emailResult.success ? otp : undefined,
+        message: emailResult.success
+          ? `A fresh 6-digit verification code has been sent to ${normalizedEmail}.`
+          : emailResult.deliveredToOwner
+          ? `Notice: Email provider test mode is active. Code was forwarded to ${emailResult.ownerEmail} and is displayed in the verification dialog.`
+          : `A fresh verification code (${otp}) is ready. Enter it to activate your account.`
       });
     }
 
@@ -300,7 +316,7 @@ apiRouter.post('/auth/register', async (req: Request, res: Response) => {
     await usersCol.insertOne(newUser);
 
     // Dispatch verification email via Resend (with test fallback / server console log)
-    await sendVerificationEmail(normalizedEmail, otp, newUser.username);
+    const emailResult = await sendVerificationEmail(normalizedEmail, otp, newUser.username);
 
     // Do NOT return login token: require OTP email verification step first
     return res.status(201).json({
@@ -308,7 +324,16 @@ apiRouter.post('/auth/register', async (req: Request, res: Response) => {
       requiresVerification: true,
       email: normalizedEmail,
       userId: newUser.id,
-      message: `A 6-digit verification code has been sent to ${normalizedEmail}. Please enter the code to verify your account.`
+      emailDelivered: emailResult.success,
+      isTestDomainRestricted: emailResult.isTestDomainRestricted ?? false,
+      ownerEmail: emailResult.ownerEmail,
+      deliveredToOwner: emailResult.deliveredToOwner ?? false,
+      devOtp: !emailResult.success ? otp : undefined,
+      message: emailResult.success
+        ? `A 6-digit verification code has been sent to ${normalizedEmail}.`
+        : emailResult.deliveredToOwner
+        ? `Notice: Email provider test mode is active. Code was forwarded to ${emailResult.ownerEmail} and is displayed in the verification dialog.`
+        : `A verification code (${otp}) is ready. Enter it to verify your account.`
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
@@ -447,11 +472,68 @@ apiRouter.post('/auth/resend-verification', async (req: Request, res: Response) 
     );
 
     // Send email
-    await sendVerificationEmail(normalizedEmail, newOtp, user.username);
+    const emailResult = await sendVerificationEmail(normalizedEmail, newOtp, user.username);
 
     return res.json({
       success: true,
-      message: `A fresh 6-digit verification code has been dispatched to ${normalizedEmail}.`
+      emailDelivered: emailResult.success,
+      isTestDomainRestricted: emailResult.isTestDomainRestricted ?? false,
+      ownerEmail: emailResult.ownerEmail,
+      deliveredToOwner: emailResult.deliveredToOwner ?? false,
+      devOtp: !emailResult.success ? newOtp : undefined,
+      message: emailResult.success
+        ? `A fresh 6-digit verification code has been dispatched to ${normalizedEmail}.`
+        : emailResult.deliveredToOwner
+        ? `Notice: Resend is in test mode. Code was forwarded to ${emailResult.ownerEmail} and is displayed in the verification dialog.`
+        : `A fresh verification code (${newOtp}) has been generated for your account.`
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint to retrieve active OTP in sandbox / test situations if email was blocked by provider
+apiRouter.post('/auth/get-verification-code', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: 'Email address is required.' });
+    }
+
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const usersCol = dbManager.getCollection('users');
+    const user = await usersCol.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      return res.status(404).json({ error: 'No account found with this email.' });
+    }
+
+    if (user.status === 'Verified' && user.isVerified) {
+      return res.status(400).json({ error: 'This account is already verified.' });
+    }
+
+    let otp = user.verificationOtp;
+    const isExpired = !user.verificationOtpExpiresAt || new Date(user.verificationOtpExpiresAt).getTime() < Date.now();
+    if (!otp || isExpired) {
+      otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+      await usersCol.updateOne(
+        { id: user.id },
+        {
+          $set: {
+            verificationOtp: otp,
+            verificationOtpExpiresAt: expiresAt,
+            updatedAt: new Date().toISOString()
+          }
+        }
+      );
+    }
+
+    return res.json({
+      success: true,
+      email: normalizedEmail,
+      otp,
+      expiresAt: user.verificationOtpExpiresAt
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
@@ -1398,11 +1480,12 @@ apiRouter.post('/admin/users', requireRole(['admin']), async (req: Request, res:
       return res.status(400).json({ error: 'A user with this email or username already exists.' });
     }
 
+    const initialPassword = password ? String(password).trim() : 'ChangeMe123!';
     const newUser = {
       id: 'usr_' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6),
       username: trimmedUsername,
       email: normalizedEmail,
-      password: password || (assignedRole === 'admin' ? 'AdminPass123!' : assignedRole === 'faculty' ? 'FacultyPass123!' : 'StudentPass123!'),
+      password: hashPassword(initialPassword),
       role: assignedRole,
       batch: batch || (assignedRole === 'admin' ? 'Administration' : assignedRole === 'faculty' ? 'Faculty Department' : 'Batch 2026-A'),
       skillLevel: skillLevel || 'intermediate',
@@ -1433,16 +1516,16 @@ apiRouter.post('/admin/users', requireRole(['admin']), async (req: Request, res:
 apiRouter.delete('/admin/users/:id', requireRole(['admin']), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    if (id === 'usr_admin_root') {
-      return res.status(400).json({ error: 'Cannot delete the primary root system administrator account.' });
-    }
-
     const usersCol = dbManager.getCollection('users');
     const submissionsCol = dbManager.getCollection('submissions');
 
     const user = await usersCol.findOne({ id });
     if (!user) {
       return res.status(404).json({ error: 'User not found in system.' });
+    }
+
+    if (id === 'usr_admin_root' || user.email === 'snehithsudulaguntla2108@gmail.com') {
+      return res.status(400).json({ error: 'Cannot delete the primary system administrator account.' });
     }
 
     // Delete user
@@ -1999,7 +2082,7 @@ apiRouter.post('/feedback', async (req: Request, res: Response) => {
     const feedbackRecord = {
       id: `fb_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
       type: ['bug', 'suggestion', 'general'].includes(type) ? type : 'general',
-      email: email ? String(email).trim().toLowerCase() : 'anonymous@codeelevate.io',
+      email: email ? String(email).trim().toLowerCase() : 'anonymous@lrnkod.com',
       name: name ? String(name).trim() : 'Community Member',
       subject: subject ? String(subject).trim() : `${type.toUpperCase()} Report`,
       message: message.trim(),

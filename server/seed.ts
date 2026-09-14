@@ -1,4 +1,11 @@
+import crypto from 'crypto';
 import { dbManager } from './db';
+
+function hashPassword(password: string): string {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.scryptSync(password, salt, 64).toString('hex');
+  return `scrypt:${salt}:${hash}`;
+}
 
 export async function seedInitialData() {
   const usersCol = dbManager.getCollection('users');
@@ -6,130 +13,101 @@ export async function seedInitialData() {
   const submissionsCol = dbManager.getCollection('submissions');
   const messagesCol = dbManager.getCollection('messages');
 
-  // Purge any demo accounts that may have existed previously
+  // Completely purge all demo, test, old placeholder, and old admin accounts
   await usersCol.deleteMany({
     $or: [
+      { email: 'admin@codeelevate.io' },
+      { email: 'faculty@codeelevate.io' },
+      { email: 'student@codeelevate.io' },
+      { email: 'test.student@codeelevate.io' },
+      { email: 'test.faculty@codeelevate.io' },
       { email: 'alex@student.codenow.io' },
       { email: 'sarah@student.codenow.io' },
       { email: 'mentor@codenow.io' },
+      { email: 'alex_demo_dev@school.edu' },
+      { email: 'new_student_1789278503282@example.com' },
+      { email: 'pending_1789278504083@example.com' },
+      { email: 'smartboysnehith@gmail.com' },
+      { id: 'usr_admin_root' },
+      { id: 'usr_faculty_mentor' },
+      { id: 'usr_student_active' },
       { id: 'usr_student_demo' },
       { id: 'usr_student_beginner' },
       { id: 'usr_admin_mentor' }
     ]
   });
 
-  // Purge demo submissions associated with old demo students
+  // Purge any submissions associated with demo accounts
   await submissionsCol.deleteMany({
     $or: [
+      { id: 'sub_sample_student_01' },
+      { userId: 'usr_student_active' },
       { userId: 'usr_student_demo' },
       { userId: 'usr_student_beginner' },
+      { userEmail: 'student@codeelevate.io' },
       { userEmail: 'alex@student.codenow.io' },
-      { userEmail: 'sarah@student.codenow.io' }
+      { userEmail: 'sarah@student.codenow.io' },
+      { userEmail: 'smartboysnehith@gmail.com' }
     ]
   });
 
-  // Ensure Single Root Admin Account exists
-  const rootAdminExists = await usersCol.findOne({
-    $or: [
-      { email: 'admin@codeelevate.io' },
-      { id: 'usr_admin_root' }
-    ]
-  });
+  // Remove any other accounts holding the 'admin' role
+  const targetAdminEmail = 'snehithsudulaguntla2108@gmail.com';
+  const targetAdminPassword = 'Snehith@2108';
 
-  if (!rootAdminExists) {
-    const singleAdmin = {
-      id: 'usr_admin_root',
-      username: 'admin',
-      email: 'admin@codeelevate.io',
-      password: 'AdminPass123!',
+  const otherAdmins = await usersCol.find({
+    role: 'admin',
+    email: { $ne: targetAdminEmail }
+  }).toArray();
+
+  for (const other of otherAdmins) {
+    await usersCol.deleteOne({ id: other.id });
+    console.log(`🧹 Removed other administrator account: ${other.email}`);
+  }
+
+  // Ensure Single Primary Admin Account exists with specified credentials
+  const existingAdmin = await usersCol.findOne({ email: targetAdminEmail });
+  const hashedPassword = hashPassword(targetAdminPassword);
+
+  if (existingAdmin) {
+    await usersCol.updateOne(
+      { id: existingAdmin.id },
+      {
+        $set: {
+          role: 'admin',
+          password: hashedPassword,
+          username: existingAdmin.username || 'Snehith',
+          status: 'Verified',
+          isVerified: true,
+          emailVerified: true,
+          batch: 'Administration',
+          targetGoal: 'Platform & Academy Administration',
+          updatedAt: new Date().toISOString()
+        }
+      }
+    );
+    console.log(`👑 Updated Administrator password and role for: ${targetAdminEmail}`);
+  } else {
+    const primaryAdmin = {
+      id: 'usr_admin_snehith',
+      username: 'Snehith',
+      email: targetAdminEmail,
+      password: hashedPassword,
       role: 'admin',
       skillLevel: 'advanced',
-      preferredLanguage: 'typescript',
-      targetGoal: 'System and Curriculum Administration',
+      preferredLanguage: 'python',
+      targetGoal: 'Platform & Academy Administration',
       batch: 'Administration',
       streakDays: 0,
       totalSolved: 0,
       status: 'Verified',
       isVerified: true,
       emailVerified: true,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
-    await usersCol.insertOne(singleAdmin);
-  }
-
-  // Ensure Default Faculty Account exists
-  const rootFacultyExists = await usersCol.findOne({
-    $or: [
-      { email: 'faculty@codeelevate.io' },
-      { id: 'usr_faculty_mentor' }
-    ]
-  });
-
-  if (!rootFacultyExists) {
-    const singleFaculty = {
-      id: 'usr_faculty_mentor',
-      username: 'Prof. Alan Turing',
-      email: 'faculty@codeelevate.io',
-      password: 'FacultyPass123!',
-      role: 'faculty',
-      skillLevel: 'advanced',
-      preferredLanguage: 'python',
-      targetGoal: 'Instruct curriculum and guide batch performance',
-      batch: 'Batch 2026-A',
-      streakDays: 14,
-      totalSolved: 45,
-      status: 'Verified',
-      isVerified: true,
-      emailVerified: true,
-      createdAt: new Date().toISOString()
-    };
-    await usersCol.insertOne(singleFaculty);
-  }
-
-  // Ensure Default Student Account exists
-  const rootStudentExists = await usersCol.findOne({
-    $or: [
-      { email: 'student@codeelevate.io' },
-      { id: 'usr_student_active' }
-    ]
-  });
-
-  if (!rootStudentExists) {
-    const singleStudent = {
-      id: 'usr_student_active',
-      username: 'Demo Student',
-      email: 'student@codeelevate.io',
-      password: 'StudentPass123!',
-      role: 'student',
-      skillLevel: 'intermediate',
-      preferredLanguage: 'javascript',
-      targetGoal: 'Master algorithms and technical interviews',
-      batch: 'Batch 2026-A',
-      streakDays: 5,
-      totalSolved: 12,
-      status: 'Verified',
-      isVerified: true,
-      emailVerified: true,
-      createdAt: new Date().toISOString()
-    };
-    await usersCol.insertOne(singleStudent);
-
-    // Seed sample submission for this student
-    await submissionsCol.insertOne({
-      id: 'sub_sample_student_01',
-      userId: 'usr_student_active',
-      problemId: 'prob_two_sum',
-      problemTitle: 'Two Sum',
-      language: 'javascript',
-      status: 'Passed',
-      passedCases: 3,
-      totalCases: 3,
-      executionTimeMs: 14,
-      memoryKb: 2048,
-      category: 'Arrays & Hash Maps',
-      difficulty: 'basic',
-      createdAt: new Date().toISOString()
-    });
+    await usersCol.insertOne(primaryAdmin);
+    console.log(`👑 Created Administrator account for: ${targetAdminEmail}`);
   }
 
   console.log('Seeding & synchronizing initial CodeElevate curriculum with clean boilerplate...');

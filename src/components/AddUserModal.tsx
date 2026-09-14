@@ -16,7 +16,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
 }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('studentpass123');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState<'student' | 'faculty' | 'admin'>('student');
   const [batch, setBatch] = useState('Batch 2026-A');
   const [skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced'>('intermediate');
@@ -33,15 +33,12 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
   const handleRoleChange = (newRole: 'student' | 'faculty' | 'admin') => {
     setRole(newRole);
     if (newRole === 'faculty') {
-      setPassword('FacultyPass123!');
       setBatch('Faculty Department');
       setTargetGoal('Curriculum instruction, problem authoring & batch cohort tracking');
     } else if (newRole === 'admin') {
-      setPassword('AdminPass123!');
       setBatch('Administration');
       setTargetGoal('Academy platform oversight & system administration');
     } else {
-      setPassword('studentpass123');
       setBatch('Batch 2026-A');
       setTargetGoal('Master Algorithmic Problem Solving & Technical Interviews');
     }
@@ -85,7 +82,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
       // Reset form
       setUsername('');
       setEmail('');
-      setPassword('studentpass123');
+      setPassword('');
       setRole('student');
       setBatch('Batch 2026-A');
     } catch (err: any) {
@@ -167,7 +164,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
                   type="text"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="studentpass123"
+                  placeholder="Set initial password"
                   className="w-full pl-8 pr-3 py-2 rounded-xl bg-[#14141e] border border-[#242436] text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
                 />
               </div>

@@ -40,6 +40,9 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
   // Email Verification State
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState('');
+  const [devOtp, setDevOtp] = useState<string | undefined>();
+  const [verificationNotice, setVerificationNotice] = useState<string | undefined>();
+  const [ownerEmail, setOwnerEmail] = useState<string | undefined>();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,6 +78,9 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
         // Handle unverified account attempting to login
         if (data.requiresVerification) {
           setVerificationEmail(data.email || email.trim().toLowerCase());
+          setDevOtp(data.devOtp);
+          setVerificationNotice(data.message);
+          setOwnerEmail(data.ownerEmail);
           setIsVerificationModalOpen(true);
           return;
         }
@@ -84,6 +90,9 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
       // If backend registration requires email OTP verification
       if (data.requiresVerification) {
         setVerificationEmail(data.email || email.trim().toLowerCase());
+        setDevOtp(data.devOtp);
+        setVerificationNotice(data.message);
+        setOwnerEmail(data.ownerEmail);
         setIsVerificationModalOpen(true);
         return;
       }
@@ -189,7 +198,7 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="student@codeelevate.io"
+                  placeholder="student@example.com"
                   className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#161622] border border-[#272738] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43] transition-colors"
                   required
                 />
@@ -309,6 +318,9 @@ export const StudentLoginPage: React.FC<StudentLoginPageProps> = ({
         isOpen={isVerificationModalOpen}
         email={verificationEmail}
         onClose={() => setIsVerificationModalOpen(false)}
+        initialDevOtp={devOtp}
+        initialNotice={verificationNotice}
+        ownerEmail={ownerEmail}
         onEmailChangeRequested={() => {
           setIsVerificationModalOpen(false);
           setIsRegisterMode(true);

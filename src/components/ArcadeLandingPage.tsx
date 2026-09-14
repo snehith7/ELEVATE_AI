@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Mail,
-  Send,
   Check,
   Copy,
   Bug,
   Lightbulb,
   MessageSquare,
-  Code2,
   ArrowRight,
   Sparkles,
   Terminal,
@@ -52,18 +50,13 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
   // Email OTP Verification State
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
   const [pendingVerificationEmail, setPendingVerificationEmail] = useState('');
+  const [pendingDevOtp, setPendingDevOtp] = useState<string | undefined>();
+  const [pendingNotice, setPendingNotice] = useState<string | undefined>();
+  const [pendingOwnerEmail, setPendingOwnerEmail] = useState<string | undefined>();
 
-  // Contact / Feedback State
+  // Contact & Support State
   const CONTACT_EMAIL = 'storynestteams@gmail.com';
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [feedbackType, setFeedbackType] = useState<'bug' | 'suggestion' | 'general'>('bug');
-  const [feedbackName, setFeedbackName] = useState('');
-  const [feedbackEmail, setFeedbackEmail] = useState('');
-  const [feedbackSubject, setFeedbackSubject] = useState('');
-  const [feedbackMessage, setFeedbackMessage] = useState('');
-  const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
-  const [feedbackSuccessMsg, setFeedbackSuccessMsg] = useState<string | null>(null);
-  const [feedbackErrorMsg, setFeedbackErrorMsg] = useState<string | null>(null);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(CONTACT_EMAIL);
@@ -71,70 +64,6 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
     setTimeout(() => setCopiedEmail(false), 2200);
   };
 
-  const handleFeedbackSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!feedbackMessage.trim()) {
-      setFeedbackErrorMsg('Please describe your issue or suggestion.');
-      return;
-    }
-
-    setFeedbackSubmitting(true);
-    setFeedbackErrorMsg(null);
-    setFeedbackSuccessMsg(null);
-
-    try {
-      const result = await safeFetchJson('/api/feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: feedbackType,
-          name: feedbackName.trim(),
-          email: feedbackEmail.trim(),
-          subject: feedbackSubject.trim(),
-          message: feedbackMessage.trim()
-        })
-      });
-
-      if (!result.ok) {
-        throw new Error(result.error || 'Failed to submit feedback.');
-      }
-
-      setFeedbackSuccessMsg(
-        'Thank you! Your feedback has been received. Our engineering team reviews all reports to improve the platform.'
-      );
-      setFeedbackSubject('');
-      setFeedbackMessage('');
-      setFeedbackName('');
-      setFeedbackEmail('');
-    } catch (err: any) {
-      setFeedbackErrorMsg(err.message || 'Error submitting feedback. Please try sending directly via email.');
-    } finally {
-      setFeedbackSubmitting(false);
-    }
-  };
-
-  // Instant 1-Click Demo Login
-  const handleFastTrackStudentLogin = async () => {
-    setAuthLoading(true);
-    setAuthError(null);
-    try {
-      const result = await safeFetchJson('/api/auth/demo-student', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const data = result.data;
-      if (result.ok && data?.token && data?.user) {
-        onLoginSuccess(data.user, data.token);
-        setIsAuthModalOpen(false);
-      } else {
-        throw new Error(result.error || data?.error || 'Demo access failed');
-      }
-    } catch (err: any) {
-      setAuthError(err.message || 'Demo login failed');
-    } finally {
-      setAuthLoading(false);
-    }
-  };
 
   // Student Auth Form Submission
   const handleAuthSubmit = async (e: React.FormEvent) => {
@@ -156,7 +85,10 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
 
         if (!result.ok) {
           if (data.requiresVerification) {
-            setPendingVerificationEmail(authEmail.trim().toLowerCase());
+            setPendingVerificationEmail(data.email || authEmail.trim().toLowerCase());
+            setPendingDevOtp(data.devOtp);
+            setPendingNotice(data.message);
+            setPendingOwnerEmail(data.ownerEmail);
             setIsAuthModalOpen(false);
             setIsVerificationModalOpen(true);
             return;
@@ -187,7 +119,10 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
         }
 
         if (data.requiresVerification) {
-          setPendingVerificationEmail(authEmail.trim().toLowerCase());
+          setPendingVerificationEmail(data.email || authEmail.trim().toLowerCase());
+          setPendingDevOtp(data.devOtp);
+          setPendingNotice(data.message);
+          setPendingOwnerEmail(data.ownerEmail);
           setIsAuthModalOpen(false);
           setIsVerificationModalOpen(true);
         } else {
@@ -205,7 +140,7 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
   const bugMailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
     '[LrnKod Bug Report]'
   )}&body=${encodeURIComponent(
-    'Issue Description:\n\nSteps to Reproduce:\n1.\n2.\n3.\n\nExpected Behavior:\n\nActual Behavior:\n\nDevice / Browser:'
+    'Issue Description:\n\nSteps to Reproduce:\n1.\n2.\n3.\n\nExpected Output:\n\nActual Output:\n\nDevice / Browser:\n'
   )}`;
 
   const suggestionMailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
@@ -232,7 +167,7 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
             </a>
             <a href="#contact" className="text-[#FF8570] hover:text-[#FF5A43] font-medium transition-colors flex items-center space-x-1">
               <Mail className="w-3.5 h-3.5" />
-              <span>Report Issues & Suggestions</span>
+              <span>Support & Bugs</span>
             </a>
           </nav>
 
@@ -301,13 +236,16 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
               </button>
 
               <button
-                id="hero-instant-demo-btn"
-                onClick={handleFastTrackStudentLogin}
-                disabled={authLoading}
-                className="w-full sm:w-auto px-5 py-3 rounded-xl text-xs font-semibold bg-[#12121c] hover:bg-[#181824] text-slate-200 border border-[#252538] hover:border-[#FF5A43]/50 transition-all flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
+                id="hero-register-btn"
+                onClick={() => {
+                  setAuthMode('register');
+                  setAuthError(null);
+                  setIsAuthModalOpen(true);
+                }}
+                className="w-full sm:w-auto px-5 py-3 rounded-xl text-xs font-semibold bg-[#12121c] hover:bg-[#181824] text-slate-200 border border-[#252538] hover:border-[#FF5A43]/50 transition-all flex items-center justify-center space-x-2 cursor-pointer"
               >
-                <Zap className="w-3.5 h-3.5 text-[#FF5A43]" />
-                <span>One-Click Student Demo</span>
+                <User className="w-3.5 h-3.5 text-[#FF5A43]" />
+                <span>Create Student Account</span>
               </button>
             </div>
 
@@ -423,7 +361,7 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
         {/* ------------------------------------------------------------- */}
         {/* DEDICATED CONTACT, BUG REPORTS & SUGGESTIONS SECTION           */}
         {/* ------------------------------------------------------------- */}
-        <section id="contact" className="py-16 px-4 sm:px-6 max-w-6xl mx-auto">
+        <section id="contact" className="py-16 px-4 sm:px-6 max-w-6xl mx-auto border-t border-[#1c1c28]">
           <div className="bg-[#0b0b12] border border-[#202030] rounded-3xl p-6 sm:p-10 relative overflow-hidden">
             <div className="max-w-2xl mb-8 space-y-2">
               <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#FF5A43]/10 border border-[#FF5A43]/30 text-[11px] font-mono text-[#FF8570]">
@@ -442,15 +380,15 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left Column: Direct Email Details & Quick Action Mailto Links */}
-              <div className="lg:col-span-5 space-y-4">
-                <div className="p-5 rounded-2xl bg-[#12121d] border border-[#222236] space-y-3">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+              {/* Card 1: Official Email & Clipboard Copy */}
+              <div className="p-6 rounded-2xl bg-[#12121d] border border-[#222236] flex flex-col justify-between space-y-4">
+                <div className="space-y-3">
                   <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 block">
                     Official Contact Email
                   </span>
 
-                  <div className="flex items-center justify-between p-3 rounded-xl bg-[#09090f] border border-[#1e1e2e]">
+                  <div className="flex items-center justify-between p-3.5 rounded-xl bg-[#09090f] border border-[#1e1e2e]">
                     <div className="flex items-center space-x-2.5 min-w-0">
                       <Mail className="w-4 h-4 text-[#FF5A43] shrink-0" />
                       <span className="text-xs sm:text-sm font-mono font-semibold text-white truncate">
@@ -478,195 +416,56 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
                       <span>Copied email address to clipboard!</span>
                     </p>
                   )}
-
-                  <p className="text-[11px] text-slate-400 leading-relaxed pt-1">
-                    Direct emails go straight to our engineering and support inbox. We respond to all bug reports
-                    and suggestions within 24 hours.
-                  </p>
                 </div>
 
-                {/* Pre-Formatted Direct Mailto Actions */}
-                <div className="space-y-2">
-                  <span className="text-[11px] font-mono text-slate-400 block">
-                    Fast Mail Client Shortcuts:
-                  </span>
-
-                  <a
-                    id="mailto-bug-report-link"
-                    href={bugMailtoUrl}
-                    className="w-full p-3.5 rounded-xl bg-[#12121d] hover:bg-[#181826] border border-[#222236] hover:border-[#FF5A43]/50 text-slate-200 hover:text-white transition-all flex items-center justify-between text-xs font-semibold group cursor-pointer"
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      <Bug className="w-4 h-4 text-rose-400" />
-                      <span>Email a Bug / Technical Issue Report</span>
-                    </div>
-                    <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300" />
-                  </a>
-
-                  <a
-                    id="mailto-suggestion-link"
-                    href={suggestionMailtoUrl}
-                    className="w-full p-3.5 rounded-xl bg-[#12121d] hover:bg-[#181826] border border-[#222236] hover:border-[#FF5A43]/50 text-slate-200 hover:text-white transition-all flex items-center justify-between text-xs font-semibold group cursor-pointer"
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      <Lightbulb className="w-4 h-4 text-amber-400" />
-                      <span>Email a Suggestion or Improvement Idea</span>
-                    </div>
-                    <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300" />
-                  </a>
-                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed border-t border-[#1c1c28] pt-3">
+                  Direct emails go straight to our engineering and support inbox. We review and respond to all bug reports, technical inquiries, and feature suggestions within 24 hours.
+                </p>
               </div>
 
-              {/* Right Column: In-Browser Feedback Form */}
-              <div className="lg:col-span-7 bg-[#10101a] border border-[#202032] rounded-2xl p-6 sm:p-7">
-                <div className="mb-4">
-                  <h3 className="text-sm font-bold text-white flex items-center space-x-2">
-                    <Send className="w-4 h-4 text-[#FF5A43]" />
-                    <span>Send Message Directly From Browser</span>
-                  </h3>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
-                    Alternatively, submit your suggestions or bug descriptions directly below without opening an external mail client.
-                  </p>
+              {/* Card 2: Quick Email Client Shortcuts */}
+              <div className="p-6 rounded-2xl bg-[#12121d] border border-[#222236] flex flex-col justify-between space-y-4">
+                <div>
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 block mb-3">
+                    Fast Email Client Shortcuts
+                  </span>
+
+                  <div className="space-y-3">
+                    <a
+                      id="mailto-bug-report-link"
+                      href={bugMailtoUrl}
+                      className="w-full p-3.5 rounded-xl bg-[#09090f] hover:bg-[#161624] border border-[#1e1e2e] hover:border-[#FF5A43]/50 text-slate-200 hover:text-white transition-all flex items-center justify-between text-xs font-semibold group cursor-pointer"
+                    >
+                      <div className="flex items-center space-x-2.5">
+                        <Bug className="w-4 h-4 text-rose-400 shrink-0" />
+                        <div>
+                          <div className="text-white font-medium">Email a Bug / Technical Issue Report</div>
+                          <div className="text-[10px] text-slate-500 font-normal mt-0.5">Pre-formats steps to reproduce, expected vs actual outputs</div>
+                        </div>
+                      </div>
+                      <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 shrink-0 ml-2" />
+                    </a>
+
+                    <a
+                      id="mailto-suggestion-link"
+                      href={suggestionMailtoUrl}
+                      className="w-full p-3.5 rounded-xl bg-[#09090f] hover:bg-[#161624] border border-[#1e1e2e] hover:border-[#FF5A43]/50 text-slate-200 hover:text-white transition-all flex items-center justify-between text-xs font-semibold group cursor-pointer"
+                    >
+                      <div className="flex items-center space-x-2.5">
+                        <Lightbulb className="w-4 h-4 text-amber-400 shrink-0" />
+                        <div>
+                          <div className="text-white font-medium">Email a Suggestion or Improvement Idea</div>
+                          <div className="text-[10px] text-slate-500 font-normal mt-0.5">Share new problem suggestions, feature requests, or UI ideas</div>
+                        </div>
+                      </div>
+                      <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 shrink-0 ml-2" />
+                    </a>
+                  </div>
                 </div>
 
-                {/* Feedback Type Toggle */}
-                <div className="grid grid-cols-3 gap-2 mb-4">
-                  <button
-                    type="button"
-                    onClick={() => setFeedbackType('bug')}
-                    className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer ${
-                      feedbackType === 'bug'
-                        ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                        : 'bg-[#151522] text-slate-400 border border-[#252538] hover:text-slate-200'
-                    }`}
-                  >
-                    <Bug className="w-3.5 h-3.5" />
-                    <span>Bug Report</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setFeedbackType('suggestion')}
-                    className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer ${
-                      feedbackType === 'suggestion'
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                        : 'bg-[#151522] text-slate-400 border border-[#252538] hover:text-slate-200'
-                    }`}
-                  >
-                    <Lightbulb className="w-3.5 h-3.5" />
-                    <span>Suggestion</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setFeedbackType('general')}
-                    className={`py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors cursor-pointer ${
-                      feedbackType === 'general'
-                        ? 'bg-[#FF5A43]/20 text-[#FF8570] border border-[#FF5A43]/40'
-                        : 'bg-[#151522] text-slate-400 border border-[#252538] hover:text-slate-200'
-                    }`}
-                  >
-                    <MessageSquare className="w-3.5 h-3.5" />
-                    <span>General</span>
-                  </button>
+                <div className="text-[10px] text-slate-500 font-mono border-t border-[#1c1c28] pt-3">
+                  Opens directly in your default mail application (Gmail, Outlook, Mail, etc.)
                 </div>
-
-                {/* Status Messages */}
-                {feedbackSuccessMsg && (
-                  <div className="mb-4 p-3.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-start space-x-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span className="leading-relaxed">{feedbackSuccessMsg}</span>
-                  </div>
-                )}
-
-                {feedbackErrorMsg && (
-                  <div className="mb-4 p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-start space-x-2">
-                    <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-                    <span className="leading-relaxed">{feedbackErrorMsg}</span>
-                  </div>
-                )}
-
-                <form onSubmit={handleFeedbackSubmit} className="space-y-3.5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                        Your Name (Optional)
-                      </label>
-                      <input
-                        type="text"
-                        value={feedbackName}
-                        onChange={(e) => setFeedbackName(e.target.value)}
-                        placeholder="Alex Chen"
-                        className="w-full px-3 py-2 rounded-xl bg-[#161624] border border-[#26263a] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                        Your Email (Optional, for follow-up)
-                      </label>
-                      <input
-                        type="email"
-                        value={feedbackEmail}
-                        onChange={(e) => setFeedbackEmail(e.target.value)}
-                        placeholder="alex@example.com"
-                        className="w-full px-3 py-2 rounded-xl bg-[#161624] border border-[#26263a] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                      Subject / Short Summary *
-                    </label>
-                    <input
-                      type="text"
-                      value={feedbackSubject}
-                      onChange={(e) => setFeedbackSubject(e.target.value)}
-                      placeholder={
-                        feedbackType === 'bug'
-                          ? 'e.g. Test case 3 failed on Two Sum problem'
-                          : 'e.g. Add dark theme contrast toggle or Python 3.12 support'
-                      }
-                      className="w-full px-3 py-2 rounded-xl bg-[#161624] border border-[#26263a] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43]"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                      Details / Description *
-                    </label>
-                    <textarea
-                      rows={4}
-                      value={feedbackMessage}
-                      onChange={(e) => setFeedbackMessage(e.target.value)}
-                      placeholder={
-                        feedbackType === 'bug'
-                          ? 'Please describe what happened, expected behavior, and steps to reproduce...'
-                          : 'Describe your idea, why it would improve the website, and how it would work...'
-                      }
-                      className="w-full px-3 py-2 rounded-xl bg-[#161624] border border-[#26263a] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43] resize-none"
-                      required
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    id="submit-feedback-btn"
-                    disabled={feedbackSubmitting}
-                    className="w-full py-2.5 rounded-xl font-bold text-xs bg-[#FF5A43] hover:bg-[#F04428] text-white transition-colors flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
-                  >
-                    {feedbackSubmitting ? (
-                      <span>Submitting...</span>
-                    ) : (
-                      <>
-                        <Send className="w-3.5 h-3.5" />
-                        <span>Submit {feedbackType === 'bug' ? 'Bug Report' : 'Suggestion'}</span>
-                      </>
-                    )}
-                  </button>
-                </form>
               </div>
             </div>
           </div>
@@ -741,26 +540,6 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
                     ? 'Access your personalized learning roadmap and interactive sandbox.'
                     : 'Register with 6-digit OTP email verification.'}
                 </p>
-              </div>
-
-              {/* One-Click Fast Track Demo Account */}
-              <button
-                type="button"
-                id="modal-fast-track-login-btn"
-                onClick={handleFastTrackStudentLogin}
-                disabled={authLoading}
-                className="w-full py-2.5 mb-4 rounded-xl text-xs font-semibold bg-[#171724] hover:bg-[#1f1f32] text-slate-200 hover:text-white border border-[#2b2b40] hover:border-[#FF5A43]/60 transition-all flex items-center justify-center space-x-2 cursor-pointer"
-              >
-                <Zap className="w-3.5 h-3.5 text-[#FF5A43]" />
-                <span>Instant Demo Student Account</span>
-              </button>
-
-              <div className="relative flex py-2 items-center mb-3">
-                <div className="flex-grow border-t border-[#222234]" />
-                <span className="flex-shrink mx-3 text-[10px] font-mono uppercase text-slate-500">
-                  Or use credentials
-                </span>
-                <div className="flex-grow border-t border-[#222234]" />
               </div>
 
               {/* Error Message */}
@@ -895,6 +674,9 @@ export const ArcadeLandingPage: React.FC<ArcadeLandingPageProps> = ({
         isOpen={isVerificationModalOpen}
         email={pendingVerificationEmail}
         onClose={() => setIsVerificationModalOpen(false)}
+        initialDevOtp={pendingDevOtp}
+        initialNotice={pendingNotice}
+        ownerEmail={pendingOwnerEmail}
         onSuccess={(user, token) => {
           setIsVerificationModalOpen(false);
           onLoginSuccess(user, token);

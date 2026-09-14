@@ -4,6 +4,9 @@ export interface SendEmailResult {
   success: boolean;
   messageId?: string;
   error?: string;
+  isTestDomainRestricted?: boolean;
+  ownerEmail?: string;
+  deliveredToOwner?: boolean;
 }
 
 const DEFAULT_RESEND_SENDER = 'LrnKod <onboarding@resend.dev>';
@@ -262,14 +265,45 @@ Security notice: Do not share this code with anyone. If you didn't create an acc
 
     if (dispatchResult.error) {
       console.warn(`⚠️ Resend dispatch notice: ${dispatchResult.error.name} - ${dispatchResult.error.message}`);
-      if (dispatchResult.error.message?.includes('only send testing emails to your own email address')) {
-        console.log(`💡 Note: Resend's test domain is restricted to sending to the registered account email. To send to any recipient, add a verified custom domain at https://resend.com/domains.`);
+      
+      const isTestRestriction = dispatchResult.error.message?.includes('only send testing emails to your own email address');
+      let ownerEmail: string | undefined;
+      let deliveredToOwner = false;
+
+      if (isTestRestriction) {
+        const ownerMatch = dispatchResult.error.message?.match(/own email address \(([^)]+)\)/);
+        ownerEmail = ownerMatch ? ownerMatch[1].trim() : undefined;
+        console.log(`💡 Note: Resend's test domain is restricted to sending to the registered account email (${ownerEmail || 'account owner'}). To send to any recipient, add a verified custom domain at https://resend.com/domains.`);
+        
+        // If an owner email is identified and different from the recipient, forward the code to the owner
+        if (ownerEmail && ownerEmail.toLowerCase() !== recipientEmail.toLowerCase()) {
+          try {
+            console.log(`📨 Forwarding verification code for "${recipientEmail}" to Resend account owner "${ownerEmail}"...`);
+            const forwardResult = await resend.emails.send({
+              from: DEFAULT_RESEND_SENDER,
+              to: [ownerEmail],
+              subject: `[LrnKod Verification] ${otp} is the code for ${recipientEmail}`,
+              text: `A new registration / verification was initiated on LrnKod.\n\nRecipient: ${recipientEmail}\nUsername: ${displayName}\nVerification Code: ${otp}\nExpires at: ${expiryTime}\n\nNotice: Resend is operating in Test Mode (using ${DEFAULT_RESEND_SENDER}), so testing emails are delivered exclusively to your account address (${ownerEmail}).`,
+              html: htmlContent
+            });
+            if (forwardResult.data?.id) {
+              deliveredToOwner = true;
+              console.log(`✅ Forwarded copy successfully delivered to Resend owner (${ownerEmail})! Message ID: ${forwardResult.data.id}`);
+            }
+          } catch (forwardErr: any) {
+            console.warn(`⚠️ Could not forward to owner email: ${forwardErr.message}`);
+          }
+        }
       }
+
       console.log(`👉 In-flight OTP code for verification: ${otp}`);
       console.log('='.repeat(70) + '\n');
       return {
         success: false,
-        error: dispatchResult.error.message
+        error: dispatchResult.error.message,
+        isTestDomainRestricted: !!isTestRestriction,
+        ownerEmail,
+        deliveredToOwner
       };
     }
 

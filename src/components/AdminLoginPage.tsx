@@ -14,7 +14,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
   onGoToStudentLogin,
   onGoToFacultyLogin
 }) => {
-  const [email, setEmail] = useState('admin@codeelevate.io');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -119,7 +119,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@codeelevate.io"
+                  placeholder="admin@institution.edu"
                   className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#161622] border border-[#272738] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#FF5A43] transition-colors"
                   required
                 />
