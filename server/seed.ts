@@ -110,7 +110,7 @@ export async function seedInitialData() {
     console.log(`👑 Created Administrator account for: ${targetAdminEmail}`);
   }
 
-  console.log('Seeding & synchronizing initial CodeElevate curriculum with clean boilerplate...');
+  console.log('Seeding & synchronizing initial Code Sprint curriculum with clean boilerplate...');
 
   // Curated Roadmap Problems across Basic, Intermediate, and Advanced
   const curatedProblems = [
@@ -843,7 +843,7 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
         senderId: 'usr_admin_root',
         senderName: 'System Administrator',
         senderRole: 'admin',
-        text: 'Welcome to LrnKod! The interactive coding platform is active. Work through curriculum modules, test your algorithms, and submit code for instant AI diagnostics.',
+        text: 'Welcome to Code Sprint! The interactive coding platform is active. Work through curriculum modules, test your algorithms, and submit code for instant AI diagnostics.',
         createdAt: new Date().toISOString()
       }
     ];

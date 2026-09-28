@@ -427,7 +427,7 @@ apiRouter.post('/auth/verify-email', async (req: Request, res: Response) => {
     // Grant access with authenticated session token
     return res.json({
       success: true,
-      message: 'Email successfully verified! Welcome to LrnKod.',
+      message: 'Email successfully verified! Welcome to Code Sprint.',
       token: updatedUser.id,
       user: sanitizeUser(updatedUser)
     });
@@ -2094,7 +2094,7 @@ apiRouter.post('/feedback', async (req: Request, res: Response) => {
     await feedbackCol.insertOne(feedbackRecord);
 
     console.log('\n' + '='.repeat(70));
-    console.log(`📬 [CodeElevate Feedback & Bug Report] RECEIVED: [${feedbackRecord.type.toUpperCase()}]`);
+    console.log(`📬 [Code Sprint Feedback & Bug Report] RECEIVED: [${feedbackRecord.type.toUpperCase()}]`);
     console.log(`👤 From     : ${feedbackRecord.name} <${feedbackRecord.email}>`);
     console.log(`📌 Subject  : ${feedbackRecord.subject}`);
     console.log(`💬 Message  : ${feedbackRecord.message}`);

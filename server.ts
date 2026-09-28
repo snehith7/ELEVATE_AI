@@ -42,7 +42,7 @@ async function startServer() {
   app.get('/api/health', (req, res) => {
     res.json({
       status: 'ok',
-      service: 'CodeElevate AI Academy',
+      service: 'Code Sprint AI Academy',
       timestamp: new Date().toISOString()
     });
   });
@@ -63,7 +63,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 CodeElevate AI Server running on http://0.0.0.0:${PORT}`);
+    console.log(`🚀 Code Sprint AI Server running on http://0.0.0.0:${PORT}`);
   });
 }
 

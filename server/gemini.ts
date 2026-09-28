@@ -83,7 +83,7 @@ export async function generatePersonalizedProblem(options: GenerateProblemOption
     return createFallbackProblem(difficulty, language, options.topicFocus);
   }
 
-  const prompt = `You are the lead AI Curriculum Architect at LrnKod.
+  const prompt = `You are the lead AI Curriculum Architect at Code Sprint.
 Generate a novel, high-quality, practical coding question tailored for a student with:
 - Skill Level: ${options.skillLevel}
 - Desired Difficulty: ${difficulty}
@@ -200,7 +200,7 @@ export async function reviewUserCode(params: {
     return createFallbackCodeReview(params.passedCount, params.totalCount, params.code);
   }
 
-  const prompt = `You are an elite Senior Staff Engineer and AI Coding Mentor at LrnKod.
+  const prompt = `You are an elite Senior Staff Engineer and AI Coding Mentor at Code Sprint.
 Review this student's code submission for the problem "${params.problemTitle}":
 
 --- PROBLEM DESCRIPTION ---
@@ -317,7 +317,7 @@ export async function analyzeMistakesAndRecommend(submissions: any[], userProfil
     return generateDefaultMistakeAnalysis(submissions, userProfile);
   }
 
-  const prompt = `You are the LrnKod Learning Analytics Engine.
+  const prompt = `You are the Code Sprint Learning Analytics Engine.
 Analyze the following recent problem submissions for student "${userProfile?.username || 'Student'}":
 ${JSON.stringify(submissions.slice(0, 10).map(s => ({
   problem: s.problemTitle,

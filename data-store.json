@@ -21,21 +21,142 @@
     },
     {
       "id": "usr_admin_snehith",
-      "username": "Snehith",
-      "email": "snehithsudulaguntla2108@gmail.com",
-      "password": "scrypt:1f26e09eaf4d9f5cd95033655611aa0a:ec46634e4d974d7adbbec6f87d006947f107924786cba18e587987e9513c7f7a394cde4e57ec334f50840193fc1f4949d0792ad84a6ac0c8fb5fc5314c23e670",
-      "role": "admin",
-      "skillLevel": "advanced",
+      "status": "Verified",
       "preferredLanguage": "python",
       "targetGoal": "Platform & Academy Administration",
+      "username": "Snehith",
+      "updatedAt": "2026-09-28T08:53:40.240Z",
+      "emailVerified": true,
+      "isVerified": true,
+      "role": "admin",
+      "skillLevel": "advanced",
       "batch": "Administration",
+      "createdAt": "2026-09-14T10:58:12.086Z",
+      "email": "snehithsudulaguntla2108@gmail.com",
+      "password": "scrypt:9bd561be915bb539dac0be2455ec7f1a:54858c5defacaf83e53f31bb67d67ea851ddeec547cc61ca5f0453e6b169bf4838625396ca97a14121eaa9d86c5c19bc473ebd8991af3b6eed274c4343963662",
       "streakDays": 0,
-      "totalSolved": 0,
+      "totalSolved": 0
+    },
+    {
+      "id": "usr_mu14yuby2v50",
+      "isVerified": true,
+      "updatedAt": "2026-09-14T11:45:05.063Z",
       "status": "Verified",
+      "targetGoal": "Master technical interviews",
+      "role": "student",
+      "batch": "DEMO-1",
+      "username": "Vasu Kupili",
+      "email": "23me1a4629@rcee.ac.in",
+      "password": "scrypt:761850394bb502683ea76f8df58c25bf:6619f0491daf1192720a658bc60ceeca57e0c8b29dff22bf2ec08c42ad1422bf3d2dc404e367e7acabda3698b9f1a217af735b1f4e82a8e4d30e78243025242e",
+      "streakDays": 0,
+      "preferredLanguage": "python",
+      "emailVerified": true,
+      "createdAt": "2026-09-14T11:04:50.494Z",
+      "totalSolved": 0,
+      "skillLevel": "beginner"
+    },
+    {
+      "id": "usr_mu14zhgje45m",
+      "targetGoal": "Master technical interviews",
+      "createdAt": "2026-09-14T11:05:20.467Z",
       "isVerified": true,
       "emailVerified": true,
-      "createdAt": "2026-09-14T10:58:12.086Z",
-      "updatedAt": "2026-09-14T10:58:17.208Z"
+      "status": "Verified",
+      "password": "scrypt:f742c720aba60d2a52c8e1da34466122:9042e0f80db21f0c976f0fdc068179a7795befd4e58f5aad96e2121fbe97ff23efa9cffaa69cf9d44870d365d706857e0933af7cf1704286cb98c68f3e9763c4",
+      "totalSolved": 0,
+      "username": "Lokesh",
+      "role": "student",
+      "skillLevel": "beginner",
+      "streakDays": 0,
+      "email": "23me1a4638@rcee.ac.in",
+      "updatedAt": "2026-09-14T11:45:25.363Z",
+      "batch": "Batch 2026-A",
+      "preferredLanguage": "python"
+    },
+    {
+      "id": "usr_mu16geu7ft2o",
+      "preferredLanguage": "javascript",
+      "skillLevel": "intermediate",
+      "status": "Verified",
+      "username": "paulsubhash",
+      "streakDays": 0,
+      "targetGoal": "Master Algorithmic Problem Solving & Technical Interviews",
+      "totalSolved": 0,
+      "role": "student",
+      "batch": "Batch 2026-A",
+      "isVerified": true,
+      "password": "scrypt:aa71732ee90dbc3a468c3593af3a02ce:e38d2787e948e6bd2b160fb144f0ac368e2d88dadea493718aff633cb6baf3b2e50073dab398c7cc5a5f7fc705cb05c631e729857789d0fa876299a45d67cc14",
+      "email": "paulsubhashg@gmail.com",
+      "createdAt": "2026-09-14T11:46:29.968Z",
+      "emailVerified": true
+    },
+    {
+      "id": "usr_mu16xa97q6x1",
+      "skillLevel": "beginner",
+      "batch": "Batch 2026-A",
+      "email": "23me1a4601@rcee.ac.in",
+      "totalSolved": 0,
+      "emailVerified": true,
+      "username": "Abhi Ram",
+      "streakDays": 0,
+      "role": "student",
+      "status": "Verified",
+      "createdAt": "2026-09-14T11:59:37.190Z",
+      "targetGoal": "Master Algorithmic Problem Solving & Technical Interviews",
+      "password": "scrypt:9337d82e44661e4e6bb6dceb456d5823:f34b6d8231ef2a76b73de897edb6c4d2ac0f7f70a54d7bc1d04f51b759a7ae2ecd12efe3c80ba6666dcc994ea5bdbfee0112110749f2a78bfc3052d0e37d22f2",
+      "isVerified": true,
+      "preferredLanguage": "python"
+    },
+    {
+      "id": "usr_mu16y2zfowdd",
+      "totalSolved": 0,
+      "streakDays": 0,
+      "preferredLanguage": "python",
+      "password": "scrypt:7fb79c19b75ecce302ba79f55507aa0d:afa3ff27e5c158ea7350e15bc8c64f9d95c716cb650b31beddbd7f4f8855abb9de53e2c4bea445b5c318b36c7dfb90f5808881b639d4ea31dd9b1c5d08302ee0",
+      "skillLevel": "beginner",
+      "createdAt": "2026-09-14T12:00:14.390Z",
+      "status": "Verified",
+      "isVerified": true,
+      "username": "Sameena",
+      "role": "student",
+      "email": "23me1a4653@rcee.ac.in",
+      "targetGoal": "Master Algorithmic Problem Solving & Technical Interviews",
+      "emailVerified": true,
+      "batch": "Batch 2026-A"
+    },
+    {
+      "id": "usr_mu16z8yat3pu",
+      "password": "scrypt:9ff27486b8756b92697ea3bef45637b7:9544829590a4cb375bd1225cd6bbcf20fbca4d443c0e52871a22b781b4ca4d409d6adbd2ab1b75a3c4feebb9d1bd47d4fa8891872aff33c645edf85d5b19fa1f",
+      "createdAt": "2026-09-14T12:01:08.791Z",
+      "streakDays": 0,
+      "skillLevel": "beginner",
+      "role": "student",
+      "email": "23me1a4624@rcee.ac.in",
+      "batch": "Batch 2026-A",
+      "emailVerified": true,
+      "totalSolved": 0,
+      "isVerified": true,
+      "preferredLanguage": "python",
+      "username": "vignesh",
+      "status": "Verified",
+      "targetGoal": "Master Algorithmic Problem Solving & Technical Interviews"
+    },
+    {
+      "id": "usr_mu16ztzud6pp",
+      "skillLevel": "beginner",
+      "role": "student",
+      "createdAt": "2026-09-14T12:01:36.084Z",
+      "username": "Nagur",
+      "preferredLanguage": "python",
+      "streakDays": 0,
+      "email": "23me1a4654@rcee.ac.in",
+      "batch": "Batch 2026-A",
+      "totalSolved": 0,
+      "status": "Verified",
+      "targetGoal": "Master Algorithmic Problem Solving & Technical Interviews",
+      "password": "scrypt:3714b17063a668ff27c7e3ac332a7743:2b9b50300fcaca53c16db7fef54b1f6f216458071eea4e5b6cf3fc605dcc42291ef4e80a3bbd158fb6c1223418bdfb66b8ebccfa8f59aeebed43bdb4a8adc411",
+      "emailVerified": true,
+      "isVerified": true
     }
   ],
   "problems": [
@@ -710,83 +831,83 @@
     },
     {
       "id": "prob_admin-authored-bin_u3y72",
-      "createdAt": "2026-09-11T15:09:04.912Z",
-      "title": "Admin Authored Binary Search",
-      "category": "Binary Search",
-      "slug": "admin-authored-binary-search",
       "constraints": [
         "1 <= input.length <= 10^5",
         "Target time complexity: O(N)"
       ],
-      "starterCode": {
-        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};",
-        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
-        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}",
-        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}",
-        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None",
-        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}"
-      },
-      "difficulty": "intermediate",
-      "tags": [
-        "binary search"
-      ],
+      "title": "Admin Authored Binary Search",
       "testCases": [
         {
-          "isHidden": false,
           "input": "[-1,0,3,5,9,12], 9",
-          "expectedOutput": "4",
-          "id": "tc1"
-        }
-      ],
-      "acceptanceRate": 75,
-      "description": "Given an array of sorted integers, find target index in O(log n).",
-      "hints": [],
-      "examples": [
-        {
-          "input": "nums = [-1,0,3,5,9,12], target = 9",
-          "output": "4"
-        }
-      ]
-    },
-    {
-      "id": "prob_admin-authored-bin_m4piw",
-      "testCases": [
-        {
           "id": "tc1",
-          "input": "[-1,0,3,5,9,12], 9",
           "expectedOutput": "4",
           "isHidden": false
         }
       ],
-      "title": "Admin Authored Binary Search",
-      "tags": [
-        "binary search"
-      ],
+      "difficulty": "intermediate",
+      "acceptanceRate": 75,
+      "description": "Given an array of sorted integers, find target index in O(log n).",
+      "createdAt": "2026-09-11T15:09:04.912Z",
+      "slug": "admin-authored-binary-search",
+      "category": "Binary Search",
+      "starterCode": {
+        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}",
+        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None",
+        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}",
+        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}",
+        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
+        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};"
+      },
       "examples": [
         {
           "output": "4",
           "input": "nums = [-1,0,3,5,9,12], target = 9"
         }
       ],
+      "tags": [
+        "binary search"
+      ],
+      "hints": []
+    },
+    {
+      "id": "prob_admin-authored-bin_m4piw",
+      "difficulty": "intermediate",
+      "acceptanceRate": 75,
+      "title": "Admin Authored Binary Search",
+      "starterCode": {
+        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}",
+        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None",
+        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};",
+        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
+        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}",
+        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}"
+      },
+      "tags": [
+        "binary search"
+      ],
+      "createdAt": "2026-09-11T16:35:01.329Z",
       "description": "Given an array of sorted integers, find target index in O(log n).",
       "slug": "admin-authored-binary-search",
-      "createdAt": "2026-09-11T16:35:01.329Z",
-      "acceptanceRate": 75,
-      "category": "Binary Search",
       "constraints": [
         "1 <= input.length <= 10^5",
         "Target time complexity: O(N)"
       ],
-      "difficulty": "intermediate",
+      "category": "Binary Search",
       "hints": [],
-      "starterCode": {
-        "python": "def adminAuthoredBinarySearch(input):\n    # Write your solution here\n    return None",
-        "typescript": "function adminAuthoredBinarySearch(input: any): any {\n  // Write your solution here\n  return null;\n}",
-        "java": "public class Solution {\n    public static Object adminAuthoredBinarySearch(Object input) {\n        // Write your solution here\n        return null;\n    }\n}",
-        "go": "package main\n\nfunc adminAuthoredBinarySearch(input interface{}) interface{} {\n    // Write your solution here\n    return nil\n}",
-        "cpp": "#include <iostream>\n#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    auto adminAuthoredBinarySearch(auto input) {\n        // Write your solution here\n        return 0;\n    }\n};",
-        "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction adminAuthoredBinarySearch(input) {\n  // Write your solution here\n  return null;\n}"
-      }
+      "testCases": [
+        {
+          "expectedOutput": "4",
+          "isHidden": false,
+          "input": "[-1,0,3,5,9,12], 9",
+          "id": "tc1"
+        }
+      ],
+      "examples": [
+        {
+          "input": "nums = [-1,0,3,5,9,12], target = 9",
+          "output": "4"
+        }
+      ]
     }
   ],
   "submissions": [],
@@ -797,7 +918,7 @@
       "senderId": "usr_admin_mentor",
       "senderName": "Lead Mentor (David)",
       "senderRole": "mentor",
-      "text": "Welcome to CodeElevate Academy! Our AI Mentor is online 24/7 in your coding playground. Feel free to ask questions here or use the \"Ask AI Tutor\" side drawer while solving.",
+      "text": "Welcome to Code Sprint Academy! Our AI Mentor is online 24/7 in your coding playground. Feel free to ask questions here or use the \"Ask AI Tutor\" side drawer while solving.",
       "createdAt": "2026-09-05T10:24:09.104Z"
     },
     {
@@ -875,25 +996,25 @@
   "feedback": [
     {
       "id": "fb_1789278522020_6kob9",
-      "type": "suggestion",
+      "name": "Alex Test",
       "message": "It would be great to have Python 3.12 standard library typing support.",
       "subject": "Python 3.12 support",
-      "metadata": {},
+      "createdAt": "2026-09-13T05:48:42.020Z",
       "status": "received",
-      "name": "Alex Test",
       "email": "alex@example.com",
-      "createdAt": "2026-09-13T05:48:42.020Z"
+      "type": "suggestion",
+      "metadata": {}
     },
     {
       "id": "fb_1789278616159_944nd",
-      "name": "bnnnnnn",
-      "type": "bug",
-      "email": "snehithsudulaguntla2108@gmail.com",
-      "subject": "bbug",
-      "message": "iiiiiiiiiiiiiiiiiiii",
       "status": "received",
+      "createdAt": "2026-09-13T05:50:16.159Z",
+      "message": "iiiiiiiiiiiiiiiiiiii",
+      "name": "bnnnnnn",
+      "email": "snehithsudulaguntla2108@gmail.com",
       "metadata": {},
-      "createdAt": "2026-09-13T05:50:16.159Z"
+      "type": "bug",
+      "subject": "bbug"
     }
   ]
 }

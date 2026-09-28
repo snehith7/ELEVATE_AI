@@ -168,7 +168,7 @@ export const FacultyLoginPage: React.FC<FacultyLoginPageProps> = ({
 
       {/* Footer */}
       <footer className="px-6 py-4 border-t border-[#1c1c28] text-center text-xs text-slate-500">
-        <p>LrnKod Instructor Portal • Real-time cohort analytics & automated problem authoring</p>
+        <p>Code Sprint Instructor Portal • Real-time cohort analytics & automated problem authoring</p>
       </footer>
     </div>
   );

@@ -9,7 +9,7 @@ export interface SendEmailResult {
   deliveredToOwner?: boolean;
 }
 
-const DEFAULT_RESEND_SENDER = 'LrnKod <onboarding@resend.dev>';
+const DEFAULT_RESEND_SENDER = 'Code Sprint <onboarding@resend.dev>';
 
 // Public webmail domains cannot be verified on Resend (DNS records cannot be added to gmail.com, yahoo.com, etc.)
 const UNVERIFIABLE_PUBLIC_DOMAINS = new Set([
@@ -50,7 +50,7 @@ function resolveSenderAddress(): { address: string; wasOverridden: boolean; orig
 
   if (domainPart && UNVERIFIABLE_PUBLIC_DOMAINS.has(domainPart)) {
     const nameMatch = raw.match(/^([^<]+)</);
-    const displayName = nameMatch ? nameMatch[1].trim() : 'LrnKod';
+    const displayName = nameMatch ? nameMatch[1].trim() : 'Code Sprint';
     return {
       address: `${displayName} <onboarding@resend.dev>`,
       wasOverridden: true,
@@ -96,7 +96,7 @@ export async function sendVerificationEmail(
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Verify your LrnKod account</title>
+      <title>Verify your Code Sprint account</title>
     </head>
     <body style="margin: 0; padding: 0; background-color: #07070a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #e2e8f0;">
       <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #07070a; padding: 40px 20px;">
@@ -110,7 +110,7 @@ export async function sendVerificationEmail(
                     &lt;/&gt;
                   </div>
                   <h1 style="margin: 12px 0 4px 0; font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">
-                    Lrn<span style="color: #FF5A43;">Kod</span>
+                    Code <span style="color: #FF5A43;">Sprint</span>
                   </h1>
                   <p style="margin: 0; font-size: 11px; color: #94a3b8; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;">
                     Algorithmic Mastery & Technical Assessment
@@ -126,7 +126,7 @@ export async function sendVerificationEmail(
                   </h2>
                   <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #94a3b8;">
                     Hello <strong style="color: #f1f5f9;">${displayName}</strong>,<br>
-                    Thank you for joining LrnKod. Please enter the following 6-digit verification code to activate your student account:
+                    Thank you for joining Code Sprint. Please enter the following 6-digit verification code to activate your student account:
                   </p>
                 </td>
               </tr>
@@ -152,7 +152,7 @@ export async function sendVerificationEmail(
                     🔒 Security Notice:
                   </p>
                   <p style="margin: 0; font-size: 12px; color: #64748b; line-height: 1.5;">
-                    Never share this code with anyone. LrnKod staff will never ask for your verification code. If you did not register for this account, you can safely ignore this email.
+                    Never share this code with anyone. Code Sprint staff will never ask for your verification code. If you did not register for this account, you can safely ignore this email.
                   </p>
                 </td>
               </tr>
@@ -161,7 +161,7 @@ export async function sendVerificationEmail(
               <tr>
                 <td align="center" style="padding-top: 32px; border-top: 1px solid #1a1a26; margin-top: 24px;">
                   <p style="margin: 0; font-size: 11px; color: #475569;">
-                    © ${new Date().getFullYear()} LrnKod. All rights reserved.
+                    © ${new Date().getFullYear()} Code Sprint. All rights reserved.
                   </p>
                 </td>
               </tr>
@@ -174,12 +174,12 @@ export async function sendVerificationEmail(
   `;
 
   const textContent = `
-LrnKod - Email Verification
+Code Sprint - Email Verification
 ==================================================
 
 Hello ${displayName},
 
-Thank you for registering on LrnKod. Your 6-digit email verification code is:
+Thank you for registering on Code Sprint. Your 6-digit email verification code is:
 
   ${otp}
 
@@ -189,12 +189,12 @@ Enter this code on the registration verification screen to complete your account
 
 Security notice: Do not share this code with anyone. If you didn't create an account, you can safely ignore this email.
 
-© ${new Date().getFullYear()} LrnKod
+© ${new Date().getFullYear()} Code Sprint
   `.trim();
 
   // Print prominent visual banner to server terminal for instant development & debugging access
   console.log('\n' + '='.repeat(70));
-  console.log('✉️  [LrnKod Resend Email Service] EMAIL VERIFICATION CODE DISPATCHED');
+  console.log('✉️  [Code Sprint Resend Email Service] EMAIL VERIFICATION CODE DISPATCHED');
   console.log('='.repeat(70));
   console.log(`👤 Recipient Email : ${recipientEmail}`);
   console.log(`🔑 6-Digit OTP Code : \x1b[1m\x1b[33m${otp}\x1b[0m`);
@@ -238,7 +238,7 @@ Security notice: Do not share this code with anyone. If you didn't create an acc
     let dispatchResult = await resend.emails.send({
       from: fromAddress,
       to: [recipientEmail],
-      subject: `${otp} is your LrnKod verification code`,
+      subject: `${otp} is your Code Sprint verification code`,
       text: textContent,
       html: htmlContent
     });
@@ -257,7 +257,7 @@ Security notice: Do not share this code with anyone. If you didn't create an acc
       dispatchResult = await resend.emails.send({
         from: DEFAULT_RESEND_SENDER,
         to: [recipientEmail],
-        subject: `${otp} is your LrnKod verification code`,
+        subject: `${otp} is your Code Sprint verification code`,
         text: textContent,
         html: htmlContent
       });
@@ -282,8 +282,8 @@ Security notice: Do not share this code with anyone. If you didn't create an acc
             const forwardResult = await resend.emails.send({
               from: DEFAULT_RESEND_SENDER,
               to: [ownerEmail],
-              subject: `[LrnKod Verification] ${otp} is the code for ${recipientEmail}`,
-              text: `A new registration / verification was initiated on LrnKod.\n\nRecipient: ${recipientEmail}\nUsername: ${displayName}\nVerification Code: ${otp}\nExpires at: ${expiryTime}\n\nNotice: Resend is operating in Test Mode (using ${DEFAULT_RESEND_SENDER}), so testing emails are delivered exclusively to your account address (${ownerEmail}).`,
+              subject: `[Code Sprint Verification] ${otp} is the code for ${recipientEmail}`,
+              text: `A new registration / verification was initiated on Code Sprint.\n\nRecipient: ${recipientEmail}\nUsername: ${displayName}\nVerification Code: ${otp}\nExpires at: ${expiryTime}\n\nNotice: Resend is operating in Test Mode (using ${DEFAULT_RESEND_SENDER}), so testing emails are delivered exclusively to your account address (${ownerEmail}).`,
               html: htmlContent
             });
             if (forwardResult.data?.id) {
